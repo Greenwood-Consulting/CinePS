@@ -12,12 +12,12 @@
   <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
   
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
-  <link href="./assets/favicon.ico" rel="icon">
+  <!--link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png"-->
+  <!--link href="./assets/favicon.ico" rel="icon"-->
 
   <title>Title page</title>  
 
-<link href="./main.3f6952e4.css" rel="stylesheet"></head>
+<!--link href="./main.3f6952e4.css" rel="stylesheet"--></head>
 
 <body class="minimal">
 <div id="site-border-left"></div>
@@ -63,6 +63,12 @@
     $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
     $requete = $bdd->query('SELECT * FROM membre');
     ?>
+    <select>
+    <?php
+    while($data = $requete->fetch()){
+     echo "<option value='".$data['Nom']."'>".$data['Nom']."</option>";
+}?>
+    </select>
     
    
         <?php
