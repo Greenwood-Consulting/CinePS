@@ -1,6 +1,14 @@
 <?php
-//On salut le membre
-echo "Bonjour ".$_POST['user'];
+//On salut le membre*
+session_start();
+if(isset($_POST['user'])){
+    $_SESSION['user']=$_POST['user'];
+}
+
+
+echo "Bonjour ".$_SESSION['user'];
+
+
 
 ?>
 

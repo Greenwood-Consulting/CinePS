@@ -1,7 +1,9 @@
 <?php
-
+session_start();
+echo 'utilisateur connecté : '.$_SESSION['user'];
+echo "<hr>";
 $film =$_POST['film'];
-$date = date('Y-M-d');
+$date = date('Y-m-d');
 // On se connecte à la base
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 // On écrit la requête
