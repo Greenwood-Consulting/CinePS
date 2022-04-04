@@ -53,6 +53,12 @@
                 </span>
                 <span id="typed"></span-->
                 <?php
+                
+                session_start();
+              
+                
+                 
+
     //Liste des films
     //echo '<h1 style="color:#FFF000"> Liste de films</h1>';
     echo '<h1 > Liste de films</h1>';
@@ -60,18 +66,18 @@
     $requete = $bdd->query('SELECT * FROM film');
         
     while($data = $requete->fetch()){
-        echo $data['titre']."<br/>";
+        $date = new DateTime($data['date']);
+        echo $data['titre']." ".$date->format('d F Y')."<br/>";
     }
     // Liste des membres
   
     //echo '<h1 style="color:#FFF000"> Membre </h1>';
     echo '<h1> Membre </h1>';
-    $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
+    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     $requete = $bdd->query('SELECT * FROM Membre');
-    /*$Nom = $_POST['Nom'];
-    $Prenom= $_POST['Prenom'];*/
+    
     ?>
-    <form method="post" action="submit_form.php">
+    <form method="post" action="propose_film.php">
       <label>Membres</label>
     <select name="user">
     <?php
@@ -80,7 +86,7 @@
     }
     ?>
     </select>
-    <button type="submit">Envoyer</button>
+    <button type="submit">Se connecter</button>
   </form>
     
     
