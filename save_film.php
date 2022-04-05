@@ -1,6 +1,29 @@
 <?php
 session_start();
-echo 'utilisateur connecté : '.$_SESSION['user'];
+if(isset($_POST['user'])){
+    $_SESSION['user']=$_POST['user'];
+}
+if(isset($_SESSION['user'])){
+    echo "Utilisateur connecté : ".$_SESSION['user'];
+    echo "<a href='deconnexion.php'><button>Se deconnecter</button></a>";
+}else{
+    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+    $requete = $bdd->query('SELECT * FROM Membre');
+    echo'<form method="post" action="save_film.php">
+            <label>Membres</label>
+                <select name="user">';
+    while($data = $requete->fetch()){
+        echo"<option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+    }
+echo'</select>
+<button type="submit">Se connecter</button>
+</form>';
+}
+
+
+
+
+
 echo "<hr>";
 $film =$_POST['film'];
 $date = date('Y-m-d');

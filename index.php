@@ -19,7 +19,9 @@
 
 <!--link href="./main.3f6952e4.css" rel="stylesheet"-->
 </head>
-
+<?php
+session_start();
+?>              
 <!--body class="minimal">
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
@@ -27,8 +29,26 @@
 <div id="site-border-bottom"></div>
 <! Add your content of header -->
 <header>
+  
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
+    <?php
+
+    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+    $requete = $bdd->query('SELECT * FROM Membre');
+    
+    ?>
+    <form method="post" action="propose_film.php">
+      <label>Membres</label>
+    <select name="user">
+    <?php
+    while($data = $requete->fetch()){
+     echo"<option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+    }
+    ?>
+    </select>
+    <button type="submit">Se connecter</button>
+  </form>
         <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -52,55 +72,42 @@
                   <span>Bienvenue sur CinéPS</span>
                 </span>
                 <span id="typed"></span-->
-                <?php
                 
-                session_start();
-              
+                
+                
                 
                  
-
+    <?php
     //Liste des films
     //echo '<h1 style="color:#FFF000"> Liste de films</h1>';
+    ?>
+    <form>
+      
+      <?php
     echo '<h1 > Liste de films</h1>';
     $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
     $requete = $bdd->query('SELECT * FROM film');
         
     while($data = $requete->fetch()){
         $date = new DateTime($data['date']);
-        echo $data['titre']." ".$date->format('d F Y')."<br/>";
+        echo $data['titre']." ".$date->format('d F Y').'<input=>'."<br/>";
     }
     // Liste des membres
   
     //echo '<h1 style="color:#FFF000"> Membre </h1>';
-    echo '<h1> Membre </h1>';
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $requete = $bdd->query('SELECT * FROM Membre');
-    
-    ?>
-    <form method="post" action="propose_film.php">
-      <label>Membres</label>
-    <select name="user">
-    <?php
-    while($data = $requete->fetch()){
-     echo"<option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
-    }
-    ?>
-    </select>
-    <button type="submit">Se connecter</button>
-  </form>
-    
-    
-   
-        <?php
     $requete->closeCursor();
-    ?>
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    
+              //</h1>
+            //</div>
+          //</div>
+        //</div>
+      //</div>
+    //</div>
+  //</div>7
+  ?>
+  </input>
+  </form>
+  <a href="save_film.php"><button>PROPOSITION</button>
   
 <!--script>
   document.addEventListener("DOMContentLoaded", function (event) {
