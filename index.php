@@ -15,13 +15,10 @@
   <!--link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
   link href="./assets/favicon.ico" rel="icon"-->
 
-  <title>Title page</title>  
+  <title>CinePS</title>  
 
 <!--link href="./main.3f6952e4.css" rel="stylesheet"-->
-</head>
-<?php
-session_start();
-?>              
+</head>             
 <!--body class="minimal">
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
@@ -33,22 +30,8 @@ session_start();
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $requete = $bdd->query('SELECT * FROM Membre');
-    
-    ?>
-    <form method="post" action="propose_film.php">
-      <label>Membres</label>
-    <select name="user">
-    <?php
-    while($data = $requete->fetch()){
-     echo"<option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
-    }
-    ?>
-    </select>
-    <button type="submit">Se connecter</button>
-  </form>
+    include('header.php') 
+  ?>
         <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -60,55 +43,13 @@ session_start();
     </div>
   </nav>
 </header>
-<!-- Add your site or app content here -->
-  <!--div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/space.jpg')">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="hero-full-wrapper">
-            <div class="text-content">
-              <h1 style="color:#FFF000">Bonjour,<br>
-                <span id="typed-strings">
-                  <span>Bienvenue sur CinéPS</span>
-                </span>
-                <span id="typed"></span-->
-                
-                
-                
-                
-                 
-    <?php
-    //Liste des films
-    //echo '<h1 style="color:#FFF000"> Liste de films</h1>';
-    ?>
-    <form>
-      
-      <?php
-    echo '<h1 > Liste de films</h1>';
-    $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
-    $requete = $bdd->query('SELECT * FROM film');
-        
-    while($data = $requete->fetch()){
-        $date = new DateTime($data['date']);
-        echo $data['titre']." ".$date->format('d F Y').'<input=>'."<br/>";
-    }
-    // Liste des membres
+
   
-    //echo '<h1 style="color:#FFF000"> Membre </h1>';
-    $requete->closeCursor();
-    
-              //</h1>
-            //</div>
-          //</div>
-        //</div>
-      //</div>
-    //</div>
-  //</div>7
-  ?>
-  </input>
-  </form>
-  <a href="save_film.php"><button>PROPOSITION</button>
-  
+  <?php
+  if(isset($_SESSION['user'])){
+      echo '<a href="propose_film.php"><button>Ajouter un nouveau film</button>';}
+      ?>
+  <a href="vote.php">Votez pour le film de la semaine !</a>
 <!--script>
   document.addEventListener("DOMContentLoaded", function (event) {
      type();
