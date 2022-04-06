@@ -8,7 +8,7 @@
     while($data = $requete->fetch()){
         $date = new DateTime($data['date']);
         setlocale (LC_TIME, 'fr_FR.utf8','fra');
-        echo $data['titre']." ".$date = strftime('%d %B %Y').'<input type="number" min="1" max="6">'."<br/>";
+        echo $data['titre']." ".$date = strftime('%d %B %Y').'<input type="number" name="'.$data['id'].'" value="'.$data['id'].'" min="1" max="6">'."<br/>";
     }
     // Liste des membres
   
