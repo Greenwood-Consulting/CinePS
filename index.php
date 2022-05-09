@@ -17,7 +17,7 @@
 
   <title>CinePS</title>  
 
-<!--link href="./main.3f6952e4.css" rel="stylesheet">
+<link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
 <div id="site-border-left"></div>
@@ -32,7 +32,7 @@
     <?php
     include('header.php') 
   ?>
-        <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
