@@ -17,7 +17,7 @@
 
   <title>CinePS</title>  
 
-<link href="./main.3f6952e4.css" rel="stylesheet">
+<!--link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
 <div id="site-border-left"></div>
@@ -32,7 +32,7 @@
     <?php
     include('header.php') 
   ?>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -68,11 +68,11 @@
   
   
   if(isset($_SESSION['user'])){
-      echo "<a href='propose_film.php'><button type='button' class='btn btn-warning'>Ajouter un nouveau film</button>";}
+      echo "<a href='propose_film.php'><button type='button' class='btn btn-warning'>Ajouter un nouveau film</button></a>";}
       ?>
   
   
-  <a href="current_week.php" class="text-warning">Pour les test</a>
+  
   <?php
   
  $jour_aujourdhui = date("D");
@@ -95,7 +95,7 @@ $curdate=new DateTime();
 //echo $curdate->format('Y-m-d H:i:s')."<br/>";
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
-if($vote_period){
+/*if($vote_period){
   echo 'Nous ne sommes pas en période de vote';;
 }
 else{
@@ -112,9 +112,95 @@ echo $vote_periode;
 
 $connecte = isset($_SESSION['user']);
 echo "<br/>"; 
-echo $connecte;
+//echo $connecte;
 
+
+$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+$next_friday = $curdate->modify('next friday')->format('Y-m-d');
+echo 'next_friday'.$next_friday;
+$requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$next_friday."'");
+$current_semaine = $requete->fetch();
+
+echo 'current_semaine' .$current_semaine['id'];
+$id_current_semaine = $current_semaine['id'];
+
+$requete1 = $bdd->query("SELECT id FROM proposition WHERE id = '".$id_current_semaine."'");
+$proposition_semaine =  $requete1->fetch();
+if($proposition_semaine){
+  echo 'Il y a deja eu des propositions cette semaine';
+}else{
+  echo "il n'y a pas encore de proposition";
+}
+
+$requete2 = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
+$nb_votes = $requete2->fetch()['nb_votes_current_semaine'];
+echo '<br/>';
+print_r($requete2->fetch());
+echo '<br/>';
+//echo 'id_current_semaine' .$id_current_semaine;
+//echo 'nb_vote' .$nb_votes;
+
+$requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
+$nb_personnes = $requete3->fetch()['nb_personne'];
+echo '<br/>';
+print_r($requete3->fetch());
+//echo 'nb_personne' .$nb_personnes;
+$vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
+
+if($vote_termine_cette_semaine){
+  echo 'Le vote est terminé';
+}else{
+  echo 'Le vote n est pas terminé : <a href="vote.php" class="text-warning">Pour les votes</a><br/>';
+}
+
+$user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
+$id_utlisateur_connecte = $user->fetch()['id'];
+$requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (id = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
+$current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']==1;
+if($current_user_a_vote){
+  echo "l'utilsateur courrant a voté";
+}else{
+  echo "l'utilisateur courrant n'a pas encore voté";
+}*/
+$vote_period = true;
+$proposition_semaine = true;
+$vote_termine = true;
+$user_vote = true;
+
+echo '<br/>';
+echo '<br/>';
+echo '<br/>';
+echo 'Page d\'accueil :';
+echo '<br/>';
+echo '<br/>';
+
+if(isset($_SESSION['user'])){
+  echo "Utilisateur connecté : ".$_SESSION['user'];
+  if($vote_period){
+    if($proposition_semaine){
+      if($vote_termine){
+        echo 'Le film retenu est: One piece';
+      }else{
+        if($user_vote){
+
+        }
+      }
+          
+            
+    }else{
+
+    }
+
+  }else{
+
+  }
+}else{
+  echo 'La proposition n\'a pas encore été faite';
   
+}
+
+
+
  ?>
             </div>
           </div>
