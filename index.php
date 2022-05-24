@@ -152,16 +152,14 @@ if($vote_termine_cette_semaine){
 }else{
   echo 'Le vote n est pas terminé : <a href="vote.php" class="text-warning">Pour les votes</a><br/>';
 }
-
-$user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
-$id_utlisateur_connecte = $user->fetch()['id'];
-$requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (id = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
-$current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']==1;
-if($current_user_a_vote){
-  echo "l'utilsateur courrant a voté";
-}else{
-  echo "l'utilisateur courrant n'a pas encore voté";
+$current_user_a_vote = false;
+if(isset($_SESSION['user'])){
+  $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
+  $id_utlisateur_connecte = $user->fetch()['id'];
+  $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (id = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
+  $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']==1;
 }
+
 $vote_period = true;
 $proposition_semaine = true;
 $vote_termine = true;
