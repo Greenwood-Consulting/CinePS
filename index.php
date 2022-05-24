@@ -175,20 +175,29 @@ echo 'Page d\'accueil :';
 echo '<br/>';
 echo '<br/>';
 
-function printResultatVote(){
+
+function printResultatVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $requete5= $bdd->query("SELECT titre AS best_film FROM film ORDER BY score DESC LIMIT 1");
-  $best_film = $requete5->fetch()['best_film'];
-  echo 'Le film retenu est ' .$best_film;
+  $requete5= $bdd->query("SELECT film AS id_best_film FROM proposition WHERE semaine = '".$id_semaine."' ORDER BY score DESC LIMIT 1");
+  $id_best_film = $requete5->fetch()['id_best_film'];
+  $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
+  echo 'Le film retenu est ' .$requete6->fetch()['titre'];
 }
-
-
+function printFilmsProposes($id_semaine){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  echo 'Voici la liste des films proposés <br/>';
+  while ($film = $requete7->fetch()){
+    $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
+    echo $requete6->fetch()['titre'].'<br/>';
+  }
+}
 
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
       if($vote_termine){//le vote est terminé
-        printResultatVote();
+        printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
         if($user_vote){//l'user a voté
@@ -201,23 +210,23 @@ if($connecte){//l'utilisateur est connecté
       echo "la proposition n'est pas encore faite";
     }
   }else{//nous ne sommes pas en période de vote
-    printResultatVote();
+    printResultatVote($id_current_semaine);
   }
 }else{//aucun utilisateur est connecté
   if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
     if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
       if($vote_termine){//le vote est terminé et pas connecté
-        printResultatVote();
+        printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé mais pas connecté
-        echo'La selection des films de la semaine est <a href="vote.php" class="text-warning">ici </a>';
+        printFilmsProposes($id_current_semaine);
       }
 
     }else{//la proposition n'est pas encore faite et pas connecté
       echo 'la proposition n\'a pas encore été faite';
     }
   }else{//nous ne sommes pas en période de vote et pas connecté
-    printResultatVote();
+    printResultatVote($id_current_semaine);
   }
 }
 
