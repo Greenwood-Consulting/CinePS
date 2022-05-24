@@ -144,7 +144,7 @@ $requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
 $nb_personnes = $requete3->fetch()['nb_personne'];
 echo '<br/>';
 print_r($requete3->fetch());
-//echo 'nb_personne' .$nb_personnes;
+echo 'nb_personne' .$nb_personnes;
 $vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
 
 if($vote_termine_cette_semaine){
@@ -174,16 +174,17 @@ echo '<br/>';
 echo 'Page d\'accueil :';
 echo '<br/>';
 echo '<br/>';
+$requete5= $bdd->query("SELECT titre AS best_film FROM film ORDER BY score DESC LIMIT 1");
+$best_film = $requete5->fetch()['best_film'];
 
-function printResultatVote(){
-  echo 'Resultat du vote : One Piece 2';
-}
+
+
 
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
       if($vote_termine){//le vote est terminé
-        printResultatVote();
+        echo 'Le film retenu est ' .$best_film;
 
       }else{//le vote n'est pas terminé
         if($user_vote){//l'user a voté
@@ -196,23 +197,23 @@ if($connecte){//l'utilisateur est connecté
       echo "la proposition n'est pas encore faite";
     }
   }else{//nous ne sommes pas en période de vote
-    printResultatVote();
+    echo 'Le film retenu est ' .$best_film;
   }
 }else{//aucun utilisateur est connecté
   if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
     if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
       if($vote_termine){//le vote est terminé et pas connecté
-        printResultatVote();
+        echo 'Le film retenu est ' .$best_film;
 
       }else{//le vote n'est pas terminé mais pas connecté
-        echo'la selection des films';
+        echo'La selection des films de la semaine est <a href="vote.php" class="text-warning">ici </a>';
       }
 
     }else{//la proposition n'est pas encore faite et pas connecté
       echo 'la proposition n\'a pas encore été faite';
     }
   }else{//nous ne sommes pas en période de vote et pas connecté
-    printResultatVote();
+    echo 'Le film retenu est ' .$best_film;
   }
 }
 
