@@ -174,9 +174,13 @@ echo '<br/>';
 echo 'Page d\'accueil :';
 echo '<br/>';
 echo '<br/>';
-$requete5= $bdd->query("SELECT titre AS best_film FROM film ORDER BY score DESC LIMIT 1");
-$best_film = $requete5->fetch()['best_film'];
 
+function printResultatVote(){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $requete5= $bdd->query("SELECT titre AS best_film FROM film ORDER BY score DESC LIMIT 1");
+  $best_film = $requete5->fetch()['best_film'];
+  echo 'Le film retenu est ' .$best_film;
+}
 
 
 
@@ -184,7 +188,7 @@ if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
       if($vote_termine){//le vote est terminé
-        echo 'Le film retenu est ' .$best_film;
+        printResultatVote();
 
       }else{//le vote n'est pas terminé
         if($user_vote){//l'user a voté
@@ -197,13 +201,13 @@ if($connecte){//l'utilisateur est connecté
       echo "la proposition n'est pas encore faite";
     }
   }else{//nous ne sommes pas en période de vote
-    echo 'Le film retenu est ' .$best_film;
+    printResultatVote();
   }
 }else{//aucun utilisateur est connecté
   if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
     if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
       if($vote_termine){//le vote est terminé et pas connecté
-        echo 'Le film retenu est ' .$best_film;
+        printResultatVote();
 
       }else{//le vote n'est pas terminé mais pas connecté
         echo'La selection des films de la semaine est <a href="vote.php" class="text-warning">ici </a>';
@@ -213,7 +217,7 @@ if($connecte){//l'utilisateur est connecté
       echo 'la proposition n\'a pas encore été faite';
     }
   }else{//nous ne sommes pas en période de vote et pas connecté
-    echo 'Le film retenu est ' .$best_film;
+    printResultatVote();
   }
 }
 
