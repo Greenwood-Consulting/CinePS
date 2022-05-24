@@ -95,7 +95,7 @@ $curdate=new DateTime();
 //echo $curdate->format('Y-m-d H:i:s')."<br/>";
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
-/*if($vote_period){
+if($vote_period){
   echo 'Nous ne sommes pas en période de vote';;
 }
 else{
@@ -161,11 +161,12 @@ if($current_user_a_vote){
   echo "l'utilsateur courrant a voté";
 }else{
   echo "l'utilisateur courrant n'a pas encore voté";
-}*/
+}
 $vote_period = true;
 $proposition_semaine = true;
 $vote_termine = true;
-$user_vote = true;
+$connecte = true;
+$user_vote= true;
 
 echo '<br/>';
 echo '<br/>';
@@ -174,31 +175,46 @@ echo 'Page d\'accueil :';
 echo '<br/>';
 echo '<br/>';
 
-if(isset($_SESSION['user'])){
-  echo "Utilisateur connecté : ".$_SESSION['user'];
-  if($vote_period){
-    if($proposition_semaine){
-      if($vote_termine){
-        echo 'Le film retenu est: One piece';
-      }else{
-        if($user_vote){
-
-        }
-      }
-          
-            
-    }else{
-
-    }
-
-  }else{
-
-  }
-}else{
-  echo 'La proposition n\'a pas encore été faite';
-  
+function printResultatVote(){
+  echo 'Resultat du vote : One Piece 2';
 }
 
+if($connecte){//l'utilisateur est connecté
+  if($vote_period){//nous sommes en période de vote
+    if($proposition_semaine){//les propositions ont été faite
+      if($vote_termine){//le vote est terminé
+        printResultatVote();
+
+      }else{//le vote n'est pas terminé
+        if($user_vote){//l'user a voté
+          echo 'Vous avez déjà voté';
+        }else{//l'user n'a pas voté
+          echo'Vous devez voter';
+        }
+      }
+    }else{//la proposition n'est pas encore faite
+      echo "la proposition n'est pas encore faite";
+    }
+  }else{//nous ne sommes pas en période de vote
+    printResultatVote();
+  }
+}else{//aucun utilisateur est connecté
+  if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
+    if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
+      if($vote_termine){//le vote est terminé et pas connecté
+        printResultatVote();
+
+      }else{//le vote n'est pas terminé mais pas connecté
+        echo'la selection des films';
+      }
+
+    }else{//la proposition n'est pas encore faite et pas connecté
+      echo 'la proposition n\'a pas encore été faite';
+    }
+  }else{//nous ne sommes pas en période de vote et pas connecté
+    printResultatVote();
+  }
+}
 
 
  ?>
