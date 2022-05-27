@@ -114,6 +114,9 @@ $connecte = isset($_SESSION['user']);
 echo "<br/>"; 
 //echo $connecte;
 
+?>
+<a href='propose_film.php'>Propostions</a>
+<?php
 
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 $next_friday = $curdate->modify('next friday')->format('Y-m-d');
@@ -177,9 +180,14 @@ echo '<br/>';
 function printResultatVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $requete5= $bdd->query("SELECT film AS id_best_film FROM proposition WHERE semaine = '".$id_semaine."' ORDER BY score DESC LIMIT 1");
-  $id_best_film = $requete5->fetch()['id_best_film'];
-  $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
-  echo 'Le film retenu est ' .$requete6->fetch()['titre'];
+  if($data=$requete5->fetch()){
+    $id_best_film=$data['id_best_film'];
+    $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
+    echo 'Le film retenu est ' .$requete6->fetch()['titre'];
+  }else{
+    echo 'Il n\'y a pas encore eu de propositions cette semaine';
+  }
+ 
 }
 function printFilmsProposes($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');

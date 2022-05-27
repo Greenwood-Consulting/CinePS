@@ -7,9 +7,8 @@ if(isset($_POST['user'])){
 if(isset($_SESSION['user'])){
     //Si on est connecté on propose la déconnexion
     echo "Utilisateur connecté : ".$_SESSION['user'];
-    echo "<a href='deconnexion.php'><button>Se deconnecter</button></a>";
+    echo "<a href='deconnexion.php'><button type='button' class='btn btn-warning'>Se deconnecter</button></a>";
 }
-
 else{
     //Sinon on propose la connexion
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
@@ -19,11 +18,13 @@ else{
                 <select name="user">';
     while($data = $requete->fetch()){
         //Afficher un utlisateur
-        echo"<option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+        echo"class='btn btn-warning' <option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
     }
-    echo'</select>
-    <button type="submit">Se connecter</button>
-    </form>';
+    echo"</select>
+    <button type='submit' class='btn btn-warning'>Se connecter</button>
+    </form>'";
 }
+$date = date('l-j-M-y h:i:s');
+echo $date;
 ?>
 <hr/>

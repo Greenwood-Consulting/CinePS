@@ -23,11 +23,16 @@ while($data = $requete->fetch()){
     ?>
 </form>
 <?php
-$connecte = false;
-$vote_period = false;
-$proposition_semaine = true;
+$connecte = true;
+$vote_period = true;
+$proposition_semaine = false;
 $vote_termine = true;
 $user_vote = true;
+
+/*function printAffichedelasemaine();
+$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+$requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
+echo $requete6->fetch()['titre'].'<br/>';*/
 
 echo '<br/>';
 echo '<br/>';
