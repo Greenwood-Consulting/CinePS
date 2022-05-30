@@ -90,9 +90,6 @@
 $deb= new DateTime ("Fri 12:00");
 $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
-//$curdate=new DateTime("2022-05-13 20:00:00");
-//$curdate=new DateTime("9999-01-02");
-//echo $curdate->format('Y-m-d H:i:s')."<br/>";
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
 if($vote_period){
@@ -118,15 +115,7 @@ echo "<br/>";
 <a href='propose_film.php'>Propostions</a>
 <?php
 
-$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-$next_friday = $curdate->modify('next friday')->format('Y-m-d');
-echo 'next_friday'.$next_friday;
-$requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$next_friday."'");
-$current_semaine = $requete->fetch();
-
-echo 'current_semaine' .$current_semaine['id'];
-$id_current_semaine = $current_semaine['id'];
-
+include('common.php');
 $requete1 = $bdd->query("SELECT id FROM proposition WHERE id = '".$id_current_semaine."'");
 $proposition_semaine =  $requete1->fetch();
 if($proposition_semaine){
@@ -202,7 +191,7 @@ function printFilmsProposes($id_semaine){
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
-      if($vote_termine){//le vote est terminé
+      if($vote_termine_cette_semaine){//le vote est terminé
         printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
@@ -221,7 +210,7 @@ if($connecte){//l'utilisateur est connecté
 }else{//aucun utilisateur est connecté
   if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
     if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
-      if($vote_termine){//le vote est terminé et pas connecté
+      if($vote_termine_cette_semaine){//le vote est terminé et pas connecté
         printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé mais pas connecté

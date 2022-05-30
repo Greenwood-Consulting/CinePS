@@ -1,17 +1,21 @@
     <form method="POST" action="save_vote.php">
       
       <?php
+      include('common.php');
     echo '<h1>Votez pour le film</h1>';
-    $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
-    $requete = $bdd->query('SELECT * FROM film');
-        
-    while($data = $requete->fetch()){
-        $date = new DateTime($data['date']);
-        setlocale (LC_TIME, 'fr_FR.utf8','fra');
-        echo $data['titre'].'<input type="number" name="'.$data['id'].'" value="'.$data['id'].'" min="1" max="6">'."<br/>";
-    }
+    
     // Liste des membres
-  
+    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+    $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
+    echo 'Voici la liste des films proposés <br/>';
+    while ($film = $requete7->fetch()){
+      $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
+      $titre_film = $requete6->fetch()['titre'];
+      echo $titre_film.'<input type="number" name="'.$film['film_id'].'" value="'.$film['film_id'].'" min="1" max="6">'."<br/>";
+    }
+
+
+
     //echo '<h1 style="color:#FFF000"> Membre </h1>';
     $requete->closeCursor();
     ?>
