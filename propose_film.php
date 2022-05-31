@@ -23,8 +23,8 @@ echo '<h1>Film(s) proposé(s) cette semaine</h1>';
 
 //$vote_period=$curdate>=$deb && $curdate <= $fin;
 $vote_period = true;
-$requete1 = $bdd->query("SELECT id FROM proposition WHERE id = '".$id_current_semaine."'");
-$proposition_semaine =  $requete1->fetch();
+$requete1 = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
+$proposition_semaine =  $requete1->fetch()['proposition_termine'];
 
 
 
@@ -35,14 +35,7 @@ if(isset($_POST['nex_proposition'])){
 $nouveau_film_propose = $_POST['film'];
 //requete insert
 }
-function printFilmsProposes($id_semaine){
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
-    while ($film = $requete7->fetch()){
-      $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
-      echo $requete6->fetch()['titre'].'<br/>';
-    }
-  }
+
     ?>
 </form>
 <?php
@@ -63,7 +56,10 @@ $titre_film = $_POST['titre_film'];
 $date = date('Y-m-d');
 $requete6 = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
 $last_id = $bdd->lastInsertId();
-$requete7 = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+$requete8 = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+
+
+
 
 //une autre requete insert dans la table proposition pour ajouter la proposition de ce film 
 
@@ -72,10 +68,12 @@ echo '<br/>';
 echo '<br/>';
 echo '<br/>';
 }
-/*$connecte = true;
+
+
+$connecte = true;
 $vote_period = true;
-$proposition_semaine = false;
-$vote_termine_cette_semaine = true;*/
+//$proposition_semaine = ;
+$vote_termine_cette_semaine = false;
 if($connecte){//l'utilisateur est connecté
     if($vote_period){//nous sommes en période de vote
         if($proposition_semaine){//les propositions ont été faite
@@ -90,19 +88,22 @@ if($connecte){//l'utilisateur est connecté
                 }else{//l'user n'a pas voté
                     echo '<br/>';
                     printFilmsProposes($id_current_semaine); 
-                    echo 'Vous n\'avez pas encore voté';
+                    echo 'Les propositions sont terminées mais vous n\'avez pas encore voté';
                 }
             }
-        }else{//aucune propositions faites
-            echo 'Aucun film n\'a été proposé cette semaine. Veuillez faire des propositions';
-            ?>
-            <form method="POST" action="propose_film.php">
-    <label> Proposition de films:</label>
-    <input type="text" name="titre_film">
-    <?php
-    echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
-    echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
-
+        }else{//les propositions de la semaine ne sont pas terminées 
+            echo 'Les propositions de ne sont pas terminés';
+                printFilmsProposes($id_current_semaine);
+                ?>
+                <form method="POST" action="propose_film.php">
+                <label> Proposition de films:</label>
+                <input type="text" name="titre_film">
+                <?php
+                echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
+                echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
+                ?>
+                </form>
+<?php
         }
     }else{//nous ne sommes pas en période de vote
         echo 'il n\'est pas encore possible de faire une nouvelle proposition';
