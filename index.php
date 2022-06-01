@@ -67,7 +67,7 @@
               <?php
   
   
-  if(isset($_SESSION['user'])){
+  if(isset($_SESSION['user'])){//si l'utilisateur est connecté
       echo "<a href='propose_film.php'><button type='button' class='btn btn-warning'>Ajouter un nouveau film</button></a>";}
       ?>
   
@@ -81,21 +81,17 @@
  echo "$jour_aujourdhui " ;
  echo $heure_aujourdhui. "<br/>";
 
- /*if($jour_aujourdhui == "Fri"){
-   echo 'Nous sommes vendredi';
- }else{
-   echo 'Nous ne sommes pas Vendredi';
- }*/
+
  
 $deb= new DateTime ("Fri 12:00");
 $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
-if($vote_period){
+if($vote_period){//si nous ne sommes pas en période de vote
   echo 'Nous ne sommes pas en période de vote';;
 }
-else{
+else{//sinon on affiche le lien pour aller voter
    echo "<a href='vote.php' class='text-warning'>Votez pour le film de la semaine !</a>";
 }
 echo $deb->format('Y-m-d H:i:s')."<br/>";
@@ -118,9 +114,9 @@ echo "<br/>";
 include('common.php');
 $requete1 = $bdd->query("SELECT id FROM proposition WHERE id = '".$id_current_semaine."'");
 $proposition_semaine =  $requete1->fetch();
-if($proposition_semaine){
+if($proposition_semaine){//si une proposition est faite
   echo 'Il y a deja eu des propositions cette semaine';
-}else{
+}else{//si elle n'est pas faite
   echo "il n'y a pas encore de proposition";
 }
 
@@ -129,8 +125,7 @@ $nb_votes = $requete2->fetch()['nb_votes_current_semaine'];
 echo '<br/>';
 print_r($requete2->fetch());
 echo '<br/>';
-//echo 'id_current_semaine' .$id_current_semaine;
-//echo 'nb_vote' .$nb_votes;
+
 
 $requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
 $nb_personnes = $requete3->fetch()['nb_personne'];
@@ -139,13 +134,13 @@ print_r($requete3->fetch());
 echo 'nb_personne' .$nb_personnes;
 $vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
 
-if($vote_termine_cette_semaine){
+if($vote_termine_cette_semaine){//le vote est fini
   echo 'Le vote est terminé';
-}else{
+}else{//le vote n'est pas fini
   echo 'Le vote n est pas terminé : <a href="vote.php" class="text-warning">Pour les votes</a><br/>';
 }
 $current_user_a_vote = false;
-if(isset($_SESSION['user'])){
+if(isset($_SESSION['user'])){//si l'utilisateur a voté
   $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
   $id_utlisateur_connecte = $user->fetch()['id'];
   $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (id = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
@@ -169,11 +164,11 @@ echo '<br/>';
 function printResultatVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $requete5= $bdd->query("SELECT film AS id_best_film FROM proposition WHERE semaine = '".$id_semaine."' ORDER BY score DESC LIMIT 1");
-  if($data=$requete5->fetch()){
+  if($data=$requete5->fetch()){//si le vote est termine on affiche le film retenu
     $id_best_film=$data['id_best_film'];
     $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
     echo 'Le film retenu est ' .$requete6->fetch()['titre'];
-  }else{
+  }else{//sinon non
     echo 'Il n\'y a pas encore eu de propositions cette semaine';
   }
  
@@ -182,7 +177,7 @@ function printFilmsProposes($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
   echo 'Voici la liste des films proposés <br/>';
-  while ($film = $requete7->fetch()){
+  while ($film = $requete7->fetch()){//tant que film $film = $requete on affiche les films
     $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
     echo $requete6->fetch()['titre'].'<br/>';
   }

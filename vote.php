@@ -8,7 +8,7 @@
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
     echo 'Voici la liste des films proposés <br/>';
-    while ($film = $requete7->fetch()){
+    while ($film = $requete7->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
       $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
       $titre_film = $requete6->fetch()['titre'];
       echo $titre_film.'<input type="number" name="'.$film['film_id'].'" value="'.$film['film_id'].'" min="1" max="6">'."<br/>";
@@ -16,7 +16,7 @@
 
 
 
-    //echo '<h1 style="color:#FFF000"> Membre </h1>';
+    //COULEUR A GARDER echo '<h1 style="color:#FFF000"> Membre </h1>';
     $requete->closeCursor();
     ?>
     </input>
