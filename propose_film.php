@@ -51,9 +51,9 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 $titre_film = $_POST['titre_film'];
 $date = date('Y-m-d');
-$requete6 = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
+$ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
 $last_id = $bdd->lastInsertId();
-$requete8 = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+$ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
 
 echo '<br/>';
 echo '<br/>';

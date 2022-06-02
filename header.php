@@ -10,7 +10,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
 }
 else{ //Sinon on propose la connexion
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $requete = $bdd->query('SELECT * FROM Membre');
+    $$affichage_membre = $bdd->query('SELECT * FROM Membre');
     echo'<form method="post" action="propose_film.php">
             <label>Membres</label>
                 <select name="user">';
@@ -21,7 +21,6 @@ else{ //Sinon on propose la connexion
     <button type='submit' class='btn btn-warning'>Se connecter</button>
     </form>'";
 }
-$date = date('l-j-M-y h:i:s');
-echo $date;
+
 ?>
 <hr/>

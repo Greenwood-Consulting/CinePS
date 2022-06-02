@@ -94,8 +94,8 @@ if($vote_period){//si nous ne sommes pas en période de vote
 else{//sinon on affiche le lien pour aller voter
    echo "<a href='vote.php' class='text-warning'>Votez pour le film de la semaine !</a>";
 }
-echo $deb->format('Y-m-d H:i:s')."<br/>";
-echo $fin->format('Y-m-d H:i:s')."<br/>";
+echo $deb->format('m-d-Y H:i:s')."<br/>";
+echo $fin->format('m-d-Y H:i:s')."<br/>";
 
 
  
@@ -123,15 +123,10 @@ if($proposition_semaine){//si une proposition est faite
 $requete2 = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
 $nb_votes = $requete2->fetch()['nb_votes_current_semaine'];
 echo '<br/>';
-print_r($requete2->fetch());
-echo '<br/>';
-
 
 $requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
 $nb_personnes = $requete3->fetch()['nb_personne'];
 echo '<br/>';
-print_r($requete3->fetch());
-echo 'nb_personne' .$nb_personnes;
 $vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
 
 if($vote_termine_cette_semaine){//le vote est fini
@@ -159,29 +154,6 @@ echo '<br/>';
 echo 'Page d\'accueil :';
 echo '<br/>';
 echo '<br/>';
-
-
-function printResultatVote($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $requete5= $bdd->query("SELECT film AS id_best_film FROM proposition WHERE semaine = '".$id_semaine."' ORDER BY score DESC LIMIT 1");
-  if($data=$requete5->fetch()){//si le vote est termine on affiche le film retenu
-    $id_best_film=$data['id_best_film'];
-    $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
-    echo 'Le film retenu est ' .$requete6->fetch()['titre'];
-  }else{//sinon non
-    echo 'Il n\'y a pas encore eu de propositions cette semaine';
-  }
- 
-}
-function printFilmsProposes($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
-  echo 'Voici la liste des films proposés <br/>';
-  while ($film = $requete7->fetch()){//tant que film $film = $requete on affiche les films
-    $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
-    echo $requete6->fetch()['titre'].'<br/>';
-  }
-}
 
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
