@@ -88,12 +88,6 @@ $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
-if($vote_period){//si nous ne sommes pas en période de vote
-  echo 'Nous ne sommes pas en période de vote';;
-}
-else{//sinon on affiche le lien pour aller voter
-   echo "<a href='vote.php' class='text-warning'>Votez pour le film de la semaine !</a>";
-}
 echo $deb->format('m-d-Y H:i:s')."<br/>";
 echo $fin->format('m-d-Y H:i:s')."<br/>";
 
@@ -144,9 +138,9 @@ if(isset($_SESSION['user'])){//si l'utilisateur a voté
 
 $vote_period = true;
 $proposition_semaine = true;
-$vote_termine = true;
+$vote_termine_cette_semaine = false;
 $connecte = true;
-$user_vote= true;
+$user_vote= false;
 
 echo '<br/>';
 echo '<br/>';
@@ -165,7 +159,20 @@ if($connecte){//l'utilisateur est connecté
         if($user_vote){//l'user a voté
           echo 'Vous avez déjà voté';
         }else{//l'user n'a pas voté
-          echo'Vous devez voter';
+          echo'Vous devez voter <br/>';
+          ?>
+          <form method="POST" action="save_vote.php">
+          <?php
+          $vote = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
+          echo 'Voici la liste des films proposés <br/>';
+            while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
+              $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
+              $titre_film = $requete6->fetch()['titre'];
+              echo $titre_film.'<input type="number" name="'.$film['film_id'].'" value="'.$film['film_id'].'" min="1" max="6">'."<br/>";
+              ?>
+              <button type="submit">Voter</button>
+              <?php
+    }
         }
       }
     }else{//la proposition n'est pas encore faite

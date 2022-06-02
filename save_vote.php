@@ -1,7 +1,7 @@
 <pre>
 <?php
 print_r($_POST);
-echo $_POST['1'];
+echo $_POST[1];
 ?>
 </pre>
 <?php
