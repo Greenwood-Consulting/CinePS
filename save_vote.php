@@ -1,7 +1,6 @@
 <pre>
 <?php
 print_r($_POST);
-//echo $_POST[''];
 ?>
 </pre>
 <?php
