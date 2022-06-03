@@ -125,7 +125,7 @@ if($connecte){//l'utilisateur est connecté
           ?>
           <form method="POST" action="save_vote.php">
           <?php
-        $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
+          $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
           echo 'Voici la liste des films proposés <br/>';
             while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
               $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);

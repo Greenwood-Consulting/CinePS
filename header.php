@@ -19,7 +19,7 @@ else{ //Sinon on propose la connexion
     }
     echo"</select>
     <button type='submit' class='btn btn-warning'>Se connecter</button>
-    </form>'";
+    </form>";
 }
 
 ?>
