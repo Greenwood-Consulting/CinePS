@@ -1,15 +1,6 @@
-<!--link href="./main.3f6952e4.css" rel="stylesheet"-->
-<!--div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/space.jpg')"-->
 <?php 
-include('header.php');
 include('common.php');
-?>
-<?php
-if(!isset($_SESSION['user'])){//si l'utilisateur n'est pas connecté
-    echo "Vous devez être connecté pour voir cette page";
-}else{//si l'utilisateur est connecté
-    echo 'Une idée ?';
-}
+
 $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
 $deb= new DateTime ("Fri 20:00");
 $fin = new DateTime("Sat 12:00");
@@ -21,26 +12,12 @@ $id_current_semaine = $current_semaine['id'];
 
 echo '<h1>Film(s) proposé(s) cette semaine</h1>';
 
-
 $vote_period = true;
 $requete1 = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
 $proposition_semaine =  $requete1->fetch()['proposition_termine'];
 
 
-
 $connecte = isset($_SESSION['user']);
-//Comportement 2 : on vient du bouton new_proposition
-if(isset($_POST['next_proposition'])){
-//sauvegarder en base le film qui a ete proposé
-$nouveau_film_propose = $_POST['film'];
-
-}
-
-    ?>
-</form>
-<?php
-
-
 
 //Comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre

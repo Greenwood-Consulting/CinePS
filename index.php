@@ -72,8 +72,10 @@
       ?>
   
   
-  
-  <?php
+<?php
+
+include('common.php');
+
   
  $jour_aujourdhui = date("D");
  $heure_aujourdhui = date("H:i:s");
@@ -90,51 +92,8 @@ $vote_period=$curdate>=$deb && $curdate <= $fin;
 
 echo $deb->format('m-d-Y H:i:s')."<br/>";
 echo $fin->format('m-d-Y H:i:s')."<br/>";
-
-
- 
 $vote_periode = $jour_aujourdhui == "Fri";
-echo "<br/>";
 
-
-$connecte = isset($_SESSION['user']);
-echo "<br/>"; 
-
-
-?>
-<a href='propose_film.php'>Propostions</a>
-<?php
-
-include('common.php');
-$requete1 = $bdd->query("SELECT id FROM proposition WHERE id = '".$id_current_semaine."'");
-$proposition_semaine =  $requete1->fetch();
-if($proposition_semaine){//si une proposition est faite
-  echo 'Il y a deja eu des propositions cette semaine';
-}else{//si elle n'est pas faite
-  echo "il n'y a pas encore de proposition";
-}
-
-$requete2 = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
-$nb_votes = $requete2->fetch()['nb_votes_current_semaine'];
-echo '<br/>';
-
-$requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
-$nb_personnes = $requete3->fetch()['nb_personne'];
-echo '<br/>';
-$vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
-
-if($vote_termine_cette_semaine){//le vote est fini
-  echo 'Le vote est terminé';
-}else{//le vote n'est pas fini
-  echo 'Le vote n est pas terminé <br/>';
-}
-$current_user_a_vote = false;
-if(isset($_SESSION['user'])){//si l'utilisateur a voté
-  $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
-  $id_utlisateur_connecte = $user->fetch()['id'];
-  $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (id = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
-  $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']==1;
-}
 
 $vote_period = true;
 $proposition_semaine = true;
@@ -142,7 +101,6 @@ $vote_termine_cette_semaine = false;
 $connecte = true;
 $user_vote= false;
 
-echo '<br/>';
 echo '<br/>';
 echo '<br/>';
 echo 'Page d\'accueil :';
@@ -177,6 +135,9 @@ if($connecte){//l'utilisateur est connecté
       }
     }else{//la proposition n'est pas encore faite
       echo "la proposition n'est pas encore faite";
+      ?>
+      <a href='propose_film.php'>Propostions</a>
+      <?php
     }
   }else{//nous ne sommes pas en période de vote
     printResultatVote($id_current_semaine);
