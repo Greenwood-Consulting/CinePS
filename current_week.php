@@ -10,7 +10,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=CinePS','root','');
       //Récuperer les propositions de la semaine en cours 
       $requete_propositions_de_la_semaine = $bdd->query('SELECT * FROM proposition WHERE semaine = '.$semaine_laplustardive["id"]);
       echo 'Les films de cette semaine : <br/>';     
-      while($proposition=$requete_propositions_de_la_semaine->fetch()){
+      while($proposition=$requete_propositions_de_la_semaine->fetch()){//tant que $proposition = $requete_proposition_de_la_semaine on affiche les films
         $requete_titre_film = $bdd->query('SELECT titre FROM film WHERE id='.$proposition['film']);
         $titre = $requete_titre_film->fetch()['titre'];
         echo $titre.'<br/>';

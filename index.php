@@ -95,11 +95,11 @@ echo $fin->format('m-d-Y H:i:s')."<br/>";
  
 $vote_periode = $jour_aujourdhui == "Fri";
 echo "<br/>";
-echo $vote_periode;
+
 
 $connecte = isset($_SESSION['user']);
 echo "<br/>"; 
-//echo $connecte;
+
 
 ?>
 <a href='propose_film.php'>Propostions</a>
@@ -126,7 +126,7 @@ $vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
 if($vote_termine_cette_semaine){//le vote est fini
   echo 'Le vote est terminé';
 }else{//le vote n'est pas fini
-  echo 'Le vote n est pas terminé : <a href="vote.php" class="text-warning">Pour les votes</a><br/>';
+  echo 'Le vote n est pas terminé <br/>';
 }
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur a voté

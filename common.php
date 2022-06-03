@@ -40,10 +40,10 @@ function printFilmsProposes($id_semaine){
 function printResultatVote($id_semaine){
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     $film_gagnant= $bdd->query("SELECT film AS id_best_film FROM proposition WHERE semaine = '".$id_semaine."' ORDER BY score DESC LIMIT 1");
-    if($data=$requete5->fetch()){//si le vote est fini on affiche le vainqueur
+    if($data=$film_gagnant->fetch()){//si le vote est fini on affiche le vainqueur
       $id_best_film=$data['id_best_film'];
-      $ajout_film = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
-      echo 'Le film retenu est ' .$requete6->fetch()['titre'];
+      $film_retenu = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
+      echo 'Le film retenu est ' .$film_retenu->fetch()['titre'];
     }else{//sinon il n'y a pas de propositions
       echo 'Il n\'y a pas encore eu de propositions cette semaine';
     }
