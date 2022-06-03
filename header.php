@@ -11,7 +11,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
 else{ //Sinon on propose la connexion
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     $affichage_membre = $bdd->query('SELECT * FROM Membre');
-    echo'<form method="post" action="propose_film.php">
+    echo'<form method="post" action="index.php">
             <label>Membres</label>
                 <select name="user">';
     while($data = $affichage_membre->fetch()){ //Afficher un utlisateur

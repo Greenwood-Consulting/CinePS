@@ -66,22 +66,11 @@
               </h1>
               <?php
   
-  
-  if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-      echo "<a href='propose_film.php'><button type='button' class='btn btn-warning'>Ajouter un nouveau film</button></a>";}
-      ?>
-  
-  
-<?php
 
 include('common.php');
 
   
  $jour_aujourdhui = date("D");
- $heure_aujourdhui = date("H:i:s");
- echo "<br/>";
- echo "$jour_aujourdhui " ;
- echo $heure_aujourdhui. "<br/>";
 
 
  
@@ -90,34 +79,49 @@ $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
 $vote_period=$curdate>=$deb && $curdate <= $fin;
 
-echo $deb->format('m-d-Y H:i:s')."<br/>";
-echo $fin->format('m-d-Y H:i:s')."<br/>";
 $vote_periode = $jour_aujourdhui == "Fri";
 
-
+/*
 $vote_period = true;
-$proposition_semaine = true;
+$proposition_semaine = false;
 $vote_termine_cette_semaine = false;
 $connecte = true;
 $user_vote= false;
+*/
 
 echo '<br/>';
 echo '<br/>';
-echo 'Page d\'accueil :';
-echo '<br/>';
-echo '<br/>';
+
+//Proposition comportement 1 : on vient du bouton end_proposition
+if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
+  $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
+  echo 'Les propositions a été faite pour cette semaine';
+}
+//Propostion comportement 2 : on vient du bouton new_proposition
+if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
+  $titre_film = $_POST['titre_film'];
+  $date = date('Y-m-d');
+  $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
+  $last_id = $bdd->lastInsertId();
+  $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
+}
 
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
       if($vote_termine_cette_semaine){//le vote est terminé
+        echo "<h2>Résultat du vote</h2>";
         printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
-        if($user_vote){//l'user a voté
+        if($current_user_a_vote){//l'user a voté
           echo 'Vous avez déjà voté';
         }else{//l'user n'a pas voté
-          echo'Vous devez voter <br/>';
+          echo'<h2>Vous devez voter </h2>';
           ?>
           <form method="POST" action="save_vote.php">
           <?php
@@ -134,9 +138,19 @@ if($connecte){//l'utilisateur est connecté
         }
       }
     }else{//la proposition n'est pas encore faite
-      echo "la proposition n'est pas encore faite";
+      echo 'Les propositions de ne sont pas terminés <br/><br/>';
+      printFilmsProposes($id_current_semaine);
+      echo '<br/><br />';
       ?>
-      <a href='propose_film.php'>Propostions</a>
+      <form method="POST" action="index.php">
+      <label> Proposition de films:</label>
+      <input type="text" name="titre_film" />
+      <br/>
+      <?php
+      echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
+      echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
+      ?>
+      </form>
       <?php
     }
   }else{//nous ne sommes pas en période de vote
