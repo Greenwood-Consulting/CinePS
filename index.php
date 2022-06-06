@@ -81,13 +81,13 @@ $vote_period=$curdate>=$deb && $curdate <= $fin;
 
 $vote_periode = $jour_aujourdhui == "Fri";
 
-/*
+
 $vote_period = true;
 $proposition_semaine = false;
 $vote_termine_cette_semaine = false;
-$connecte = true;
+//$connecte = true;
 $user_vote= false;
-*/
+
 
 echo '<br/>';
 echo '<br/>';
@@ -138,7 +138,8 @@ if($connecte){//l'utilisateur est connecté
         }
       }
     }else{//la proposition n'est pas encore faite
-      echo 'Les propositions de ne sont pas terminés <br/><br/>';
+      if($connecte){
+        echo 'Les propositions de ne sont pas terminés <br/><br/>';
       printFilmsProposes($id_current_semaine);
       echo '<br/><br />';
       ?>
@@ -152,6 +153,8 @@ if($connecte){//l'utilisateur est connecté
       ?>
       </form>
       <?php
+      }
+      
     }
   }else{//nous ne sommes pas en période de vote
     printResultatVote($id_current_semaine);
