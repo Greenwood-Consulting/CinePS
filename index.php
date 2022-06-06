@@ -77,18 +77,23 @@ include('common.php');
 $deb= new DateTime ("Fri 12:00");
 $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
-$vote_period=$curdate>=$deb && $curdate <= $fin;
-
-$vote_periode = $jour_aujourdhui == "Fri";
+$vote_period=!($curdate>=$deb && $curdate <= $fin);
 
 
-$vote_period = true;
+/*$vote_period = true;
 $proposition_semaine = false;
 $vote_termine_cette_semaine = false;
-//$connecte = true;
+$connecte = true;
 $user_vote= false;
+$is_proposeur= false;*/
+$printVotePeriode = $vote_period? 'true':'false';
+echo 'vote_period '.$printVotePeriode. '<br/>';
 
-
+echo 'proposition_semaine '.$proposition_semaine. '<br/>';
+echo 'vote_termine '.$vote_termine_cette_semaine. '<br/>';
+echo 'connecte '.$connecte. '<br/>';
+echo 'user_vote '.$user_vote. '<br/>';
+echo'is_proposeur'.$is_proposeur;
 echo '<br/>';
 echo '<br/>';
 
@@ -109,7 +114,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   echo '<br/>';
   echo '<br/>';
 }
-
+echo 'vote_termine '.$vote_termine_cette_semaine;
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
@@ -118,27 +123,32 @@ if($connecte){//l'utilisateur est connecté
         printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
-        if($current_user_a_vote){//l'user a voté
-          echo 'Vous avez déjà voté';
-        }else{//l'user n'a pas voté
-          echo'<h2>Vous devez voter </h2>';
-          ?>
-          <form method="POST" action="save_vote.php">
-          <?php
-          $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
-          echo 'Voici la liste des films proposés <br/>';
-            while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
-              $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
-              $titre_film = $requete6->fetch()['titre'];
-              echo $titre_film.'<input type="number" name="'.$film['proposition_id'].'" value="0" min="1" max="6">'."<br/>";
-            }
+        if($is_proposeur){
+          echo 'Le vote n\'est pas terminé vous devez attendre';
+        }else{
+          if($current_user_a_vote){//l'user a voté
+            echo 'Vous avez déjà voté';
+          }else{//l'user n'a pas voté
+            echo'<h2>Vous devez voter </h2>';
             ?>
-            <button type="submit">Voter</button>
+            <form method="POST" action="save_vote.php">
             <?php
+            $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
+            echo 'Voici la liste des films proposés <br/>';
+              while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
+                $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
+                $titre_film = $requete6->fetch()['titre'];
+                echo $titre_film.'<input type="number" name="'.$film['proposition_id'].'" value="0" min="1" max="6">'."<br/>";
+              }
+              ?>
+              <button type="submit">Voter</button>
+              <?php
+          }
         }
+       
       }
     }else{//la proposition n'est pas encore faite
-      if($connecte){
+      if($is_proposeur){
         echo 'Les propositions de ne sont pas terminés <br/><br/>';
       printFilmsProposes($id_current_semaine);
       echo '<br/><br />';
@@ -153,6 +163,8 @@ if($connecte){//l'utilisateur est connecté
       ?>
       </form>
       <?php
+      }else{
+        echo"Les films n'ont pas été proposé.Cette semaine c'est le tour de" .$proposeur_cette_semaine;
       }
       
     }
