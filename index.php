@@ -87,13 +87,7 @@ $connecte = true;
 $user_vote= false;
 $is_proposeur= false;*/
 $printVotePeriode = $vote_period? 'true':'false';
-echo 'vote_period '.$printVotePeriode. '<br/>';
 
-echo 'proposition_semaine '.$proposition_semaine. '<br/>';
-echo 'vote_termine '.$vote_termine_cette_semaine. '<br/>';
-echo 'connecte '.$connecte. '<br/>';
-echo 'user_vote '.$user_vote. '<br/>';
-echo'is_proposeur'.$is_proposeur;
 echo '<br/>';
 echo '<br/>';
 

@@ -72,7 +72,7 @@ if($connecte){//l'utilisateur est connecté
                 ?>
                 </form>
 <?php
-        }
+            }
     }else{//nous ne sommes pas en période de vote
         echo 'il n\'est pas encore possible de faire une nouvelle proposition';
     }

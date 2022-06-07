@@ -19,10 +19,7 @@ $id_utlisateur_connecte = $user->fetch()['id'];
 $insert_a_vote = $bdd->query("INSERT INTO `a_vote` (`id`, `votant`, `semaine`) VALUES ('', '".$id_utlisateur_connecte."','".$id_current_semaine."')");
 
 
-echo 'Votre vote a été enregistré !<br /><br />';
+echo 'Votre vote a été enregistré !';
 
-echo 'Redirection dans 5 secondes';
-
+header('Location ; index.php')
 ?>
-
-<meta http-equiv="refresh" content="5;url=index.php"> 
