@@ -80,13 +80,13 @@ $curdate=new DateTime();
 $vote_period=!($curdate>=$deb && $curdate <= $fin);
 
 
-/*$vote_period = true;
+$vote_period = true;
 $proposition_semaine = false;
 $vote_termine_cette_semaine = false;
 $connecte = true;
 $user_vote= false;
-$is_proposeur= false;*/
-$printVotePeriode = $vote_period? 'true':'false';
+$is_proposeur= true;
+
 
 echo '<br/>';
 echo '<br/>';
@@ -151,6 +151,8 @@ if($connecte){//l'utilisateur est connecté
       <label> Proposition de films:</label>
       <input type="text" name="titre_film" />
       <br/>
+      <input type="text" name="lien_imdb" value="Lien imdb">
+      <input type="date" name="date">
       <?php
       echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
       echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
