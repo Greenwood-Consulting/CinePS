@@ -8,6 +8,7 @@
   <meta content="description" name="description">
   <meta name="google" content="notranslate" />
   <meta content="Mashup templates have been developped by Orson.io team" name="author">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <!-- Disable tap highlight on IE-->
   <meta name="msapplication-tap-highlight" content="no">
@@ -17,14 +18,14 @@
 
   <title>CinePS</title>  
 
-<!--link href="./main.3f6952e4.css" rel="stylesheet">
+<link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
 <div id="site-border-top"></div>
 <div id="site-border-bottom"></div>
-<Add your content of header -->
+<Add your content of header >
 <header>
   
   <nav class="navbar  navbar-fixed-top navbar-inverse">
@@ -32,22 +33,6 @@
     <?php
     include('header.php') 
   ?>
-        <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="nav navbar-nav ">
-          <li><a href="./index.php" title="">01 : Accueil</a></li>
-          <li><a href="./propose_film.php" title="">02 : Proposition de films</a></li>
-          <li><a href="./vote.php" title="">03 : Résultat vote</a></li>
-          <li><a href="./contact.html" title="">04 : Contact</a></li>
-          <li><a href="./components.html" title="">05 : Components</a></li>
-        </ul>
-
-   
     </div>
   </nav>
 
@@ -56,10 +41,10 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
-            <div class="text-content"-->
-              <h1>Bonjour,<br>
+            <div class="text-content">
+              <h1 class="text-warning">Bonjour,<br>
                 <span id="typed-strings">
-                  <span>Bienvenue sur le site de CinéPS</span>    
+                  <span> <p class="text-warning">Bienvenue sur le site de CinéPS</p></span>    
                 </span>
                 <span id="typed"></span>
                 
@@ -81,11 +66,11 @@ $vote_period=!($curdate>=$deb && $curdate <= $fin);
 
 
 $vote_period = true;
-$proposition_semaine = false;
+$proposition_semaine = true;
 $vote_termine_cette_semaine = false;
 $connecte = true;
-$user_vote= false;
-$is_proposeur= true;
+$user_vote= true;
+$is_proposeur= false;
 
 
 echo '<br/>';
@@ -96,19 +81,27 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
   echo 'Les propositions a été faite pour cette semaine';
 }
+
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $titre_film = $_POST['titre_film'];
+  $ajout_du_lien_imdb = $_POST['lien_imdb'];
+  echo 'lien imdb' .$ajout_du_lien_imdb;
   $date = date('Y-m-d');
-  $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
+  $sortie_film = $_POST['date'];
+  echo 'date '.$sortie_film;
+  $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`, `sortie_film`, `imdb`) VALUES ('', '".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
   $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
 
   echo '<br/>';
   echo '<br/>';
   echo '<br/>';
+  printResultatVote($id_current_semaine);
 }
-echo 'vote_termine '.$vote_termine_cette_semaine;
+?>
+<div class="container-fluid mt-9">
+<?php
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
@@ -132,10 +125,11 @@ if($connecte){//l'utilisateur est connecté
               while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
                 $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
                 $titre_film = $requete6->fetch()['titre'];
-                echo $titre_film.'<input type="number" name="'.$film['proposition_id'].'" value="0" min="1" max="6">'."<br/>";
+                echo $titre_film.'<input type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'."<br/>";
               }
               ?>
-              <button type="submit">Voter</button>
+              <button type="submit" class="btn btn-warning">Voter</button>
+              <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
               <?php
           }
         }
@@ -151,8 +145,8 @@ if($connecte){//l'utilisateur est connecté
       <label> Proposition de films:</label>
       <input type="text" name="titre_film" />
       <br/>
-      <input type="text" name="lien_imdb" value="Lien imdb">
-      <input type="date" name="date">
+      <input type="text" name="lien_imdb" value="Lien imdb"/>
+      <input type="number" name="date">
       <?php
       echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
       echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
@@ -187,6 +181,8 @@ if($connecte){//l'utilisateur est connecté
 
 
  ?>
+                </div>
+              </div>
             </div>
           </div>
         </div>
