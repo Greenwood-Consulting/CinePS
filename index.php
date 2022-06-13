@@ -141,17 +141,17 @@ if($connecte){//l'utilisateur est connecté
       ?>
       <form method="POST" action="index.php">
       <label> Proposition de films:</label>
-      <input type="text" name="titre_film" class="text-dark" />
-      <input type="text" name="lien_imdb" value="Lien imdb" class="text-dark"/>
-      <input type="number" name="date"  class="text-dark">
+      <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+      <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+      <input type="number" name="date"  placeholder="Année" class="text-dark" >
       <?php
-      echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button>';
+      echo '<br/><button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button><br/>';
       echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button>';
       ?>
       </form>
       <?php
       }else{
-        echo"Les films n'ont pas été proposé.Cette semaine c'est le tour de" .$proposeur_cette_semaine;
+        echo"<mark>Les films n'ont pas été proposé.Cette semaine c'est le tour de" .$proposeur_cette_semaine."</mark>";
       }
       
     }
@@ -169,7 +169,7 @@ if($connecte){//l'utilisateur est connecté
       }
 
     }else{//la proposition n'est pas encore faite et pas connecté
-      echo 'la proposition n\'a pas encore été faite';
+      echo '<mark>la proposition n\'a pas encore été faite</mark>';
     }
   }else{//nous ne sommes pas en période de vote et pas connecté
     printResultatVote($id_current_semaine);

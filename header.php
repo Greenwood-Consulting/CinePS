@@ -13,9 +13,9 @@ else{ //Sinon on propose la connexion
     $affichage_membre = $bdd->query('SELECT * FROM Membre');
     echo'<form method="post" action="index.php">
             <label>Membres</label>
-                <select name="user">';
+                <select class="text-dark" name="user">';
     while($data = $affichage_membre->fetch()){ //Afficher un utlisateur
-        echo"class='btn btn-warning' <option value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+        echo"<option class='text-dark' class='btn btn-warning' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
     }
     echo"</select>
     <button type='submit' class='btn btn-warning'>Se connecter</button>

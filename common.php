@@ -42,7 +42,7 @@ if(isset($_SESSION['user'])){//si l'utilisateur a voté
 }
 
 function printFilmsProposes($id_semaine){
-  echo '<h2 class="text-warning">Liste des films proposés</h2>';
+  echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $requete7 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
   $un_film_propose = false;
@@ -56,7 +56,7 @@ function printFilmsProposes($id_semaine){
     //echo $ajout_film->fetch()['imdb']; 
     }
     if(!$un_film_propose){//si aucun film n'est proposé
-      echo 'Aucun film n\'a été proposé';
+      echo '<mark> Aucun film n\'a été proposé </mark>';
     }
 }
 
