@@ -41,7 +41,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
-            <div class="text-content">
+            <div class="text-content"-->
               <h1 class="text-warning">Bonjour,<br>
                 <span id="typed-strings">
                   <span> <p class="text-warning">Bienvenue sur le site de CinéPS</p></span>    
@@ -65,12 +65,12 @@ $curdate=new DateTime();
 $vote_period=!($curdate>=$deb && $curdate <= $fin);
 
 
-$vote_period = true;
+/*$vote_period = true;
 $proposition_semaine = true;
 $vote_termine_cette_semaine = false;
 $connecte = true;
 $user_vote= true;
-$is_proposeur= false;
+$is_proposeur= false;*/
 
 
 echo '<br/>';
@@ -86,10 +86,8 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $titre_film = $_POST['titre_film'];
   $ajout_du_lien_imdb = $_POST['lien_imdb'];
-  echo 'lien imdb' .$ajout_du_lien_imdb;
   $date = date('Y-m-d');
   $sortie_film = $_POST['date'];
-  echo 'date '.$sortie_film;
   $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`, `sortie_film`, `imdb`) VALUES ('', '".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
   $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
@@ -97,7 +95,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   echo '<br/>';
   echo '<br/>';
   echo '<br/>';
-  printResultatVote($id_current_semaine);
+  
 }
 ?>
 <div class="container-fluid mt-9">
@@ -137,19 +135,18 @@ if($connecte){//l'utilisateur est connecté
       }
     }else{//la proposition n'est pas encore faite
       if($is_proposeur){
-        echo 'Les propositions de ne sont pas terminés <br/><br/>';
+        echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
       printFilmsProposes($id_current_semaine);
       echo '<br/><br />';
       ?>
       <form method="POST" action="index.php">
       <label> Proposition de films:</label>
-      <input type="text" name="titre_film" />
-      <br/>
-      <input type="text" name="lien_imdb" value="Lien imdb"/>
-      <input type="number" name="date">
+      <input type="text" name="titre_film" class="text-dark" />
+      <input type="text" name="lien_imdb" value="Lien imdb" class="text-dark"/>
+      <input type="number" name="date"  class="text-dark">
       <?php
-      echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button> </br>';
-      echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button> </br>';
+      echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button>';
+      echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button>';
       ?>
       </form>
       <?php
