@@ -11,6 +11,8 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
         $new_score= $current_proposition['score'] - $film_vote;
         $update_proposition = $bdd->query('UPDATE proposition SET score='.$new_score.' WHERE id='.$proposition_id);
         $update_proposition->fetch();
+        // Sauvegarder le vote de la personne
+        $insert_vote = $bdd->query("INSERT INTO `votes` (`semaine`, `membre`, `proposition`, `vote`) VALUES ('".$id_current_semaine."', '".$id_utlisateur_connecte."', '".$proposition_id."', '".$film_vote."')");
     }
   }
 
