@@ -25,5 +25,4 @@ $insert_a_vote = $bdd->query("INSERT INTO `a_vote` (`votant`, `semaine`) VALUES 
 
 echo 'Votre vote a été enregistré ! <a href=index.php><button>Revenir</button>';
 
-header('Location ; index.php')
 ?>
