@@ -27,7 +27,7 @@ $requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
 $nb_personnes = $requete3->fetch()['nb_personne'];
 echo '<br/>';
 print_r($requete3->fetch());
-$vote_termine_cette_semaine = ($nb_personnes == $nb_votes);
+$vote_termine_cette_semaine = (($nb_personnes - 1) == $nb_votes);
 
 // get état connecte
 $connecte = isset($_SESSION['user']);
@@ -52,8 +52,7 @@ function printFilmsProposes($id_semaine){
     $data_film = $ajout_film->fetch();
     echo '<mark>'.$data_film['titre'].' ';
     echo $data_film['sortie_film'];
-    echo '<a href = '.$data_film['imdb'].'class="text-dark"'.'> Lien imdb </a><br/></mark>';
-    //echo $ajout_film->fetch()['imdb']; 
+    echo '<a class="text-dark" href = '.$data_film['imdb'].' '.'> Lien imdb </a><br/></mark>';
     }
     if(!$un_film_propose){//si aucun film n'est proposé
       echo '<mark> Aucun film n\'a été proposé </mark>';
@@ -66,9 +65,9 @@ function printResultatVote($id_semaine){
     if($data=$film_gagnant->fetch()){//si le vote est fini on affiche le vainqueur
       $id_best_film=$data['id_best_film'];
       $film_retenu = $bdd->query('SELECT titre FROM film WHERE id = '.$id_best_film);
-      echo 'Tous les utilisateurs ont voté. Le film retenu est : <br ><b>' .$film_retenu->fetch()['titre'].'</b>';
+      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b>' .$film_retenu->fetch()['titre'].'</b></mark>';
     }else{//sinon il n'y a pas de propositions
-      echo 'Il n\'y a pas encore eu de propositions cette semaine';
+      echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
     }
 }
 

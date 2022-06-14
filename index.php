@@ -79,7 +79,7 @@ echo '<br/>';
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
   $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
-  echo 'Les propositions a été faite pour cette semaine';
+  echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
 }
 
 //Propostion comportement 2 : on vient du bouton new_proposition
@@ -104,27 +104,29 @@ if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
       if($vote_termine_cette_semaine){//le vote est terminé
-        echo "<h2>Résultat du vote</h2>";
+        echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
         printResultatVote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
         if($is_proposeur){
-          echo 'Le vote n\'est pas terminé vous devez attendre';
+          echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
         }else{
           if($current_user_a_vote){//l'user a voté
-            echo 'Vous avez déjà voté';
+            echo '<mark>Vous avez déjà voté</mark>';
           }else{//l'user n'a pas voté
-            echo'<h2>Vous devez voter </h2>';
+            echo'<h2 class="text-warning">Vous devez voter </h2>';
             ?>
             <form method="POST" action="save_vote.php">
             <?php
             $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
-            echo 'Voici la liste des films proposés <br/>';
+            echo '<mark>Voici la liste des films proposés </mark><br/>';
+              echo "<table>";
               while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
                 $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
                 $titre_film = $requete6->fetch()['titre'];
-                echo $titre_film.'<input type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'."<br/>";
+                echo '<tr><td><mark>'.$titre_film.'</td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
               }
+              echo "</table>";
               ?>
               <button type="submit" class="btn btn-warning">Voter</button>
               <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
@@ -151,7 +153,7 @@ if($connecte){//l'utilisateur est connecté
       </form>
       <?php
       }else{
-        echo"<mark>Les films n'ont pas été proposé.Cette semaine c'est le tour de" .$proposeur_cette_semaine."</mark>";
+        echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
       }
       
     }
