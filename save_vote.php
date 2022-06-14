@@ -19,7 +19,7 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
 // Mise à jour de la table a_vote pour l'utilisateur connecté
 $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
 $id_utlisateur_connecte = $user->fetch()['id'];
-$insert_a_vote = $bdd->query("INSERT INTO `a_vote` (`id`, `votant`, `semaine`) VALUES ('', '".$id_utlisateur_connecte."','".$id_current_semaine."')");
+$insert_a_vote = $bdd->query("INSERT INTO `a_vote` (`votant`, `semaine`) VALUES ('".$id_utlisateur_connecte."','".$id_current_semaine."')");
 
 
 

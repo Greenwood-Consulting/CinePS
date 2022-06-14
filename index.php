@@ -88,9 +88,9 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $ajout_du_lien_imdb = $_POST['lien_imdb'];
   $date = date('Y-m-d');
   $sortie_film = $_POST['date'];
-  $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`, `sortie_film`, `imdb`) VALUES ('', '".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
+  $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES ('".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
-  $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+  $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES ('".$id_current_semaine."','".$last_id."','36')");
 
   echo '<br/>';
   echo '<br/>';

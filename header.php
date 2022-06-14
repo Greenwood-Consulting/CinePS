@@ -10,7 +10,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
 }
 else{ //Sinon on propose la connexion
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $affichage_membre = $bdd->query('SELECT * FROM Membre');
+    $affichage_membre = $bdd->query('SELECT * FROM membre');
     echo'<form method="post" action="index.php">
             <label>Membres</label>
                 <select class="text-dark" name="user">';
