@@ -34,11 +34,11 @@ $connecte = isset($_SESSION['user']);
 
 // get état current_user_a_vote
 $current_user_a_vote = false;
-if(isset($_SESSION['user'])){//si l'utilisateur a voté
+if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
   $id_utlisateur_connecte = $user->fetch()['id'];
   $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (votant = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
-  $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']==1;
+  $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']>0;
 }
 
 function printFilmsProposes($id_semaine){

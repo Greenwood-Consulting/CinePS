@@ -72,7 +72,6 @@ $connecte = true;
 $user_vote= true;
 $is_proposeur= false;*/
 
-
 echo '<br/>';
 echo '<br/>';
 
