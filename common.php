@@ -73,12 +73,11 @@ function printResultatVote($id_semaine){
 function printUserVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $user_vote = $bdd->query("SELECT votant AS votant_id FROM a_vote WHERE semaine = '".$id_semaine."'");
-  if($data = $user_vote->fetch()){
+  echo '<mark>Les personnes qui ont voté sont : <br/></mark>';
+  while($data = $user_vote->fetch()){
     $user_qui_a_vote = $data['votant_id'];
     $user_a_vote = $bdd->query('SELECT Prenom FROM membre WHERE id = '.$user_qui_a_vote);
-    echo '<mark>Les personnes qui ont voté sont : <br/><b>' .$user_a_vote->fetch()['Prenom'].'</b></mark>';
-  }else{
-    echo '<mark>Personne n\'a voté pour l\'instant</mark>';
+    echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].'</b></mark><br/>';
   }
   
   }

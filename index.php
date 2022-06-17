@@ -59,18 +59,18 @@ include('common.php');
 
 
  
-$deb= new DateTime ("Fri 12:00");
-$fin = new DateTime("Sat 12:00");
+$deb= new DateTime ("Sat 12:00");
+$fin = new DateTime("Sun 12:00");
 $curdate=new DateTime();
 $vote_period=!($curdate>=$deb && $curdate <= $fin);
 
 
-/*$vote_period = true;
-$proposition_semaine = true;
+/*$vote_period = false;
+$proposition_semaine = false;
 $vote_termine_cette_semaine = false;
 $connecte = true;
-$user_vote= true;
-$is_proposeur= false;*/
+$user_vote= false;
+$is_proposeur= true;*/
 echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
 echo '<br/>';
 echo '<br/>';
