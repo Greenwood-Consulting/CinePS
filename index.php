@@ -59,11 +59,10 @@ include('common.php');
 
 
  
-$deb= new DateTime ("Sat 12:00");
-$fin = new DateTime("Sun 12:00");
+$deb= new DateTime ("Mon 12:00");
+$fin = new DateTime("Fri 14:00");
 $curdate=new DateTime();
-$vote_period=!($curdate>=$deb && $curdate <= $fin);
-
+$vote_period=$curdate>=$deb && $curdate <= $fin;
 
 /*$vote_period = false;
 $proposition_semaine = false;

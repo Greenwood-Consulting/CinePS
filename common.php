@@ -1,12 +1,16 @@
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
-// Dates
+// Date du jour
 $curdate=new DateTime();
-$next_friday = $curdate->modify('next friday')->format('Y-m-d');
 
 // Get état id_current_semaine
-$requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$next_friday."'");
+if ($curdate->format('D')=="Fri"){ // Si nous sommes vendredi, alors id_current_semaine est défini par ce vendredi
+  $friday_current_semaine = $curdate->format('Y-m-d');
+} else { // Sinon id_current_semaine est défini par vendredi prochain
+  $friday_current_semaine = $curdate->modify('next friday')->format('Y-m-d');
+}
+$requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$friday_current_semaine."'");
 $current_semaine = $requete->fetch();
 $id_current_semaine = $current_semaine['id'];
 
