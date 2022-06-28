@@ -73,6 +73,9 @@ $is_proposeur= true;*/
 echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
 echo '<br/>';
 echo '<br/>';
+
+
+
 printUserVote($id_current_semaine);
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
@@ -151,9 +154,13 @@ if($connecte){//l'utilisateur est connecté
       </form>
       <?php
       }else{
-        echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
-      }
+        if($proposeur_cette_semaine){
+          echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
+        }else{
+          echo "<mark>Aucun proposeur n'a encore été défini</mark>";
+        }
       
+      }
     }
   }else{//nous ne sommes pas en période de vote
     printResultatVote($id_current_semaine);

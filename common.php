@@ -11,18 +11,33 @@ if ($curdate->format('D')=="Fri"){ // Si nous sommes vendredi, alors id_current_
   $friday_current_semaine = $curdate->modify('next friday')->format('Y-m-d');
 }
 $requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$friday_current_semaine."'");
-$current_semaine = $requete->fetch();
-$id_current_semaine = $current_semaine['id'];
+if($current_semaine = $requete->fetch()){
+  $id_current_semaine = $current_semaine['id'];
+}else{
+  $id_current_semaine = 0;
+}
+
 
 // Get proposition_semaine
 $requete1 = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
-$proposition_semaine =  $requete1->fetch()['proposition_termine'];
+$proposition_semaine = 0;
+if($result_proposition_semaine =  $requete1->fetch()){
+  $proposition_semaine = $result_proposition_semaine['proposition_termine'];
+}
+
+//Calcule etat is_proposeur
 $requete10 = $bdd->query("SELECT proposeur FROM semaine WHERE id = '".$id_current_semaine."'");
-$proposeur_cette_semaine = $requete10->fetch()['proposeur'];
+if($requete_proposeur_cette_semaine = $requete10->fetch()){
+  $proposeur_cette_semaine = $requete_proposeur_cette_semaine['proposeur'];
+}else{
+  $proposeur_cette_semaine = 0;
+}
 $is_proposeur = false;
 if(isset($_SESSION['user'])){
 $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
+
+
 
 // get état vote_termine_cette_semaine
 $requete2 = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
