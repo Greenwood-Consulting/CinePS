@@ -60,9 +60,10 @@ include('common.php');
 
  
 $deb= new DateTime ("Mon 12:00");
+$deb = $deb->modify('-1 week');
 $fin = new DateTime("Fri 14:00");
 $curdate=new DateTime();
-$vote_period=$curdate>=$deb && $curdate <= $fin;
+$vote_period=($curdate>=$deb && $curdate <= $fin);
 
 /*$vote_period = false;
 $proposition_semaine = false;
@@ -101,6 +102,9 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 ?>
 <div class="container-fluid mt-9">
 <?php
+
+include('calcul_etat.php');
+
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
@@ -149,7 +153,7 @@ if($connecte){//l'utilisateur est connecté
       <input type="number" name="date"  placeholder="Année" class="text-dark" >
       <?php
       echo '<br/><button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button><br/>';
-      echo '<button type="submit" name="end_proposition" class="btn btn-warning">Proposition terminé</button>';
+      echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Proposition terminé</button>';
       ?>
       </form>
       <?php
