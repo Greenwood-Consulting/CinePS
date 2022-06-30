@@ -60,6 +60,8 @@ function printUserVote($id_semaine){
   
   }
 
+  
 
 
-?>
+
+   ?>
