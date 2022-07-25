@@ -82,8 +82,21 @@ printUserVote($id_current_semaine);
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
   $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
-  
+  /*$to = $requete_mail;
+
+  $subject = 'Mail envoyé depuis un script PHP';
+
+  $message = 'Allez Paris!';
+
+  $headers = 'From: cineps@gc2.fr'       . "\r\n" .
+             'Reply-To: cineps@gc2.fr' . "\r\n" .
+             'X-Mailer: PHP/' . phpversion();
+
+  mail($to, $subject, $message, $headers);*/
+
+
 }
+
 
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
@@ -128,9 +141,11 @@ if($connecte){//l'utilisateur est connecté
             echo '<mark>Voici la liste des films proposés </mark><br/>';
               echo "<table>";
               while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
-                $requete6 = $bdd->query('SELECT titre FROM film WHERE id = '.$film['film_id']);
-                $titre_film = $requete6->fetch()['titre'];
-                echo '<tr><td><mark>'.$titre_film.'</td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+                $requete6 = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
+                $titre_imdb_film = $requete6->fetch();
+                
+                echo '<tr><td><mark>'.$titre_imdb_film['titre'].' ';
+                echo '<a class="text-dark" href = '.$titre_imdb_film['imdb'].' '.'>Lien imdb<a/></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
               }
               echo "</table>";
               ?>
