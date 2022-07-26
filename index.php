@@ -41,10 +41,10 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
-            <div class="text-content"-->
-              <h1 class="text-warning">Bonjour,<br>
+            <div class="text-content">
+              <h1 class="text-warning">Bonjour,<br/>
                 <span id="typed-strings">
-                  <span> <p class="text-warning">Bienvenue sur le site de CinéPS</p></span>    
+                  <span id="text-warning">Bienvenue sur le site de CinéPS</span>
                 </span>
                 <span id="typed"></span>
                 
