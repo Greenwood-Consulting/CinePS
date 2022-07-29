@@ -18,8 +18,8 @@ if(isset($_POST['new_membre'])){//Ajout nouveau membre
     $nom_de_famille = $_POST['name'];
     $prenom = $_POST['prenom'];
     $mail = $_POST['email'];
-    $ajout_membre = $bdd->query("INSERT INTO `membre` (`id` ,`Nom`, `Prenom`, `mail`) VALUES ('', '".$nom_de_famille."','".$prenom."','".$mail."')");
-
+    $ajout_membre = $bdd->query("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`) VALUES ('".$nom_de_famille."','".$prenom."','".$mail."')");
+    
 }
 
 
