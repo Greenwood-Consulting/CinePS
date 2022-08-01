@@ -17,6 +17,8 @@ if($current_semaine = $requete->fetch()){
   $id_current_semaine = 0;
 }
 
+//Récupération des mails
+//$requete_mail = $bdd->query("SELECT mail FROM membre");
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){
@@ -56,9 +58,24 @@ function printUserVote($id_semaine){
     $user_qui_a_vote = $data['votant_id'];
     $user_a_vote = $bdd->query('SELECT Prenom FROM membre WHERE id = '.$user_qui_a_vote);
     echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].'</b></mark><br/>';
+  } 
+}
+
+function printAllfilmsSemaines($id_semaine){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $requete8 = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  $un_film_propose = false;
+  while ($film = $requete8->fetch()){
+    $un_film_propose = true;
+    $requete_titre_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
+    $data_film = $requete_titre_film->fetch();
+    echo '<mark>'.$data_film['titre'];
+    echo '<a class="text-dark" href = '.$data_film['imdb'].' '.'> Lien imdb </a><br/></mark>';
   }
-  
+  if(!$un_film_propose){
+    echo "<mark> Pas de film pour cette semaine </mark>";
   }
+}
 
   
 
