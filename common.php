@@ -76,8 +76,18 @@ function printAllfilmsSemaines($id_semaine){
     echo "<mark> Pas de film pour cette semaine </mark>";
   }
 }
-
-  
+//Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
+function printNextproposeurs($id_semaine){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $date = date('Y-m-d');
+  $requete_jour_correspondant = $bdd->query("SELECT jour FROM semaine WHERE id = ".$id_semaine);
+  $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
+  $next_proposeurs = $bdd->query("SELECT proposeur, jour FROM semaine WHERE jour >= '" .$jour_correspondant_id_semaine."' ORDER BY jour");
+    while ($data = $next_proposeurs->fetch()){
+    echo $data['proposeur'];
+    echo $data['jour'].'</br>';
+  }
+}
 
 
 
