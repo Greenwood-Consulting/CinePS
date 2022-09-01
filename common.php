@@ -58,8 +58,7 @@ function printUserVote($id_semaine){
     $une_personne_a_vote = true;
     $user_qui_a_vote = $data['votant_id'];
     $user_a_vote = $bdd->query('SELECT Prenom FROM membre WHERE id = '.$user_qui_a_vote);
-    echo '<mark>Les personnes qui ont voté sont : <br/></mark>';
-    echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].'</b></mark><br/>';
+    echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].' a voté</b></mark><br/>';
   }
   if(!$une_personne_a_vote){
     echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
