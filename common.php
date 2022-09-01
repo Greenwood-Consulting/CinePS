@@ -62,7 +62,7 @@ function printUserVote($id_semaine){
     echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].'</b></mark><br/>';
   }
   if(!$une_personne_a_vote){
-    echo '<mark>Personne n\'a voté pour l\'instant <br/></mark>';
+    echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
   }
 }
 
@@ -89,11 +89,8 @@ function printNextproposeurs($id_semaine){
   $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
   $next_proposeurs = $bdd->query("SELECT proposeur, jour FROM semaine WHERE jour >= '" .$jour_correspondant_id_semaine."' ORDER BY jour");
     while ($data = $next_proposeurs->fetch()){
-    echo $data['proposeur'];
-    echo $data['jour'].'</br>';
+    echo '<mark>' .$data['jour'];
+    echo " - " .$data['proposeur'].'<mark/></br>';
   }
 }
-
-
-
-   ?>
+?>

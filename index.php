@@ -202,8 +202,8 @@ if($connecte){//l'utilisateur est connecté
     printResultatVote($id_current_semaine);
   }
 }
-
-
+echo '<h2 class="text-warning"> Les prochains proposeurs des semaines à venir </h2><br/>';
+printNextproposeurs($id_current_semaine);
  ?>
                 </div>
               </div>
