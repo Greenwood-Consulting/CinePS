@@ -71,7 +71,7 @@ $vote_termine_cette_semaine = false;
 $connecte = true;
 $user_vote= false;
 $is_proposeur= true;*/
-//echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
+echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
 echo '<br/>';
 echo '<br/>';
 
