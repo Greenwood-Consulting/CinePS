@@ -32,7 +32,9 @@
           <div class="hero-full-wrapper">
             <div class="text-content">
               <h1 class="text-warning">Historique des propositions</h1>
-<?php 
+<?php
+
+echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
 include('common.php');
 $requete8 = $bdd->query("SELECT id, jour, proposeur FROM semaine");
   while ($semaine = $requete8->fetch()){
