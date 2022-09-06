@@ -92,4 +92,43 @@ function printNextproposeurs($id_semaine){
     echo " - " .$data['proposeur'].'<mark/></br>';
   }
 }
+
+function printChoixvote($id_semaine){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $film_semaine= $bdd->query("SELECT id, film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  echo "<TABLE border = '1px'>";
+
+  // Affichage du header du tableau :
+  $get_membre_header = $bdd->query('SELECT Prenom FROM membre');
+  echo "<TR>";
+  echo "<TD></TD>";
+  while ($data_membre = $get_membre_header->fetch()){
+    echo "<TD>";
+    echo $data_membre['Prenom'];
+    echo "</TD>";
+  }
+  echo "</TR>";
+
+  while ($proposition = $film_semaine->fetch()){
+    echo "<TR>";
+    $proposition_id = $proposition['id'];
+    $get_film = $bdd->query('SELECT titre, sortie_film, imdb FROM film WHERE id = '.$proposition['film_id']);
+    $data_film = $get_film->fetch();
+    echo '<TD>'.$data_film['titre'].'</TD>';
+    $get_membre = $bdd->query('SELECT id, Prenom FROM membre');
+    while ($data_membre = $get_membre->fetch()){
+      echo "<TD>";
+      $prenom = $data_membre['Prenom'];
+
+      $id_membre = $data_membre['id'];
+      $get_vote = $bdd->query("SELECT vote FROM votes WHERE membre = '".$id_membre."' AND proposition = '".$proposition_id."'");
+      if($vote = $get_vote->fetch()){
+        echo $vote['vote'];
+      }
+      echo "</TD>";
+    }
+    echo "</TR>";
+  }
+  echo "</TABLE>";
+}
 ?>
