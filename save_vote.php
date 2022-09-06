@@ -23,12 +23,6 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
   }
 }
 
-
-
-
-
-echo 'utilisateur connecte' .$id_utilisateur_connecte. '<br/>' ;
-
 echo 'Votre vote a été enregistré ! <a href=index.php><button>Revenir</button>';
 
 ?>
