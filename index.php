@@ -134,11 +134,13 @@ if($connecte){//l'utilisateur est connecté
             echo '<mark>Vous avez déjà voté</mark>';
           }else{//l'user n'a pas voté
             echo'<h2 class="text-warning">Vous devez voter </h2>';
+            echo '<p class = "text-warning"><b>Voici la liste des films proposés </b></p>';
+            echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
             ?>
             <form method="POST" action="save_vote.php">
             <?php
             $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
-            echo '<mark>Voici la liste des films proposés </mark><br/>';
+           
               echo "<table>";
               while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
                 $requete6 = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
