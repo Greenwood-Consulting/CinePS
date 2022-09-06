@@ -95,37 +95,46 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $film_semaine= $bdd->query("SELECT id, film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  $get_film_semaine= $bdd->query("SELECT id, film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  $get_proposeur_prenom = $bdd->query("SELECT proposeur FROM semaine WHERE id ='".$id_semaine."'");
+  $proposeur_prenom = $get_proposeur_prenom->fetch()['proposeur'];
+  $get_proposeur_id = $bdd->query("SELECT id FROM membre WHERE Prenom ='".$proposeur_prenom."'");
+  $proposeur_id =$get_proposeur_id->fetch()['id'];
   echo "<TABLE border = '1px'>";
 
   // Affichage du header du tableau :
   $get_membre_header = $bdd->query('SELECT Prenom FROM membre');
   echo "<TR>";
-  echo "<TD></TD>";
+  echo "<TD></TD><TD></TD>";
   while ($data_membre = $get_membre_header->fetch()){
-    echo "<TD>";
-    echo $data_membre['Prenom'];
-    echo "</TD>";
+    if($data_membre['Prenom']!= $proposeur_prenom){
+      echo "<TD>";
+      echo $data_membre['Prenom'];
+      echo "</TD>";
+    }
   }
   echo "</TR>";
-
-  while ($proposition = $film_semaine->fetch()){
+  while ($proposition = $get_film_semaine->fetch()){
     echo "<TR>";
     $proposition_id = $proposition['id'];
     $get_film = $bdd->query('SELECT titre, sortie_film, imdb FROM film WHERE id = '.$proposition['film_id']);
+    
     $data_film = $get_film->fetch();
-    echo '<TD>'.$data_film['titre'].'</TD>';
+    echo '<TD><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></TD>';
+    echo '<TD> '.$data_film['sortie_film'].'</TD>';
     $get_membre = $bdd->query('SELECT id, Prenom FROM membre');
     while ($data_membre = $get_membre->fetch()){
-      echo "<TD>";
-      $prenom = $data_membre['Prenom'];
+      if($data_membre['Prenom']!= $proposeur_prenom){
+        echo "<TD>";
+        $prenom = $data_membre['Prenom'];
 
-      $id_membre = $data_membre['id'];
-      $get_vote = $bdd->query("SELECT vote FROM votes WHERE membre = '".$id_membre."' AND proposition = '".$proposition_id."'");
-      if($vote = $get_vote->fetch()){
-        echo $vote['vote'];
+        $id_membre = $data_membre['id'];
+        $get_vote = $bdd->query("SELECT vote FROM votes WHERE membre = '".$id_membre."' AND proposition = '".$proposition_id."'");
+        if($vote = $get_vote->fetch()){
+          echo $vote['vote'];
+        }
+        echo "</TD>";
       }
-      echo "</TD>";
     }
     echo "</TR>";
   }
