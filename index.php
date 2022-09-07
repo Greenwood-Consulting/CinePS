@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--Gestion du compte à rebours de la période de vote -->
+<script>
+var deadline = new Date("Sep 9 , 2022 14:00:00").getTime();
+var x = setInterval(function() {
+var now = new Date().getTime();
+var t = deadline - now;
+var days = Math.floor(t / (1000 * 60 * 60 * 24));
+var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((t % (1000 * 60)) / 1000);
+document.getElementById("compte_a_rebours").innerHTML = days + "d " 
++ hours + "h " + minutes + "m " + seconds + "s ";
+    if (t < 0) {
+        clearInterval(x);
+        document.getElementById("compte_a_rebours").innerHTML = "";
+    }
+}, 1000);
+</script>
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -125,8 +144,10 @@ if($connecte){//l'utilisateur est connecté
       if($vote_termine_cette_semaine){//le vote est terminé
         echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
         printResultatVote($id_current_semaine);
+        printChoixvote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
+        echo '<mark>Compte a rebours avant la fin du vote : <div class = "text-warning" id  = "compte_a_rebours"></div></mark>';
         if($is_proposeur){
           echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
         }else{
