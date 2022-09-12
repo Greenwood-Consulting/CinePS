@@ -3,7 +3,7 @@
 
 <!--Gestion du compte à rebours de la période de vote -->
 <script>
-var deadline = new Date("Sep 9 , 2022 14:00:00").getTime();
+var deadline = new Date("Sep 16 , 2022 14:00:00").getTime();
 var x = setInterval(function() {
 var now = new Date().getTime();
 var t = deadline - now;
@@ -36,7 +36,7 @@ document.getElementById("compte_a_rebours").innerHTML = days + "d "
   <link href="./assets/favicon.ico" rel="icon">
 
   <title>CinePS</title>  
-
+  <link href="index.css" rel="stylesheet">
 <link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
@@ -80,7 +80,7 @@ include('common.php');
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 18:00");
+$fin = new DateTime("Fri 20:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
@@ -147,7 +147,7 @@ if($connecte){//l'utilisateur est connecté
         printChoixvote($id_current_semaine);
 
       }else{//le vote n'est pas terminé
-        echo '<mark>Compte a rebours avant la fin du vote : <div class = "text-warning" id  = "compte_a_rebours"></div></mark>';
+        echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "compte_a_rebours"></div></mark></b>';
         if($is_proposeur){
           echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
         }else{
