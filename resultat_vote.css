@@ -1,0 +1,31 @@
+body {
+    background-image: url("./assets/images/space.jpg");
+    background-position: center;
+    background-position: top;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    background-repeat: no-repeat;
+    background-color: black;
+  }
+table{
+  background-color: #000000c7;
+  text-align: center;
+  color: #ffc107;
+  border-color: #ffc107;
+  margin-top: 30%;
+  margin-left: 45%;
+}
+h1{
+  color: #ffc107;
+  text-align: center;
+  font-size: 70px;
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  font-weight: 900;
+}
+a:visited{
+  color: #ffc107;
+}
