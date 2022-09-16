@@ -146,7 +146,7 @@ if($connecte){//l'utilisateur est connecté
       if($vote_termine_cette_semaine){//le vote est terminé
         echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
         printResultatVote($id_current_semaine);
-        printChoixvote($id_current_semaine);
+        /*printChoixvote($id_current_semaine);*/
 
       }else{//le vote n'est pas terminé
         echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "compte_a_rebours"></div></mark></b>';
