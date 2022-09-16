@@ -6,7 +6,7 @@ if(isset($_POST['user'])){
 }
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     echo "Utilisateur connecté : ".$_SESSION['user'];
-    echo "<a href='deconnexion.php'><button type='button' class='btn btn-warning'>Se deconnecter</button></a>";
+    echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>";
 }
 else{ //Sinon on propose la connexion
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');

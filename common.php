@@ -30,9 +30,8 @@ function printFilmsProposes($id_semaine){
     $un_film_propose = true;
     $ajout_film = $bdd->query('SELECT titre, sortie_film, imdb FROM film WHERE id = '.$film['film_id']);
     $data_film = $ajout_film->fetch();
-    echo '<mark>'.$data_film['titre'].' ';
-    echo $data_film['sortie_film'];
-    echo '<a class="text-dark" href = '.$data_film['imdb'].' '.'> Lien imdb </a><br/></mark>';
+    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a>';
+    echo $data_film['sortie_film'].'</mark></br>';
     }
     if(!$un_film_propose){//si aucun film n'est proposé
       echo '<mark> Aucun film n\'a été proposé </mark>';
@@ -73,8 +72,7 @@ function printAllfilmsSemaines($id_semaine){
     $un_film_propose = true;
     $requete_titre_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
     $data_film = $requete_titre_film->fetch();
-    echo '<mark>'.$data_film['titre'];
-    echo '<a class="text-dark" href = '.$data_film['imdb'].' '.'> Lien imdb </a><br/></mark>';
+    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a>';
   }
   if(!$un_film_propose){
     echo "<mark> Pas de film pour cette semaine </mark>";

@@ -24,5 +24,6 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
 }
 
 echo 'Votre vote a été enregistré ! <a href=index.php><button>Revenir</button>';
-
+header('Location: index.php');
+exit();
 ?>

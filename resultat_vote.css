@@ -29,3 +29,20 @@ h1{
 a:visited{
   color: #ffc107;
 }
+.btn{
+  background-color: #d0880d00; 
+  border-color: #ffc107;
+  color: #ffc107;
+  font-family: inherit;
+  font-size: large;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 30%;
+}
+
+.btn:hover{
+  background-color: #ffc107;
+  color: white;
+}

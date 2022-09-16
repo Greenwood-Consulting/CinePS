@@ -36,7 +36,7 @@ document.getElementById("compte_a_rebours").innerHTML = days + "d "
   <link href="./assets/favicon.ico" rel="icon">
 
   <title>CinePS</title>  
-  <link href="index.css" rel="stylesheet">
+  
 <link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
@@ -97,6 +97,8 @@ echo '<br/>';
 
 
 printUserVote($id_current_semaine);
+
+
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
   $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
@@ -167,8 +169,7 @@ if($connecte){//l'utilisateur est connecté
                 $requete6 = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
                 $titre_imdb_film = $requete6->fetch();
                 
-                echo '<tr><td><mark>'.$titre_imdb_film['titre'].' ';
-                echo '<a class="text-dark" href = '.$titre_imdb_film['imdb'].' '.'>Lien imdb<a/></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+                echo '<tr><td><mark><a class="text-dark" href = '.$titre_imdb_film['imdb'].'>' .$titre_imdb_film['titre'].' </a></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
               }
               echo "</table>";
               ?>
