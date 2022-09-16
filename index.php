@@ -149,7 +149,7 @@ if($connecte){//l'utilisateur est connecté
         /*printChoixvote($id_current_semaine);*/
 
       }else{//le vote n'est pas terminé
-        echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "compte_a_rebours"></div></mark></b>';
+        //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "compte_a_rebours"></div></mark></b>';
         if($is_proposeur){
           echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
         }else{
