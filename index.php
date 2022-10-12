@@ -80,16 +80,10 @@ include('common.php');
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 20:00");
+$fin = new DateTime("Fri 14:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
-/*$vote_period = false;
-$proposition_semaine = false;
-$vote_termine_cette_semaine = false;
-$connecte = true;
-$user_vote= false;
-$is_proposeur= true;*/
 echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
 echo '<br/>';
 echo '<br/>';
@@ -146,6 +140,7 @@ if($connecte){//l'utilisateur est connecté
       if($vote_termine_cette_semaine){//le vote est terminé
         echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
         printResultatVote($id_current_semaine);
+        echo "<a href='resultat_vote.php'><button type='button' class='btn btn-warning'>Résultat vote</button></a>";
         /*printChoixvote($id_current_semaine);*/
 
       }else{//le vote n'est pas terminé
@@ -157,7 +152,6 @@ if($connecte){//l'utilisateur est connecté
             echo '<mark>Vous avez déjà voté</mark>';
           }else{//l'user n'a pas voté
             echo'<h2 class="text-warning">Vous devez voter </h2>';
-            echo '<p class = "text-warning"><b>Voici la liste des films proposés </b></p>';
             echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
             ?>
             <form method="POST" action="save_vote.php">
