@@ -4,6 +4,14 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 // Date du jour
 $curdate=new DateTime();
 
+// calcul de la date de fin de la période de vote
+$fin_periode_vote = new DateTime("Fri 14:00");
+$fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
+
+// conversion de la date de fin en timestamp JavaScript
+$deadline_vote = strtotime($fin_periode_vote);
+$deadline_vote = $deadline_vote*1000;
+
 // Get état id_current_semaine
 if ($curdate->format('D')=="Fri"){ // Si nous sommes vendredi, alors id_current_semaine est défini par ce vendredi
   $friday_current_semaine = $curdate->format('Y-m-d');
@@ -72,7 +80,7 @@ function printAllfilmsSemaines($id_semaine){
     $un_film_propose = true;
     $requete_titre_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
     $data_film = $requete_titre_film->fetch();
-    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a>';
+    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></br>';
   }
   if(!$un_film_propose){
     echo "<mark> Pas de film pour cette semaine </mark>";
@@ -93,6 +101,64 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  
+  $get_film_semaine= $bdd->query("SELECT id, film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
+  
+  //$score = $get_score->fetch()['score'];
+  $get_proposeur_prenom = $bdd->query("SELECT proposeur FROM semaine WHERE id ='".$id_semaine."'");
+  $proposeur_prenom = $get_proposeur_prenom->fetch()['proposeur'];
+  $get_proposeur_id = $bdd->query("SELECT id FROM membre WHERE Prenom ='".$proposeur_prenom."'");
+  $proposeur_id =$get_proposeur_id->fetch()['id'];
+  echo "<TABLE border = '1px'>";
+
+  // Affichage du header du tableau :
+  $get_membre_header = $bdd->query('SELECT Prenom FROM membre');
+  echo "<TR>";
+  echo "<TD></TD><TD></TD>";
+  while ($data_membre = $get_membre_header->fetch()){//on crée une colonne pour chaque membre
+    if($data_membre['Prenom']!= $proposeur_prenom){//On affiche tout le monde sauf le proposeur
+      echo "<TD>";
+      echo $data_membre['Prenom'];
+      echo "</TD>";
+    }
+  }
+  echo "<TD>";
+  echo "Score";
+  echo "</TD>";
+  echo "</TR>";
+  while ($proposition = $get_film_semaine->fetch()){//on crée une ligne pour chaque film de la semaine
+    echo "<TR>";
+    $proposition_id = $proposition['id'];
+    $get_film = $bdd->query('SELECT titre, sortie_film, imdb FROM film WHERE id = '.$proposition['film_id']);
+    
+    $data_film = $get_film->fetch();
+    echo '<TD><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></TD>';
+    echo '<TD> '.$data_film['sortie_film'].'</TD>';
+    $get_membre = $bdd->query('SELECT id, Prenom FROM membre');
+    while ($data_membre = $get_membre->fetch()){//On affiche le vote de chaque membres
+      if($data_membre['Prenom']!= $proposeur_prenom){//On affiche pas le proposeur car il ne vote pas
+        echo "<TD>";
+        $prenom = $data_membre['Prenom'];
+        $id_membre = $data_membre['id'];
+        $get_vote = $bdd->query("SELECT vote FROM votes WHERE membre = '".$id_membre."' AND proposition = '".$proposition_id."'");
+        if($vote = $get_vote->fetch()){
+          echo $vote['vote'];
+        }
+        echo "</TD>";
+      }
+    }
+    $get_score = $bdd->query("SELECT score FROM proposition WHERE id = '".$proposition_id."'");
+    $score = $get_score->fetch();
+    echo "<TD>";
+    echo $score['score'];
+    echo "</TD>";
+    echo "</TR>";
+  }
+  echo "</TABLE>";
+}
+function printHistoriquechoixvote($id_semaine){
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  
   $get_film_semaine= $bdd->query("SELECT id, film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
   
   //$score = $get_score->fetch()['score'];

@@ -15,11 +15,13 @@ table{
   background-color: #000000c7;
   text-align: center;
   color: #ffc107;
+  margin: 0 auto;
   border-color: #ffc107;
-  margin-top: 30%;
-  margin-left: 45%;
 }
-h1{
+#tableau {
+  vertical-align: center;
+}
+#titre{
   color: #ffc107;
   text-align: center;
   font-size: 70px;
@@ -40,6 +42,8 @@ a:visited{
   padding-left: 20px;
   padding-right: 20px;
   margin-left: 30%;
+  margin-top: 8%;
+  position: fixed;
 }
 
 .btn:hover{

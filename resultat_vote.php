@@ -10,100 +10,47 @@
 <body>
 <?php
 include('common.php');
-echo "<h1>Résultat du vote</h1>";
+echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
-printChoixvote($id_current_semaine);
-?>
-<p> xr </p>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
-a <br/>
+  $deb= new DateTime ("Fri 12:00");
+  $fin = new DateTime("Mon 14:00");
+  $curdate=new DateTime();
+  $vote_period=($curdate>=$deb && $curdate <= $fin);
 
+  if($vote_period){
+    echo "<div id = 'tableau'>";
+    printChoixvote($id_current_semaine);
+    echo "</div>";
+  }
+  else{
+    echo "<h1 class = 'prout'>Le vote n'est pas terminé, vous ne pouvez donc pas voir les résultats du vote.</h1>";
+  }
+
+?>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
+<p>x</p></br>
 </body>
 </html>
 

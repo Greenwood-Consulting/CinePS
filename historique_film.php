@@ -41,7 +41,7 @@ $requete8 = $bdd->query("SELECT id, jour, proposeur FROM semaine");
     $id_semaine = $semaine['id'];
     $jour_semaine = $semaine['jour'];
     $proposeur_semaine = $semaine['proposeur'];
-    echo " <h2 class = 'bg-primary text-white'> Les propositions de ".$proposeur_semaine;
+    echo " <h2 class = 'bg-dark text-warning'> Les propositions de ".$proposeur_semaine;
     echo " Pour la semaine du ".$jour_semaine. "</h2><br/>";
     printAllfilmsSemaines($id_semaine);
 }

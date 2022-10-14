@@ -1,24 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!--Gestion du compte à rebours de la période de vote -->
-<script>
-var deadline = new Date("Sep 16 , 2022 14:00:00").getTime();
-var x = setInterval(function() {
-var now = new Date().getTime();
-var t = deadline - now;
-var days = Math.floor(t / (1000 * 60 * 60 * 24));
-var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
-var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-var seconds = Math.floor((t % (1000 * 60)) / 1000);
-document.getElementById("compte_a_rebours").innerHTML = days + "d " 
-+ hours + "h " + minutes + "m " + seconds + "s ";
-    if (t < 0) {
-        clearInterval(x);
-        document.getElementById("compte_a_rebours").innerHTML = "";
-    }
-}, 1000);
-</script>
+<?php
+include('common.php');
+// calcul de la date de fin de la période de vote
+$fin_periode_vote = new DateTime("Fri 16:26");
+$fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
+
+// conversion de la date de fin en timestamp JavaScript
+$deadline_vote = strtotime($fin_periode_vote);
+$deadline_vote = $deadline_vote*1000;
+?>
+
+
 
 <head>
   <meta charset="UTF-8">
@@ -35,11 +29,33 @@ document.getElementById("compte_a_rebours").innerHTML = days + "d "
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
   <link href="./assets/favicon.ico" rel="icon">
 
+  <!--Gestion du compte à rebours de la période de vote -->
+<script>
+// Injection de la date de fin PHP dans une variable Javascript
+var deadline_vote = <?php echo $deadline_vote; ?>;
+
+var x = setInterval(function() {
+    var now = new Date().getTime();
+    var t = deadline_vote - now;
+    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((t % (1000 * 60)) / 1000);
+    document.getElementById("demo").innerHTML = days + "d " 
+        + hours + "h " + minutes + "m " + seconds + "s ";
+    if (t < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerHTML = "";
+    }
+}, 1000);
+</script>
+
   <title>CinePS</title>  
   
 <link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
+
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
 <div id="site-border-top"></div>
@@ -71,7 +87,6 @@ document.getElementById("compte_a_rebours").innerHTML = days + "d "
               <?php
   
 
-include('common.php');
 
   
  $jour_aujourdhui = date("D");
@@ -118,7 +133,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $titre_film = $bdd->quote($_POST['titre_film']);
   $ajout_du_lien_imdb = $_POST['lien_imdb'];
   $date = date('Y-m-d');
-  $sortie_film = $_POST['date'];
+  $sortie_film = $_POST['date'];    
   $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES (".$titre_film.",'".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
   $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES ('".$id_current_semaine."','".$last_id."','36')");
@@ -144,7 +159,7 @@ if($connecte){//l'utilisateur est connecté
         /*printChoixvote($id_current_semaine);*/
 
       }else{//le vote n'est pas terminé
-        //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "compte_a_rebours"></div></mark></b>';
+        //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
         if($is_proposeur){
           echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
         }else{
@@ -152,6 +167,8 @@ if($connecte){//l'utilisateur est connecté
             echo '<mark>Vous avez déjà voté</mark>';
           }else{//l'user n'a pas voté
             echo'<h2 class="text-warning">Vous devez voter </h2>';
+            echo "<br />";
+            echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';
             echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
             ?>
             <form method="POST" action="save_vote.php">
