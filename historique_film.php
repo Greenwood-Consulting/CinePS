@@ -18,7 +18,7 @@
 
   <title>CinePS</title>  
 
-<link href="./main.3f6952e4.css" rel="stylesheet">
+<!--link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
 <div id="site-border-left"></div>
@@ -30,20 +30,20 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
-            <div class="text-content">
+            <div class="text-content"-->
               <h1 class="text-warning">Historique des propositions</h1>
 <?php
 
 echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
 include('common.php');
-$requete8 = $bdd->query("SELECT id, jour, proposeur FROM semaine");
+  $requete8 = $bdd->query("SELECT id, jour, proposeur FROM semaine");
   while ($semaine = $requete8->fetch()){
     $id_semaine = $semaine['id'];
     $jour_semaine = $semaine['jour'];
     $proposeur_semaine = $semaine['proposeur'];
-    echo " <h2 class = 'bg-dark text-warning'> Les propositions de ".$proposeur_semaine;
+    echo " <h2<> Les propositions de ".$proposeur_semaine;
     echo " Pour la semaine du ".$jour_semaine. "</h2><br/>";
-    printAllfilmsSemaines($id_semaine);
+    printVotesSemaine($id_semaine);
 }
 
 ?>
