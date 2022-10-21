@@ -12,8 +12,8 @@
 include('common.php');
 echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
-  $deb= new DateTime ("Fri 12:00");
-  $fin = new DateTime("Mon 14:00");
+  $deb= new DateTime ("Fri 14:00");
+  $fin = new DateTime("Mon 8:00");
   $curdate=new DateTime();
   $vote_period=($curdate>=$deb && $curdate <= $fin);
 
@@ -23,34 +23,11 @@ echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</b
     echo "</div>";
   }
   else{
-    echo "<h1 class = 'prout'>Le vote n'est pas terminé, vous ne pouvez donc pas voir les résultats du vote.</h1>";
+    echo "<h1 class = 'message_vote'>Le vote n'est pas terminé, vous ne pouvez donc pas voir les résultats du vote.</h1>";
   }
 
 ?>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
-<p>x</p></br>
+
 </body>
 </html>
 
