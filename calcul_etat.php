@@ -35,6 +35,7 @@ $connecte = isset($_SESSION['user']);
 // get état current_user_a_vote
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
+  // TODO: Que se passe-t'il si une injection se glisse à la place de la session user
   $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
   $id_utlisateur_connecte = $user->fetch()['id'];
   $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (votant = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
