@@ -1,8 +1,14 @@
 <?php
 session_start();
 //Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
+// si l'utilisateur se présente
+
 if(isset($_POST['user'])){
+    //vérifier si l'utilisateur est bien dans la liste
+    //si l'utilisateur est dans la liste
     $_SESSION['user']=$_POST['user'];
+    //si l'utlisateur n'est pas sur la liste
+    // ??
 }
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     echo "Utilisateur connecté : ".$_SESSION['user'];
