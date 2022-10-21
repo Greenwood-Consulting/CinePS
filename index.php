@@ -77,13 +77,7 @@ var x = setInterval(function() {
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
             <div class="text-content">
-              <h1 class="text-warning">Bonjour,<br/>
-                <span id="typed-strings">
-                  <span id="text-warning">Bienvenue sur le site de CinéPS</span>
-                </span>
-                <span id="typed"></span>
-                
-              </h1>
+              <h1 class="text-warning">CinePS</h1>
               <?php
   
 
@@ -95,7 +89,7 @@ var x = setInterval(function() {
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 14:00");
+$fin = new DateTime("Fri 15:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
@@ -130,11 +124,12 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
-  $titre_film = $bdd->quote($_POST['titre_film']);
+  //$titre_film = $bdd->quote($_POST['titre_film']);
+  $titre_film = $_POST['titre_film'];
   $ajout_du_lien_imdb = $_POST['lien_imdb'];
   $date = date('Y-m-d');
   $sortie_film = $_POST['date'];    
-  $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES (".$titre_film.",'".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
+  $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES ('".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
   $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES ('".$id_current_semaine."','".$last_id."','36')");
 
