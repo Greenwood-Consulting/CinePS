@@ -187,7 +187,7 @@ function printVotesSemaine($id_semaine){
       $get_film = $bdd->query('SELECT titre, sortie_film, imdb FROM film WHERE id = '.$proposition['film_id']);
       
       $data_film = $get_film->fetch();
-      echo '<TD><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></TD>';
+      echo '<TD><a href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></TD>';
       echo '<TD> '.$data_film['sortie_film'].'</TD>';
       $get_membre = $bdd->query('SELECT id, Prenom FROM membre');
       while ($data_membre = $get_membre->fetch()){//On affiche le vote de chaque membres
