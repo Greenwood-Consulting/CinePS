@@ -2,8 +2,8 @@
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
 if(isset($_POST['new_proposeur'])){
-    $nom_proposeur = $_POST['user'];
-    $date_proposeur = $_POST['date'];
+    $nom_proposeur = addslashes($_POST['user']);
+    $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
     echo "proposeur".$nom_proposeur."<br/>";
     echo "date".$date_to_insert."<br/>";

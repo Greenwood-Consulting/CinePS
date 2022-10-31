@@ -1,7 +1,7 @@
 <?php 
 include('header.php');
 
-$film =$_POST['film'];
+$film = addslashes($_POST['film']);
 $date = date('Y-m-d');
 // On se connecte à la base
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');

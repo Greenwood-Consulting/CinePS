@@ -13,9 +13,9 @@
     include('common.php');
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     if(isset($_POST['new_membre'])){//Ajout nouveau membre
-        $nom_de_famille = $_POST['name'];
-        $prenom = $_POST['prenom'];
-        $mail = $_POST['email'];
+        $nom_de_famille = addslashes($_POST['name']);
+        $prenom = addslashes($_POST['prenom']);
+        $mail = addslashes($_POST['email']);
         $ajout_membre = $bdd->query("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`) VALUES ('".$nom_de_famille."','".$prenom."','".$mail."')");
         
     }
@@ -41,8 +41,8 @@
 <h2 class="container-fluid p-5 bg-secondary text-white text-center"> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
 if(isset($_POST['new_proposeur'])){
-    $nom_proposeur = $_POST['user'];
-    $date_proposeur = $_POST['date'];
+    $nom_proposeur = addslashes($_POST['user']);
+    $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
     $ajout_proposeur = $bdd->query("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES ('".$date_to_insert."','".$nom_proposeur."','0')");
 }

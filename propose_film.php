@@ -26,7 +26,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 }
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
-    $titre_film = $_POST['titre_film'];
+    $titre_film = addslashes($_POST['titre_film']);
     $date = date('Y-m-d');
     $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
     $last_id = $bdd->lastInsertId();
