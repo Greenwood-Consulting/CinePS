@@ -5,12 +5,31 @@ session_start();
 // si l'utilisateur se présente
 
 if(isset($_POST['user'])){
-    //vérifier si l'utilisateur est bien dans la liste
-    //si l'utilisateur est dans la liste
-    $_SESSION['user']=addslashes($_POST['user']);
-    //si l'utlisateur n'est pas sur la liste
-    // ??
+
+    $prenom = $_POST['user'];
+    $password = $_POST['password'];
+
+
+    $check = $bdd->prepare('SELECT mdp FROM membre WHERE Prenom = ?');
+    $check->execute(array($prenom));
+    $data = $check->fetch();
+    $row = $check->rowCount();
+
+    if($row == 1){
+
+        //$password = hash('sha256', $password);
+
+        if($data['mdp'] == $password){
+            $_SESSION['user'] = $prenom;     
+        }else{
+            echo 'Le mdp n\'est pas valide';
+        } 
+
+    }else{
+        echo 'Cet utilisateur n\'existe pas dans la base de données';
+    } 
 }
+
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     echo "Utilisateur connecté : ".$_SESSION['user'];
     echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>";
@@ -21,13 +40,21 @@ else{ //Sinon on propose la connexion
     echo'<form method="post" action="index.php">
             <label>Membres</label>
                 <select class="text-dark" name="user">';
+
     while($data = $affichage_membre->fetch()){ //Afficher un utlisateur
-        echo"<option class='text-dark' class='btn btn-warning' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+        echo"<option class='text-dark' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
     }
-    echo"</select>
-    <button type='submit' class='btn btn-warning'>Se connecter</button>
+    echo"</select>";
+
+    /*Password input */
+    echo    '<div class="form-outline mb-4">
+                <input type="password" name="password" class="form-control" />
+                <label class="form-label" for="form2Example2">Password</label>
+            </div>';
+    echo "<button class='btn btn-warning' name='connect'>Se connecter</button>
     </form>";
 }
+
 
 ?>
 <hr/>
