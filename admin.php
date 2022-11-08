@@ -16,8 +16,9 @@
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
         $mail = addslashes($_POST['email']);
-        $ajout_membre = $bdd->query("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`) VALUES ('".$nom_de_famille."','".$prenom."','".$mail."')");
-        
+        $new_membre = $bdd->prepare("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`) VALUES (?,?,?)");
+        $new_membre->execute([$nom_de_famille, $prenom, $mail]);
+   
     }
 ?>
 
@@ -44,9 +45,9 @@ if(isset($_POST['new_proposeur'])){
     $nom_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
-    $ajout_proposeur = $bdd->query("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES ('".$date_to_insert."','".$nom_proposeur."','0')");
+    $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES (?,?,?)");
+    $ajout_proposeur->execute([$date_to_insert, $nom_proposeur, '0']);
 }
-
 $membres = $bdd->query('SELECT * FROM membre');
 echo'<form method="post" action="">
         <label>Membres</label>
