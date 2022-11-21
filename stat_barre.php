@@ -9,19 +9,6 @@ while($film_semaine = $get_film_semaine->fetch()){
   $titre_film = $get_titre_film->fetch()['titre'];
   array_push($data_score, array("Film" => $titre_film, "Score" => $film_semaine['score']));
 }
-/*$data_score = array(
-  "Iron Man" => 30,
-  "Thor" => 21,
-  "Hulk" => 26,
-  "Dr Strange" => 25,
-  "Black Panther" => 32,
-);
-
-$js_data_score= json_encode($data_score);*/
-
-/*array_push($data_score, array("Film" => "Iron Man", "Score" => "32" ));
-array_push($data_score, array("Film" => "thor", "Score" => "28" ));
-array_push($data_score, array("Film" => "Hulk", "Score" => "26" ));*/
 
 $count_data_score = count($data_score);
 ?>
@@ -36,12 +23,10 @@ $count_data_score = count($data_score);
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
-
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawMaterial);
 
-
-function drawMaterial() {
+    function drawMaterial() {
       var data_score = new google.visualization.DataTable();
       data_score.addColumn('string', 'Film');
       data_score.addColumn('number', 'Score');
@@ -54,16 +39,6 @@ function drawMaterial() {
         ?>
       ]);
 
-      console.log(data_score);
-      /*var data_score = google.visualization.arrayToDataTable([
-        ['Titre film', 'score'],
-        ['Iron Man', 30],
-        ['Thor', 21],
-        ['Hulk', 26],
-        ['Dr Strange', 25],
-        ['Black Panther', 32]
-      ]);*/
-      console.log(data_score);
       var materialOptions = {
         chart: {
           title: 'Classement du vote'
@@ -78,8 +53,7 @@ function drawMaterial() {
         bars: 'horizontal'
       };
       var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-      materialChart.draw(data_score, materialOptions);
-      
+      materialChart.draw(data_score, materialOptions);      
     }
 </script>
 </head>
