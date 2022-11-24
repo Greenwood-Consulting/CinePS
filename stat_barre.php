@@ -20,14 +20,23 @@ $data_proposeurs = [];
 $get_proposeurs = $bdd->query("SELECT proposeur, COUNT(id) AS nb_proposeurs FROM semaine GROUP BY proposeur");
 
 while($proposeurs = $get_proposeurs->fetch()){
-  echo "proposeur". $proposeurs['proposeur'];
-  echo "<br/>";
-  echo "nb_proposeurs". $proposeurs['nb_proposeurs'];
-  echo "<br/>";
   array_push($data_proposeurs, array("Proposeur" => $proposeurs['proposeur'], "nombre" => $proposeurs['nb_proposeurs']));
 }
 
 $count_data_proposeurs = count($data_proposeurs);
+
+
+//Construction du tableau data_année
+$data_annee = [];
+$get_film_annee = $bdd->query("SELECT sortie_film, COUNT(id) AS nb_films FROM film GROUP BY sortie_film");
+
+while($film_annee = $get_film_annee->fetch()){
+    array_push($data_annee, array("Année Film" => $film_annee['sortie_film'], "nombre" => $film_annee['nb_films']));
+}
+// Transformer le tableau film année pour faire un tableau film décénie qui groupe les films par décennie
+$count_data_annee = count($data_annee);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,13 +44,14 @@ $count_data_proposeurs = count($data_proposeurs);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Statistique</title>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawMaterial);
+    google.charts.setOnLoadCallback(drawChart);
 
     function drawMaterial() {
       //draw data_score
@@ -59,7 +69,7 @@ $count_data_proposeurs = count($data_proposeurs);
 
       var materialOptions = {
         chart: {
-          title: 'Classement du vote'
+          title: ''
         },
         hAxis: {
           title: 'Score',
@@ -70,9 +80,41 @@ $count_data_proposeurs = count($data_proposeurs);
         },
         bars: 'horizontal'
       };
+      
       var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
       materialChart.draw(data_score, materialOptions);
-      
+
+      //draw data_annee
+      var data_annee = new google.visualization.DataTable();
+      data_annee.addColumn('string', 'Année Film');
+      data_annee.addColumn('number', 'nombre');
+
+      data_annee.addRows([
+        <?php
+          for($i=0;$i<$count_data_annee;$i++){
+            echo "['" . $data_annee[$i]['Année Film'] . "'," . $data_annee[$i]['nombre'] . "],";
+          } 
+        ?>
+      ]);
+
+      var materialOptions = {
+        chart: {
+          title: ''
+        },
+        hAxis: {
+          title: 'nombre',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'Année Film'
+        },
+        bars: 'horizontal'
+      };
+      var materialChart = new google.charts.Bar(document.getElementById('chart_film_année'));
+      materialChart.draw(data_annee, materialOptions);
+    }
+
+    function drawChart(){
       //draw data_proposeurs
       var data_proposeurs = new google.visualization.DataTable();
       data_proposeurs.addColumn('string', 'proposeurs');
@@ -86,27 +128,25 @@ $count_data_proposeurs = count($data_proposeurs);
         ?>
       ]);
 
-      var materialOptions = {
-        chart: {
-          title: 'nombre de propositions'
-        },
-        hAxis: {
-          title: 'nombre',
-          minValue: 0,
-        },
-        vAxis: {
-          title: 'proposeurs'
-        },
-        bars: 'horizontal'
-      };
-      var materialChart = new google.charts.Bar(document.getElementById('chart_proposeurs'));
-      materialChart.draw(data_proposeurs, materialOptions);
-    }
+      var options = {
+          title: ''
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data_proposeurs, options);
+    };
 </script>
 </head>
 <body>
-    <h2>Graphique</h2>
-    <div id="chart_div"></div>
-    <div id="chart_proposeurs"></div>
+  <a href=index.php><button type='button'>Accueil</button></a>
+  <h2>Classement Des films de la semaine
+  <div id="chart_div"  style="width: 1800px; height: 200px"></div>
+  </h2>
+  <h2> Films par années
+  <div id="chart_film_année" style="width: 1800px; height: 200px"></div>
+  </h2>
+  <h2> Nombre de fois que les membres ont été proposeurs
+  <div id="piechart" style="width: 900px; height: 500px"></div>
+  </h2>
 </body>
 </html>
