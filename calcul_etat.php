@@ -42,4 +42,9 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']>0;
 }
 
+//indique si le thème a été proposé ou non
+$get_theme = $bdd->query("SELECT theme FROM semaine WHERE id ='".$id_current_semaine."'");
+$theme = $get_theme->fetch()['theme'];
+$etat_theme_non_propose = $theme == "";
+
 ?>

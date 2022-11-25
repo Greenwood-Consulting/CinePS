@@ -94,6 +94,7 @@ $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
 echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
+echo "<a href='stat_barre.php'><button type='button' class='btn btn-warning'>Statistique</button></a>";
 echo '<br/>';
 echo '<br/>';
 
@@ -132,11 +133,17 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES ('".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
   $last_id = $bdd->lastInsertId();
   $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES ('".$id_current_semaine."','".$last_id."','36')");
-
-  echo '<br/>';
-  echo '<br/>';
-  echo '<br/>';
   
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
+}
+
+if(isset($_POST['new_theme'])){
+
+$theme_film = addslashes($_POST['theme_film']);
+$update_theme = "UPDATE semaine SET theme = '".$theme_film."'  WHERE id ='".$id_current_semaine."'";
+$ajout_theme  = $bdd->query($update_theme);
 }
 ?>
 <div class="container-fluid mt-9">
@@ -188,21 +195,31 @@ if($connecte){//l'utilisateur est connecté
       }
     }else{//la proposition n'est pas encore faite
       if($is_proposeur){
-        echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
-      printFilmsProposes($id_current_semaine);
-      echo '<br/><br />';
-      ?>
-      <form method="POST" action="index.php">
-      <label> Proposition de films:</label>
-      <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
-      <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
-      <input type="number" name="date"  placeholder="Année" class="text-dark" >
-      <?php
-      echo '<br/><button type="submit" name="new_proposition" class="btn btn-warning">Proposer un nouveau film</button><br/>';
-      echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Proposition terminé</button>';
-      ?>
-      </form>
-      <?php
+        
+          echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
+          printFilmsProposes($id_current_semaine);
+          echo '<br/><br />';
+          ?>
+          <form method="POST" action="index.php">
+          <label> Proposition de films:</label>
+          <?php
+          if($etat_theme_non_propose){
+            echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
+                  <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
+            
+          }
+          ?>
+          
+          <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+          <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+          <input type="number" name="date"  placeholder="Année" class="text-dark" >
+          
+          <?php
+          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+          echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button>';
+          ?>
+          </form>
+          <?php
       }else{
         if($proposeur_cette_semaine){
           echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
