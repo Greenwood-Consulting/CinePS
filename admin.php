@@ -45,8 +45,8 @@ if(isset($_POST['new_proposeur'])){
     $nom_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
-    $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES (?,?,?)");
-    $ajout_proposeur->execute([$date_to_insert, $nom_proposeur, '0']);
+    $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`, `theme`) VALUES (?,?,?,?)");
+    $ajout_proposeur->execute([$date_to_insert, $nom_proposeur, '0', ""]);
 }
 $membres = $bdd->query('SELECT * FROM membre');
 echo'<form method="post" action="">
