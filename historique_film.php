@@ -38,16 +38,17 @@
 echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
 include('common.php');
 include('calcul_etat.php');
-  $requete8 = $bdd->query("SELECT id, jour, proposeur FROM semaine ORDER BY jour DESC ");
-  while ($semaine = $requete8->fetch()){
+
+  $requete_jour_correspondant = $bdd->query("SELECT jour FROM semaine WHERE id = ".$id_current_semaine);
+  $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
+  $historique_film = $bdd->query("SELECT id, proposeur, jour FROM semaine WHERE jour <= '" .$jour_correspondant_id_semaine."' ORDER BY jour DESC");
+  while ($semaine = $historique_film->fetch()){
     $id_semaine = $semaine['id'];
     $jour_semaine = $semaine['jour'];
     $proposeur_semaine = $semaine['proposeur'];
-    echo " <h2 > Les propositions de ".$proposeur_semaine;
-    echo " Pour la semaine du ".$jour_semaine. "</h2><br/>";
-    if(($id_semaine == $id_current_semaine) && !$vote_termine_cette_semaine){//Si c'est la semaine en cours et que le vote n'est pas terminé
-      echo "Le vote n'est pas terminé, vous ne pouvez pas voir le résultat";  
-    }else{
+    if(!(($id_semaine == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
+      echo " <h2 > Les propositions de ".$proposeur_semaine;
+      echo " Pour la semaine du ".$jour_semaine. "</h2><br/>";
       printVotesSemaine($id_semaine);
     }
   }
