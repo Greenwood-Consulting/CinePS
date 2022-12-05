@@ -250,7 +250,7 @@ if($connecte){//l'utilisateur est connecté
   }
 }
 echo "<br/>";
-echo '<h2 class="text-warning"> Les prochains proposeurs des semaines à venir </h2><br/>';
+echo '<h2 class="text-warning">Les prochains proposeurs</h2><br/>';
 printNextproposeurs($id_current_semaine);
  ?>
                 </div>

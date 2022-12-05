@@ -98,9 +98,9 @@ function printNextproposeurs($id_semaine){
   $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
   $next_proposeurs = $bdd->query("SELECT proposeur, jour FROM semaine WHERE jour >= '" .$jour_correspondant_id_semaine."' ORDER BY jour");
     while ($data = $next_proposeurs->fetch()){
-    echo '<mark>' .$data['jour'];
-    echo " - " .$data['proposeur'].'<mark/></br>';
-  }
+      echo '</br><mark>' .$data['jour'];
+      echo " - " .$data['proposeur'].'<mark/>';
+    }
 }
 
 function printChoixvote($id_semaine){
