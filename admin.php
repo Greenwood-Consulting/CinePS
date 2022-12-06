@@ -12,7 +12,7 @@
     <?php
     include('common.php');
     $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    if(isset($_POST['new_membre'])){//Ajout nouveau membre
+    if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
         $mail = addslashes($_POST['email']);
@@ -41,6 +41,7 @@
 </br>
 <h2 class="container-fluid p-5 bg-secondary text-white text-center"> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
+//si il clique sur le bouton new_proposeur
 if(isset($_POST['new_proposeur'])){
     $nom_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
@@ -52,7 +53,8 @@ $membres = $bdd->query('SELECT * FROM membre');
 echo'<form method="post" action="">
         <label>Membres</label>
             <select class="text-dark" name="user">';
-while($data = $membres->fetch()){ //Afficher un utlisateur
+            
+while($data = $membres->fetch()){ //Afficher un utlisateur dans le dropdown
     echo"<option class='text-dark' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
 }
 echo"<input type='date' name='date'>";
