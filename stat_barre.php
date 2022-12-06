@@ -28,12 +28,26 @@ $count_data_proposeurs = count($data_proposeurs);
 
 //Construction du tableau data_année
 $data_annee = [];
-$get_film_annee = $bdd->query("SELECT sortie_film, COUNT(id) AS nb_films FROM film GROUP BY sortie_film");
+$get_film_annee = $bdd->query("SELECT sortie_film FROM film");
 
-while($film_annee = $get_film_annee->fetch()){
-    array_push($data_annee, array("Année Film" => $film_annee['sortie_film'], "nombre" => $film_annee['nb_films']));
+$films_par_decennie = [];
+
+
+
+while($film = $get_film_annee->fetch()){
+  $date_sortie = $film['sortie_film'];
+  $decennie = intdiv($date_sortie, 10)*10;
+  if(isset($films_par_decennie[$decennie])){
+    $nb_films = $films_par_decennie[$decennie];
+    $films_par_decennie[$decennie] = $nb_films + 1;
+  }else{
+    $films_par_decennie[$decennie] = 1;
+  }
 }
-// Transformer le tableau film année pour faire un tableau film décénie qui groupe les films par décennie
+foreach($films_par_decennie as $decennie => $nb_films){
+  array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
+}
+
 $count_data_annee = count($data_annee);
 
 
