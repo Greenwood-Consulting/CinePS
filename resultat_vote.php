@@ -17,12 +17,12 @@ echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</b
   $curdate=new DateTime();
   $vote_period=($curdate>=$deb && $curdate <= $fin);
 
-  if($vote_period){
+  if($vote_period){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
     echo "<div id = 'tableau'>";
     printChoixvote($id_current_semaine);
     echo "</div>";
   }
-  else{
+  else{//Sinon le tableau n'est pas crée
     echo "<h1 class = 'message_vote'>Le vote n'est pas terminé, vous ne pouvez donc pas voir les résultats du vote.</h1>";
   }
 

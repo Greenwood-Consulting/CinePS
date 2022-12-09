@@ -105,7 +105,7 @@ printUserVote($id_current_semaine);
 
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-  $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
+  $update_vote= $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   /*$to = $requete_mail;
 

@@ -4,7 +4,7 @@ session_start();
 //Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
 // si l'utilisateur se présente
 
-if(isset($_POST['user'])){
+if(isset($_POST['user'])){//si l'utilisateur est connecté
 
     $prenom = $_POST['user'];
     $password = $_POST['password'];
@@ -15,17 +15,17 @@ if(isset($_POST['user'])){
     $data = $check->fetch();
     $row = $check->rowCount();
 
-    if($row == 1){
+    if($row == 1){//On crée une ligne dans le dropdown pour chaque user
 
         //$password = hash('sha256', $password);
 
-        if($data['mdp'] == $password){
+        if($data['mdp'] == $password){//Le mot de passe correspond on autorise la connection
             $_SESSION['user'] = $prenom;     
-        }else{
+        }else{//sinon on refuse la connection
             echo 'Le mdp n\'est pas valide';
         } 
 
-    }else{
+    }else{//on refuse la connection
         echo 'Cet utilisateur n\'existe pas dans la base de données';
     } 
 }

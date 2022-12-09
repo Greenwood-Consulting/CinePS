@@ -42,7 +42,7 @@ include('calcul_etat.php');
   $requete_jour_correspondant = $bdd->query("SELECT jour FROM semaine WHERE id = ".$id_current_semaine);
   $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
   $historique_film = $bdd->query("SELECT id, proposeur, jour FROM semaine WHERE jour <= '" .$jour_correspondant_id_semaine."' ORDER BY jour DESC");
-  while ($semaine = $historique_film->fetch()){
+  while ($semaine = $historique_film->fetch()){//tant que il y a un proposeur pour une semaine défini
     $id_semaine = $semaine['id'];
     $jour_semaine = $semaine['jour'];
     $proposeur_semaine = $semaine['proposeur'];

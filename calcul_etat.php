@@ -1,32 +1,32 @@
 <?php
 // Get proposition_semaine
-$requete1 = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
+$get_proposition_semaine = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
 $proposition_semaine = 0;
-if($result_proposition_semaine =  $requete1->fetch()){
+if($result_proposition_semaine =  $get_proposition_semaine->fetch()){//si la proposition de la semaine est égal à 0
   $proposition_semaine = $result_proposition_semaine['proposition_termine'];
 }
 
 //Calcule etat is_proposeur
-$requete10 = $bdd->query("SELECT proposeur FROM semaine WHERE id = '".$id_current_semaine."'");
-if($requete_proposeur_cette_semaine = $requete10->fetch()){
+$get_proposeur = $bdd->query("SELECT proposeur FROM semaine WHERE id = '".$id_current_semaine."'");
+if($requete_proposeur_cette_semaine = $get_proposeur->fetch()){//Si la personne est proposeur
   $proposeur_cette_semaine = $requete_proposeur_cette_semaine['proposeur'];
-}else{
+}else{//sinon elle ne l'est pas 
   $proposeur_cette_semaine = 0;
 }
 $is_proposeur = false;
-if(isset($_SESSION['user'])){
+if(isset($_SESSION['user'])){//utilisateur connecté
 $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
 
 
 
 // get état vote_termine_cette_semaine
-$requete2 = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
-$nb_votes = $requete2->fetch()['nb_votes_current_semaine'];
-$requete3 = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
-$nb_personnes = $requete3->fetch()['nb_personne'];
+$get_nb_votes = $bdd->query("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = '".$id_current_semaine."'");
+$nb_votes = $get_nb_votes->fetch()['nb_votes_current_semaine'];
+$get_nb_personnes = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
+$nb_personnes = $get_nb_personnes->fetch()['nb_personne'];
 echo '<br/>';
-print_r($requete3->fetch());
+print_r($get_nb_personnes->fetch());
 $vote_termine_cette_semaine = (($nb_personnes - 1) == $nb_votes);
 
 // get état connecte
@@ -35,11 +35,10 @@ $connecte = isset($_SESSION['user']);
 // get état current_user_a_vote
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-  // TODO: Que se passe-t'il si une injection se glisse à la place de la session user
   $user= $bdd->query("SELECT id FROM membre WHERE Prenom = '".$_SESSION['user']. "'");
   $id_utlisateur_connecte = $user->fetch()['id'];
-  $requete4= $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (votant = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
-  $current_user_a_vote=$requete4->fetch()['a_vote_current_user_semaine']>0;
+  $get_current_user_a_vote = $bdd->query("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (votant = '".$id_utlisateur_connecte. "' AND semaine = '".$id_current_semaine."')");
+  $current_user_a_vote=$get_current_user_a_vote->fetch()['a_vote_current_user_semaine']>0;
 }
 
 //indique si le thème a été proposé ou non
