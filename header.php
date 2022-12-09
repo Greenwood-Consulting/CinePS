@@ -10,10 +10,10 @@ if(isset($_POST['user'])){//si l'utilisateur est connecté
     $password = $_POST['password'];
 
 
-    $check = $bdd->prepare('SELECT mdp FROM membre WHERE Prenom = ?');
-    $check->execute(array($prenom));
-    $data = $check->fetch();
-    $row = $check->rowCount();
+    $get_mdp = $bdd->prepare('SELECT mdp FROM membre WHERE Prenom = ?');
+    $get_mdp->execute(array($prenom));
+    $data = $get_mdp->fetch();
+    $row = $get_mdp->rowCount();
 
     if($row == 1){//On crée une ligne dans le dropdown pour chaque user
 
@@ -54,7 +54,9 @@ else{ //Sinon on propose la connexion
     echo "<button class='btn btn-warning' name='connect'>Se connecter</button>
     </form>";
 }
-
+echo "</br>";
+echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
+echo "<a href='stat_barre.php'><button type='button' class='btn btn-warning'>Statistique</button></a>";
 
 ?>
 <hr/>

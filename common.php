@@ -19,9 +19,9 @@ if ($curdate->format('D')=="Fri"){ // Si nous sommes vendredi, alors id_current_
   $friday_current_semaine = $curdate->modify('next friday')->format('Y-m-d');
 }
 $get_semaine_id = $bdd->query("SELECT id FROM semaine WHERE jour ='".$friday_current_semaine."'");
-if($current_semaine = $get_semaine_id->fetch()){//Si la semaine en cours correspond à l'id semaine
+if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défini dans la bdd
   $id_current_semaine = $current_semaine['id'];
-}else{//Sinon nous ne somme pas pendant la semaine en cours
+}else{//Pas de semaine en cours défini dans la bdd
   $id_current_semaine = 0;
 }
 
@@ -65,13 +65,13 @@ function printUserVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $user_vote = $bdd->query("SELECT votant AS votant_id FROM a_vote WHERE semaine = '".$id_semaine."'");
   $une_personne_a_vote = false;
-  while($data = $user_vote->fetch()){//tant que quelqu'un a voté
+  while($data = $user_vote->fetch()){//A chaque tour un votant
     $une_personne_a_vote = true;
     $user_qui_a_vote = $data['votant_id'];
     $user_a_vote = $bdd->query('SELECT Prenom FROM membre WHERE id = '.$user_qui_a_vote);
     echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].' a voté</b></mark><br/>';
   }
-  if(!$une_personne_a_vote){//Sinon personne a voté
+  if(!$une_personne_a_vote){//Personne n'a voté
     echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
   }
 }
@@ -80,13 +80,13 @@ function printAllfilmsSemaines($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $get_film_semaine = $bdd->query("SELECT film AS film_id FROM proposition WHERE semaine = '".$id_semaine."'");
   $un_film_propose = false;
-  while ($film = $get_film_semaine->fetch()){//tant que un film est proposé pour la semaine en cours
+  while ($film = $get_film_semaine->fetch()){//A chaque tour de boucle on affiche l'un des films de la semaine
     $un_film_propose = true;
     $requete_titre_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
     $data_film = $requete_titre_film->fetch();
     echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></br>';
   }
-  if(!$un_film_propose){//Sinon aucun film proposé pour la semaine en cours
+  if(!$un_film_propose){//Aucun film proposé pour la semaine en cours
     echo "<mark> Pas de film pour cette semaine </mark>";
   }
 }

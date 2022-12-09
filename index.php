@@ -93,10 +93,6 @@ $fin = new DateTime("Fri 18:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
-echo "<a href='historique_film.php'><button type='button' class='btn btn-warning'>Historique</button></a>";
-echo "<a href='stat_barre.php'><button type='button' class='btn btn-warning'>Statistique</button></a>";
-echo '<br/>';
-echo '<br/>';
 
 
 
@@ -105,7 +101,7 @@ printUserVote($id_current_semaine);
 
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-  $update_vote= $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
+  $update_status_proposition= $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   /*$to = $requete_mail;
 
@@ -139,7 +135,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   echo '<br/>';
 }
 
-if(isset($_POST['new_theme'])){
+if(isset($_POST['new_theme'])){//si on valide le theme
 
 $theme_film = addslashes($_POST['theme_film']);
 $update_theme = "UPDATE semaine SET theme = '".$theme_film."'  WHERE id ='".$id_current_semaine."'";
@@ -162,9 +158,9 @@ if($connecte){//l'utilisateur est connecté
 
       }else{//le vote n'est pas terminé
         //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
-        if($is_proposeur){
+        if($is_proposeur){//si l'user est proposeur
           echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
-        }else{
+        }else{//sinon il ne l'est pas
           if($current_user_a_vote){//l'user a voté
             echo '<mark>Vous avez déjà voté</mark>';
           }else{//l'user n'a pas voté
@@ -178,9 +174,9 @@ if($connecte){//l'utilisateur est connecté
             $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
            
               echo "<table>";
-              while ($film = $vote->fetch()){//tant que $film = $requete 7 on affiche le tableau de vote
-                $requete6 = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
-                $titre_imdb_film = $requete6->fetch();
+              while ($film = $vote->fetch()){//on affiche le tableau de vote
+                $get_titre_imdb_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
+                $titre_imdb_film = $get_titre_imdb_film->fetch();
                 
                 echo '<tr><td><mark><a class="text-dark" href = '.$titre_imdb_film['imdb'].'>' .$titre_imdb_film['titre'].' </a></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
               }
@@ -194,7 +190,7 @@ if($connecte){//l'utilisateur est connecté
        
       }
     }else{//la proposition n'est pas encore faite
-      if($is_proposeur){
+      if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
         
           echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
           printFilmsProposes($id_current_semaine);
@@ -203,7 +199,7 @@ if($connecte){//l'utilisateur est connecté
           <form method="POST" action="index.php">
           <label> Proposition de films:</label>
           <?php
-          if($etat_theme_non_propose){
+          if($etat_theme_non_propose){//si le thème n'est pas rentrer on affiche le formulaire
             echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
                   <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
             
@@ -220,10 +216,10 @@ if($connecte){//l'utilisateur est connecté
           ?>
           </form>
           <?php
-      }else{
-        if($proposeur_cette_semaine){
+      }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
+        if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
           echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
-        }else{
+        }else{//Sinon on indique que aucun proposeur n'est défini
           echo "<mark>Aucun proposeur n'a encore été défini</mark>";
         }
       
