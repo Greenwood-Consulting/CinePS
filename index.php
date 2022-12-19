@@ -104,19 +104,6 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   $update_status_proposition= $bdd->prepare('UPDATE semaine SET proposition_termine = 1 WHERE id = ?');
   $update_status_proposition->execute([$id_current_semaine]);
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
-  /*$to = $requete_mail;
-
-  $subject = 'Mail envoyé depuis un script PHP';
-
-  $message = 'Allez Paris!';
-
-  $headers = 'From: cineps@gc2.fr'       . "\r\n" .
-             'Reply-To: cineps@gc2.fr' . "\r\n" .
-             'X-Mailer: PHP/' . phpversion();
-
-  mail($to, $subject, $message, $headers);*/
-
-
 }
 
 
