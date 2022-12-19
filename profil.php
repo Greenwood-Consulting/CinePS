@@ -17,7 +17,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 <body>
     <?php
     if(isset($_SESSION['user'])){//Si l'user est connecté on affiche ses données personnelles
-        $profil_connecte =$bdd->query("SELECT Nom, Prenom, mail, mdp FROM membre WHERE Prenom ='".$_SESSION['user']."'");
+        $profil_connecte =$bdd->prepapre("SELECT Nom, Prenom, mail, mdp FROM membre WHERE Prenom = ?");
+        $profil_connecte->execute([$_SESSION['user']]);
         $data_profil_connecte = $profil_connecte->fetch();
         echo $data_profil_connecte['Nom'].' '. $data_profil_connecte['Prenom'].' '. $data_profil_connecte['mail'];
     }else header('Location:index.php');//Sinon il est redirigé directement vers l'index
@@ -37,8 +38,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     <?php
     if(isset($_POST['old_password'])){//Si l'ancien mot de passé est rentré
         if($_POST['old_password'] == $data_profil_connecte['mdp']){//Si l'ancien mot de passe correspond le nouveau de mot de passe sera modifié
-            $changement_mdp = $bdd->query("UPDATE membre SET mdp ='".$_POST['new_password']."' WHERE Prenom ='".$_SESSION['user']."'");
-            $changement_mdp->execute();
+            $changement_mdp = $bdd->prepare("UPDATE membre SET mdp ='".$_POST['new_password']."' WHERE Prenom = ?");
+            $changement_mdp->execute([$_SESSION['user']]);
             echo "Le mot de passe a bien été modfié";
         }else{//Sinon le mot de passe ne sera pas modifié
             echo "Pour être modifié vous devez saisir l'ancien mot de passe correctement";

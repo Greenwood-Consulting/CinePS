@@ -101,7 +101,8 @@ printUserVote($id_current_semaine);
 
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-  $update_status_proposition= $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
+  $update_status_proposition= $bdd->prepare('UPDATE semaine SET proposition_termine = 1 WHERE id = ?');
+  $update_status_proposition->execute([$id_current_semaine]);
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   /*$to = $requete_mail;
 
@@ -126,9 +127,11 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   $ajout_du_lien_imdb = addslashes($_POST['lien_imdb']);
   $date = date('Y-m-d');
   $sortie_film = addslashes($_POST['date']);    
-  $ajout_film = $bdd->query("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES ('".$titre_film."','".$date."','".$sortie_film."','".$ajout_du_lien_imdb."')");
+  $ajout_film = $bdd->prepare("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES (?,?,?,?)");
+  $ajout_film->execute([$titre_film, $date, $sortie_film, $ajout_du_lien_imdb]);
   $last_id = $bdd->lastInsertId();
-  $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES ('".$id_current_semaine."','".$last_id."','36')");
+  $ajout_de_proposition = $bdd->prepare("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES (?, ? , ?)  ");
+  $ajout_de_proposition->execute([$id_current_semaine, $last_id, 36]);
   
   echo '<br/>';
   echo '<br/>';
@@ -138,8 +141,8 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 if(isset($_POST['new_theme'])){//si on valide le theme
 
 $theme_film = addslashes($_POST['theme_film']);
-$update_theme = "UPDATE semaine SET theme = '".$theme_film."'  WHERE id ='".$id_current_semaine."'";
-$ajout_theme  = $bdd->query($update_theme);
+$update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
+$update_theme->execute([$id_current_semaine]);
 }
 ?>
 <div class="container-fluid mt-9">
@@ -171,11 +174,12 @@ if($connecte){//l'utilisateur est connecté
             ?>
             <form method="POST" action="save_vote.php">
             <?php
-            $vote = $bdd->query("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = '".$id_current_semaine."'");
-           
+            $vote = $bdd->prepare("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = ?");
+            $vote->execute([$id_current_semaine]);
               echo "<table>";
               while ($film = $vote->fetch()){//on affiche le tableau de vote
-                $get_titre_imdb_film = $bdd->query('SELECT titre, imdb FROM film WHERE id = '.$film['film_id']);
+                $get_titre_imdb_film = $bdd->prepare('SELECT titre, imdb FROM film WHERE id = ?');
+                $get_titre_imdb_film->execute([$film['film_id']]);
                 $titre_imdb_film = $get_titre_imdb_film->fetch();
                 
                 echo '<tr><td><mark><a class="text-dark" href = '.$titre_imdb_film['imdb'].'>' .$titre_imdb_film['titre'].' </a></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';

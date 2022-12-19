@@ -12,14 +12,14 @@ if(isset($_POST['user'])){//si l'utilisateur est connecté
 
     $get_mdp = $bdd->prepare('SELECT mdp FROM membre WHERE Prenom = ?');
     $get_mdp->execute(array($prenom));
-    $data = $get_mdp->fetch();
+    $data_get_mdp = $get_mdp->fetch();
     $row = $get_mdp->rowCount();
 
-    if($row == 1){//On crée une ligne dans le dropdown pour chaque user
+    if($row == 1){//On vérifie qui'il y est un mdp pour l'utilisateur connecté
 
         //$password = hash('sha256', $password);
 
-        if($data['mdp'] == $password){//Le mot de passe correspond on autorise la connection
+        if($data_get_mdp['mdp'] == $password){//Le mot de passe correspond on autorise la connection
             $_SESSION['user'] = $prenom;     
         }else{//sinon on refuse la connection
             echo 'Le mdp n\'est pas valide';

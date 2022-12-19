@@ -3,10 +3,12 @@ include('common.php');
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 //Construction du tableau data_score
 $data_score = [];
-$get_film_semaine= $bdd->query("SELECT film, score  FROM proposition WHERE semaine = '".$id_current_semaine."'");
+$get_film_semaine = $bdd->prepare("SELECT film, score FROM proposition WHERE semaine = ?");
+$get_film_semaine->execute([$id_current_semaine]);
 
 while($film_semaine = $get_film_semaine->fetch()){
-  $get_titre_film = $bdd->query("SELECT titre FROM film WHERE id = ".$film_semaine['film']);
+  $get_titre_film = $bdd->prepare("SELECT titre FROM film WHERE id = ?");
+  $get_titre_film->execute([$film_semaine['film']]);
   $titre_film = $get_titre_film->fetch()['titre'];
   array_push($data_score, array("Film" => $titre_film, "Score" => $film_semaine['score']));
 }

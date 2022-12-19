@@ -15,9 +15,9 @@ echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</b
   $deb= new DateTime ("Fri 14:00");
   $fin = new DateTime("Mon 8:00");
   $curdate=new DateTime();
-  $vote_period=($curdate>=$deb && $curdate <= $fin);
+  $watch_period=($curdate>=$deb && $curdate <= $fin);
 
-  if($vote_period){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
+  if($watch_period){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
     echo "<div id = 'tableau'>";
     printChoixvote($id_current_semaine);
     echo "</div>";

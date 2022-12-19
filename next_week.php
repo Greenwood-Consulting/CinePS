@@ -7,8 +7,8 @@ if(isset($_POST['new_proposeur'])){
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
     echo "proposeur".$nom_proposeur."<br/>";
     echo "date".$date_to_insert."<br/>";
-    $ajout_proposeur = $bdd->query("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES ('".$date_to_insert."','".$nom_proposeur."','0')");
-    echo"requete"."INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES ('".$date_to_insert."','".$nom_proposeur."','0')";
+    $ajout_proposeur = $bdd->query("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`) VALUES (?,?,?");
+    $ajout_proposeur->execute([$date_proposeur, $nom_proposeur, 0]);
 }
 
 $membres = $bdd->query('SELECT * FROM membre');

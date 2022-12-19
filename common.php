@@ -34,7 +34,7 @@ function printFilmsProposes($id_semaine){
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
-  $get_film_semaine->execute($id_semaine);
+  $get_film_semaine->execute([$id_semaine]);
   $un_film_propose = false;
   while ($film = $get_film_semaine->fetch()){
     $un_film_propose = true;
@@ -234,7 +234,7 @@ function printVotesSemaine($id_semaine){
       }
       //On affiche le score pour ce film
       $get_score = $bdd->prepare("SELECT score FROM proposition WHERE id = ?");
-      $get_score->execute([$proposeur_id]);
+      $get_score->execute([$proposition_id]);
       $score = $get_score->fetch();
       echo "<TD>";
       echo $score['score'];

@@ -6,31 +6,36 @@ $deb= new DateTime ("Fri 20:00");
 $fin = new DateTime("Sat 12:00");
 $curdate=new DateTime();
 $next_friday = $curdate->modify('next friday')->format('Y-m-d');
-$requete = $bdd->query("SELECT id FROM semaine WHERE jour ='".$next_friday."'");
-$current_semaine = $requete->fetch();
+$get_id_next_friday = $bdd->prepare("SELECT id FROM semaine WHERE jour = ?");
+$get_id_next_friday->execute([$next_friday]);
+$current_semaine = $get_id_next_friday->fetch();
 $id_current_semaine = $current_semaine['id'];
 
 echo '<h1>Film(s) proposé(s) cette semaine</h1>';
 
 $vote_period = true;
-$requete1 = $bdd->query("SELECT proposition_termine FROM semaine WHERE id = '".$id_current_semaine."'");
-$proposition_semaine =  $requete1->fetch()['proposition_termine'];
+$get_proposition_semaine = $bdd->prepare("SELECT proposition_termine FROM semaine WHERE id = ?");
+$get_proposition_semaine->execute([$id_current_semaine]);
+$proposition_semaine =  $get_proposition_semaine->fetch()['proposition_termine'];
 
 
 $connecte = isset($_SESSION['user']);
 
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-    $requete6 = $bdd->query('UPDATE semaine SET proposition_termine = 1 WHERE id ='.$id_current_semaine);
+    $update_proposition_terminé = $bdd->prepare('UPDATE semaine SET proposition_termine = 1 WHERE id = ?');
+    $update_proposition_terminé->execute([$id_current_semaine]);
     echo 'Les propositions a été faite pour cette semaine';
 }
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
     $titre_film = addslashes($_POST['titre_film']);
     $date = date('Y-m-d');
-    $ajout_film = $bdd->query("INSERT INTO `film` (`id`, `titre`, `date`) VALUES ('', '".$titre_film."','".$date."')");
+    $ajout_film = $bdd->prepare("INSERT INTO `film` (`id`, `titre`, `date`) VALUES (?, ?, ?");
+    $ajout_film->execute(["" ,$titre_film, $date]);
     $last_id = $bdd->lastInsertId();
-    $ajout_de_proposition = $bdd->query("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES ('', '".$id_current_semaine."','".$last_id."','36')");
+    $ajout_de_proposition = $bdd->prepare("INSERT INTO `proposition` (`id`, `semaine`, `film`,`score`) VALUES (?,?,?,?");
+    $ajout_de_proposition->execute(["" ,$id_current_semaine, $last_id, 36]);
 
     echo '<br/>';
     echo '<br/>';
