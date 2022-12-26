@@ -4,7 +4,7 @@
 <?php
 include('common.php');
 // calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime("Fri 16:26");
+$fin_periode_vote = new DateTime("Fri 18:00");
 $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 
 // conversion de la date de fin en timestamp JavaScript
@@ -48,6 +48,7 @@ var x = setInterval(function() {
         document.getElementById("demo").innerHTML = "";
     }
 }, 1000);
+
 </script>
 
   <title>CinePS</title>  
@@ -156,8 +157,9 @@ if($connecte){//l'utilisateur est connecté
           }else{//l'user n'a pas voté
             echo'<h2 class="text-warning">Vous devez voter </h2>';
             echo "<br />";
-            echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';
+            echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
             echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
+            echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
             ?>
             <form method="POST" action="save_vote.php">
             <?php
@@ -213,7 +215,6 @@ if($connecte){//l'utilisateur est connecté
         }else{//Sinon on indique que aucun proposeur n'est défini
           echo "<mark>Aucun proposeur n'a encore été défini</mark>";
         }
-      
       }
     }
   }else{//nous ne sommes pas en période de vote
@@ -228,7 +229,6 @@ if($connecte){//l'utilisateur est connecté
       }else{//le vote n'est pas terminé mais pas connecté
         printFilmsProposes($id_current_semaine);
       }
-
     }else{//la proposition n'est pas encore faite et pas connecté
       echo '<mark>la proposition n\'a pas encore été faite</mark>';
     }
