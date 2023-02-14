@@ -16,7 +16,7 @@
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
         $mail = addslashes($_POST['email']);
-        $new_membre = $bdd->prepare("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`) VALUES (?,?,?)");
+        $new_membre = $bdd->prepare("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`, `mdp`) VALUES (?,?,?, 'Toto')");
         $new_membre->execute([$nom_de_famille, $prenom, $mail]);
    
     }
@@ -38,6 +38,7 @@
             </div>
         </form>
 </br>
+    
 </br>
 <h2 class="container-fluid p-5 bg-secondary text-white text-center"> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
