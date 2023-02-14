@@ -14,9 +14,9 @@ body {
 table{
   background-color: #000000c7;
   text-align: center;
-  color: #ffc107;
+  color: rgb(240, 173, 78);
   margin: 0 auto;
-  border-color: #ffc107;
+  border-color: rgb(240, 173, 78);
 }
 #tableau {
   vertical-align: center;
@@ -29,12 +29,12 @@ table{
   font-weight: 900;
 }
 a:visited{
-  color: #ffc107;
+  color: rgb(240, 173, 78);
 }
 .btn{
   background-color: #d0880d00; 
-  border-color: #ffc107;
-  color: #ffc107;
+  border-color: rgb(240, 173, 78);
+  color: rgb(240, 173, 78);
   font-family: inherit;
   font-size: large;
   padding-top: 7px;
@@ -48,10 +48,18 @@ a:visited{
 }
 
 .btn:hover{
-  background-color: #ffc107;
+  background-color: rgb(240, 173, 78);
   color: white;
 }
 
 #titre{
     text-align: center;
+}
+
+h2{
+  margin-left: 30%;
+}
+
+p{
+  margin-left: 30%;
 }
