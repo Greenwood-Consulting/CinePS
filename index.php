@@ -4,7 +4,7 @@
 <?php
 include('common.php');
 // calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime("Fri 18:00");
+$fin_periode_vote = new DateTime("Fri 16:00");
 $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 
 // conversion de la date de fin en timestamp JavaScript
@@ -90,7 +90,7 @@ var x = setInterval(function() {
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 18:00");
+$fin = new DateTime("Fri 16:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
