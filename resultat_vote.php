@@ -12,7 +12,7 @@
 include('common.php');
 echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
-  $deb= new DateTime ("Fri 14:00");
+  $deb= new DateTime ("Fri 16:00");
   $fin = new DateTime("Mon 8:00");
   $curdate=new DateTime();
   $watch_period=($curdate>=$deb && $curdate <= $fin);
