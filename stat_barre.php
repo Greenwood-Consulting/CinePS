@@ -73,7 +73,7 @@ $count_data_annee = count($data_annee);
       //draw data_score
       var data_score = new google.visualization.DataTable();
       data_score.addColumn('string', 'Film');
-      data_score.addColumn('number', 'Score');
+      data_score.addColumn('number', '');
 
       data_score.addRows([
         <?php
@@ -103,7 +103,7 @@ $count_data_annee = count($data_annee);
       //draw data_annee
       var data_annee = new google.visualization.DataTable();
       data_annee.addColumn('string', 'Année Film');
-      data_annee.addColumn('number', 'nombre');
+      data_annee.addColumn('number', '');
 
       data_annee.addRows([
         <?php
