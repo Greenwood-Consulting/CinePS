@@ -188,7 +188,7 @@ function printVotesSemaine($id_semaine){
   $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);
   if($get_film_semaine->rowCount()==0){
-    echo "Pas de proposition pour cette semaine <br/>";
+    echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
   }else{
     $get_proposeur_prenom = $bdd->prepare("SELECT proposeur FROM semaine WHERE id = ?");
     $get_proposeur_prenom->execute([$id_semaine]);
