@@ -10,6 +10,7 @@
 <body>
 <?php
 include('common.php');
+include('calcul_etat.php');
 echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
   $deb= new DateTime ("Fri 16:00");
@@ -17,7 +18,7 @@ echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</b
   $curdate=new DateTime();
   $watch_period=($curdate>=$deb && $curdate <= $fin);
 
-  if($watch_period){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
+  if($watch_period || $vote_termine_cette_semaine){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
     echo "<div id = 'tableau'>";
     printChoixvote($id_current_semaine);
     echo "</div>";
