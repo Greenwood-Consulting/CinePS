@@ -180,6 +180,8 @@ function printChoixvote($id_semaine){
     echo "</TR>";
   }
   echo "</TABLE>";
+
+  echo "klfegplep".$proposition_id;
 }
 //Affiche le tableau de tout les votes de la semaine définie par $id_semaine
 function printVotesSemaine($id_semaine){
@@ -225,7 +227,7 @@ function printVotesSemaine($id_semaine){
           $prenom = $data_membre['Prenom'];
           $id_membre = $data_membre['id'];
           $get_vote = $bdd->prepare("SELECT vote FROM votes WHERE membre = ? AND proposition = ?");
-          $get_vote->execute([$id_membre, $proposeur_id]);
+          $get_vote->execute([$id_membre, $proposition_id]);
           if($vote = $get_vote->fetch()){//On affiche les votes
             echo $vote['vote'];
           }
