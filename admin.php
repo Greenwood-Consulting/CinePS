@@ -62,8 +62,9 @@ echo"<input type='date' name='date'>";
 echo"</select>
 <button type='submit' name='new_proposeur'>Soumettre</button>
 </form>";
-
 printNextproposeurs($id_current_semaine);
+echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
+
 ?>
 
 </body>
