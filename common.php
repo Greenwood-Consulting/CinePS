@@ -1,6 +1,28 @@
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
+function recupererToken(){
+  //Récupération du token
+  $body = [
+    'username'=>'a@a.fr',
+    'password'=>'password'
+  ];
+  $json_body = json_encode($body);
+
+  $curl = curl_init("http://localhost:8000/api/login_check");
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json'
+  ]);
+  curl_setopt($curl, CURLOPT_POSTFIELDS, $json_body);
+  $response = curl_exec($curl);
+  curl_close($curl);
+  $response_array = json_decode($response);
+  $token = $response_array->token;
+
+  return $token;
+}
+
 // Date du jour
 $curdate=new DateTime();
 
@@ -31,22 +53,30 @@ if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défin
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){
+  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
-  $get_film_semaine->execute([$id_semaine]);
+  
+  $token = recupererToken();
+
+  $curl = curl_init("http://localhost:8000/filmsProposes/".$id_semaine);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, [
+    'Authorization: bearer '. $token,
+    'Content-Type: application/json'
+  ]);
+  $films_semaine = curl_exec($curl);
+  curl_close($curl);
+
+  $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;
-  while ($film = $get_film_semaine->fetch()){
+  foreach($films_semaine_array as $film){
     $un_film_propose = true;
-    $ajout_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
-    $ajout_film->execute([$film['film_id']]);
-    $data_film = $ajout_film->fetch();
-    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a>';
-    echo $data_film['sortie_film'].'</mark></br>';
-    }
-    if(!$un_film_propose){//si aucun film n'est proposé
-      echo '<mark> Aucun film n\'a été proposé </mark>';
-    }
+    echo '<mark><a class="text-dark" href = '.$film->film->imdb.'>' .$film->film->titre.' </a>';
+    echo $film->film->sortieFilm.'</mark></br>';
+  }
+  if(!$un_film_propose){//si aucun film n'est proposé
+    echo '<mark> Aucun film n\'a été proposé </mark>';
+  }
 }
 
 function printResultatVote($id_semaine){
@@ -104,17 +134,25 @@ function printAllfilmsSemaines($id_semaine){
 }
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $date = date('Y-m-d');
-  $requete_jour_correspondant = $bdd->prepare("SELECT jour FROM semaine WHERE id = ?");
-  $requete_jour_correspondant->execute([$id_semaine]);
-  $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
-  $next_proposeurs = $bdd->prepare("SELECT proposeur, jour FROM semaine WHERE jour >= ? ORDER BY jour");
-  $next_proposeurs->execute([$jour_correspondant_id_semaine]);
-    while ($data = $next_proposeurs->fetch()){//Tant que un proposeur est défini pour la ou les semaines suivantes
-      echo '</br><mark>' .$data['jour'];
-      echo " - " .$data['proposeur'].'<mark/>';
-    }
+
+  $token = recupererToken();
+
+  $curl = curl_init("http://localhost:8000/nextProposeurs/".$id_semaine);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, [
+    'Authorization: bearer '. $token,
+    'Content-Type: application/json'
+  ]);
+$next_proposeurs = curl_exec($curl);
+
+$next_proposeurs_array = json_decode($next_proposeurs);
+foreach($next_proposeurs_array as $next){
+    echo "<mark>".$next->jour;
+    echo " - ".$next->proposeur."</mark><br/>";
+
+}
+
+
 }
 
 function printChoixvote($id_semaine){
