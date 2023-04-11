@@ -29,14 +29,14 @@ if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défin
 //Récupération des mails
 //$requete_mail = $bdd->query("SELECT mail FROM membre");
 
-//Fonction d'affichage
+//Affiche la liste des films proposés
 function printFilmsProposes($id_semaine){
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);
   $un_film_propose = false;
-  while ($film = $get_film_semaine->fetch()){
+  while ($film = $get_film_semaine->fetch()){//On affiche un film
     $un_film_propose = true;
     $ajout_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
     $ajout_film->execute([$film['film_id']]);
@@ -49,26 +49,23 @@ function printFilmsProposes($id_semaine){
     }
 }
 
+//Affiche le Film victorieux
 function printResultatVote($id_semaine){
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
-    $get_film_semaine->execute([$id_semaine]);
-    $film = $get_film_semaine->fetch();
+    //Récupère le film ayant le meilleur score
     $film_gagnant= $bdd->prepare("SELECT film AS id_best_film FROM proposition WHERE semaine = ? ORDER BY score DESC LIMIT 1");
     $film_gagnant->execute([$id_semaine]);
-    $ajout_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
-    $ajout_film->execute([$film['film_id']]);
 
-    $data_film = $ajout_film->fetch();
-    if($data=$film_gagnant->fetch()){//si le vote est fini on affiche le vainqueur
+    if($data=$film_gagnant->fetch()){//si il y a des films proposés, on affiche le film avec le meilleur score
       $id_best_film=$data['id_best_film'];
-      $film_retenu = $bdd->prepare('SELECT titre FROM film WHERE id = ?');
+      $film_retenu = $bdd->prepare('SELECT titre,imdb FROM film WHERE id = ?');
       $film_retenu->execute([$id_best_film]);
-      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$data_film['imdb'].'>' .$film_retenu->fetch()['titre'].'</b></mark>';
+      $data_film_retenu = $film_retenu->fetch();
+      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$data_film_retenu['imdb'].'>' .$data_film_retenu['titre'].'</b></mark>';
     }else{//sinon il n'y a pas de propositions
       echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
     }
 }
+
 function printUserVote($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   $user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
