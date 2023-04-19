@@ -58,7 +58,7 @@ function printFilmsProposes($id_semaine){
   
   $token = recupererToken();
 
-  $curl = curl_init("http://localhost:8000/filmsProposes/".$id_semaine);
+  $curl = curl_init("http://localhost:8000/filmsProposes/82");
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_HTTPHEADER, [
     'Authorization: bearer '. $token,
@@ -78,30 +78,43 @@ function printFilmsProposes($id_semaine){
     echo '<mark> Aucun film n\'a été proposé </mark>';
   }
 }
-
 function printResultatVote($id_semaine){
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
-    $get_film_semaine->execute([$id_semaine]);
-    $film = $get_film_semaine->fetch();
-    $film_gagnant= $bdd->prepare("SELECT film AS id_best_film FROM proposition WHERE semaine = ? ORDER BY score DESC LIMIT 1");
-    $film_gagnant->execute([$id_semaine]);
-    $ajout_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
-    $ajout_film->execute([$film['film_id']]);
 
-    $data_film = $ajout_film->fetch();
-    if($data=$film_gagnant->fetch()){//si le vote est fini on affiche le vainqueur
-      $id_best_film=$data['id_best_film'];
-      $film_retenu = $bdd->prepare('SELECT titre FROM film WHERE id = ?');
-      $film_retenu->execute([$id_best_film]);
-      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$data_film['imdb'].'>' .$film_retenu->fetch()['titre'].'</b></mark>';
-    }else{//sinon il n'y a pas de propositions
+    $token = recupererToken();
+
+    //function nextProposeurs
+    $curl = curl_init("http://localhost:8000/filmVictorieux/82");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+        'Authorization: bearer '. $token,
+        'Content-Type: application/json'
+    ]);
+    $film_victorieux = curl_exec($curl);
+
+    $film_victorieux_array = json_decode($film_victorieux);
+
+    if(empty($film_victorieux_array)){//il n'y a pas de propositions 
       echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
+    }else{//Affiche le film victorieux
+      $film_victorieux = $film_victorieux_array[0]->film;
+      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
     }
 }
 function printUserVote($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
+  $token = recupererToken();
+  $curl = curl_init("http://localhost:8000/membreVotant/82");
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, [
+      'Authorization: bearer '. $token,
+      'Content-Type: application/json'
+  ]);
+  $membre_votant = curl_exec($curl);
+  $membre_votant_array = json_decode($membre_votant);
+
+  foreach($membre_votant_array as $membre){
+      echo "<mark><b>".$membre->votant->nom. "</b> a voté</mark>";
+  }
+  /*$user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
   $user_vote->execute([$id_semaine]);
   $une_personne_a_vote = false;
   while($data = $user_vote->fetch()){//A chaque tour un votant
@@ -113,50 +126,31 @@ function printUserVote($id_semaine){
   }
   if(!$une_personne_a_vote){//Personne n'a voté
     echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
-  }
+  }*/
 }
 
-function printAllfilmsSemaines($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-  $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
-  $get_film_semaine->execute([$id_semaine]);
-  $un_film_propose = false;
-  while ($film = $get_film_semaine->fetch()){//A chaque tour de boucle on affiche l'un des films de la semaine
-    $un_film_propose = true;
-    $requete_titre_film = $bdd->prepare('SELECT titre, imdb FROM film WHERE id = ?');
-    $requete_titre_film->execute([$film['film_id']]);
-    $data_film = $requete_titre_film->fetch();
-    echo '<mark><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></br>';
-  }
-  if(!$un_film_propose){//Aucun film proposé pour la semaine en cours
-    echo "<mark> Pas de film pour cette semaine </mark>";
-  }
-}
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
 
-  $token = recupererToken();
+  //$token = recupererToken();
 
-  $curl = curl_init("http://localhost:8000/nextProposeurs/".$id_semaine);
+  $curl = curl_init("http://localhost:8000/nextProposeurs/82");
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, [
-    'Authorization: bearer '. $token,
-    'Content-Type: application/json'
-  ]);
-$next_proposeurs = curl_exec($curl);
+  // curl_setopt($curl, CURLOPT_HTTPHEADER, [
+  //   'Authorization: bearer '. $token,
+  //   'Content-Type: application/json'
+  // ]);
+  $next_proposeurs = curl_exec($curl);
 
-$next_proposeurs_array = json_decode($next_proposeurs);
-foreach($next_proposeurs_array as $next){
-    echo "<mark>".$next->jour;
-    echo " - ".$next->proposeur."</mark><br/>";
+  $next_proposeurs_array = json_decode($next_proposeurs);
+  foreach($next_proposeurs_array as $next){
+      echo "<mark>".$next->jour;
+      echo " - ".$next->proposeur."</mark><br/>";
 
-}
-
-
+  }
 }
 
 function printChoixvote($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
   
   $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);
@@ -221,6 +215,8 @@ function printChoixvote($id_semaine){
 
   echo "klfegplep".$proposition_id;
 }
+
+
 //Affiche le tableau de tout les votes de la semaine définie par $id_semaine
 function printVotesSemaine($id_semaine){
   $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
