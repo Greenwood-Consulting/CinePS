@@ -66,19 +66,30 @@ printNextproposeurs($id_current_semaine);
 
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
+
+if(isset($_POST['submit'])){
+  if(!empty($_POST['films'])){
+    foreach($_POST['films'] as $film_id){
+      $delete_film = $bdd->prepare("DELETE FROM proposition WHERE film = ?");
+      $delete_film->execute([$film_id]);
+    }
+  }
+}
+
+
 // Appel de la fonction pour récupérer les films proposés
 $return_films_proposes = getFilmsProposes($id_current_semaine);
 
 
 ?>
 <form method="post" action="">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
           <th>Titre</th>
         </tr>
-      </thead>
+    </thead>
       <tbody>
         <?php foreach ($return_films_proposes as $film) { ?>
           <tr>
@@ -87,18 +98,9 @@ $return_films_proposes = getFilmsProposes($id_current_semaine);
           </tr>
         <?php } ?>
       </tbody>
-    </table>
-    <input type="submit" name="submit" value="Supprimer">
-  </form>
-  <?php
-  if(isset($_POST['submit'])){
-    if(!empty($_POST['films'])){
-      foreach($_POST['films'] as $film_id){
-        $delete_film = $bdd->prepare("DELETE FROM proposition WHERE film = ?");
-        $delete_film->execute([$film_id]);
-      }
-    }
-    }
-?>
+  </table>
+  <input type="submit" name="submit" value="Supprimer">
+</form>
+
 </body>
 </html>
