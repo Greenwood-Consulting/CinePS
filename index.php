@@ -37,7 +37,6 @@ var deadline_vote = <?php echo $deadline_vote; ?>;
 
 var x = setInterval(function() {
     var now = new Date().getTime();
-    console.log('horloge', now);
     var t = deadline_vote - now;
     var days = Math.floor(t / (1000 * 60 * 60 * 24));
     var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
@@ -141,7 +140,7 @@ $update_theme->execute([$id_current_semaine]);
 echo '<span class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</span>';
 
 include('calcul_etat.php');
-$vote_termine_cette_semaine = false;
+
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
     if($proposition_semaine){//les propositions ont été faite
