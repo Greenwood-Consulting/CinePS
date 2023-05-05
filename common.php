@@ -29,6 +29,28 @@ if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défin
 //Récupération des mails
 //$requete_mail = $bdd->query("SELECT mail FROM membre");
 
+
+//Retourne la liste des films proposés
+function getFilmsProposes($id_semaine){
+  //Récupération des id des films des propositions de $id_semaine
+  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  $get_film_semaine = $bdd->prepare("SELECT film AS film_id FROM proposition WHERE semaine = ?");
+  $get_film_semaine->execute([$id_semaine]);
+  $return_films_proposes = array();
+  //Pour chaque film on ajoute son id et son titre dans un tableau
+  while ($film_id = $get_film_semaine->fetch()){
+    //On va chercher le titre du film
+    $get_titre_film = $bdd->prepare("SELECT titre FROM film WHERE id = ?");
+    $get_titre_film->execute([$film_id['film_id']]);
+    $titre_film = $get_titre_film->fetch()['titre'];
+    $return_films_proposes[] = array("id" => $film_id['film_id'], "titre" => $titre_film);
+  }
+  echo "<pre>";
+  print_r($return_films_proposes);
+  echo "</pre>";
+  return $return_films_proposes;
+}
+
 //Affiche la liste des films proposés
 function printFilmsProposes($id_semaine){
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
@@ -49,9 +71,15 @@ function printFilmsProposes($id_semaine){
     }
 }
 
+
+
 //Affiche le Film victorieux
 function printResultatVote($id_semaine){
     //Récupère le film ayant le meilleur score
+    echo "merci";
+    echo $id_semaine;
+    //$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+    global $bdd;
     $film_gagnant= $bdd->prepare("SELECT film AS id_best_film FROM proposition WHERE semaine = ? ORDER BY score DESC LIMIT 1");
     $film_gagnant->execute([$id_semaine]);
 
