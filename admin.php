@@ -93,8 +93,8 @@ $return_films_proposes = getFilmsProposes($id_current_semaine);
       <tbody>
         <?php foreach ($return_films_proposes as $film) { ?>
           <tr>
-            <td><input type="checkbox" name="films[]" value="<?php echo $film['film_id']; ?>"></td>
-            <td><?php print_r($film); ?></td>
+            <td><input type="checkbox" name="films[]" value="<?php echo $film['id']; ?>"></td>
+            <td><?php echo $film['titre']; ?></td>
           </tr>
         <?php } ?>
       </tbody>
