@@ -1,4 +1,13 @@
 <?php
+
+//Détermination de si on est en période de vote
+$deb= new DateTime ("Mon 12:00");
+$deb = $deb->modify('-1 week');
+$fin = new DateTime("Fri 16:00");
+$curdate=new DateTime();
+$vote_period=($curdate>=$deb && $curdate <= $fin);
+
+
 // Get proposition_semaine
 $get_proposition_termine_semaine = $bdd->prepare("SELECT proposition_termine FROM semaine WHERE id = ?");
 $get_proposition_termine_semaine->execute([$id_current_semaine]);
@@ -19,7 +28,6 @@ $is_proposeur = false;
 if(isset($_SESSION['user'])){//utilisateur connecté
 $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
-
 
 
 // get état vote_termine_cette_semaine
