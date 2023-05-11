@@ -1,6 +1,9 @@
 <?php
 include('common.php');
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+$get_semaine_id = $bdd->prepare("SELECT id FROM semaine WHERE jour = ?");
+$get_semaine_id->execute([$friday_current_semaine]);
+$id_semaine = $get_semaine_id->fetch();
 //Construction du tableau data_score
 $data_score = [];
 $get_film_semaine = $bdd->prepare("SELECT film, score FROM proposition WHERE semaine = ?");
@@ -17,9 +20,10 @@ $count_data_score = count($data_score);
 
 
 
+
 //construction du tableau data_proposeur
 $data_proposeurs = [];
-$get_proposeurs = $bdd->query("SELECT proposeur, COUNT(id) AS nb_proposeurs FROM semaine GROUP BY proposeur");
+$get_proposeurs = $bdd->query("SELECT proposeur, COUNT(id) AS nb_proposeurs FROM semaine  WHERE `proposition_termine` = 1 GROUP BY proposeur");
 
 while($proposeurs = $get_proposeurs->fetch()){
   array_push($data_proposeurs, array("Proposeur" => $proposeurs['proposeur'], "nombre" => $proposeurs['nb_proposeurs']));
@@ -50,6 +54,9 @@ foreach($films_par_decennie as $decennie => $nb_films){
   array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
 }
 
+echo "<pre>";
+print_r($data_annee);
+echo "</pre>";
 $count_data_annee = count($data_annee);
 
 
@@ -139,7 +146,7 @@ $count_data_annee = count($data_annee);
       data_proposeurs.addRows([
         <?php
           for($i=0;$i<$count_data_proposeurs;$i++){
-            echo "['" . $data_proposeurs[$i]['Proposeur'] . "'," . $data_proposeurs[$i]['nombre'] . "],";
+            echo "['" . addslashes($data_proposeurs[$i]['Proposeur']) . "'," . $data_proposeurs[$i]['nombre'] . "],";
           } 
         ?>
       ]);
