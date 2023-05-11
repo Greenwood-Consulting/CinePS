@@ -1,6 +1,4 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-
 // Date du jour
 $curdate=new DateTime();
 
@@ -45,9 +43,6 @@ function getFilmsProposes($id_semaine){
     $titre_film = $get_titre_film->fetch()['titre'];
     $return_films_proposes[] = array("id" => $film_id['film_id'], "titre" => $titre_film);
   }
-  echo "<pre>";
-  print_r($return_films_proposes);
-  echo "</pre>";
   return $return_films_proposes;
 }
 
@@ -76,9 +71,6 @@ function printFilmsProposes($id_semaine){
 //Affiche le Film victorieux
 function printResultatVote($id_semaine){
     //Récupère le film ayant le meilleur score
-    echo "merci";
-    echo $id_semaine;
-    //$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     global $bdd;
     $film_gagnant= $bdd->prepare("SELECT film AS id_best_film FROM proposition WHERE semaine = ? ORDER BY score DESC LIMIT 1");
     $film_gagnant->execute([$id_semaine]);
@@ -138,7 +130,7 @@ function printNextproposeurs($id_semaine){
   $next_proposeurs->execute([$jour_correspondant_id_semaine]);
     while ($data = $next_proposeurs->fetch()){//Tant que un proposeur est défini pour la ou les semaines suivantes
       echo '</br><mark>' .$data['jour'];
-      echo " - " .$data['proposeur'].'<mark/>';
+      echo " - " .$data['proposeur'].'</mark>';
     }
 }
 
@@ -205,8 +197,6 @@ function printChoixvote($id_semaine){
     echo "</TR>";
   }
   echo "</TABLE>";
-
-  echo "klfegplep".$proposition_id;
 }
 //Affiche le tableau de tout les votes de la semaine définie par $id_semaine
 function printVotesSemaine($id_semaine){

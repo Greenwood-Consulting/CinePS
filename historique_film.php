@@ -34,6 +34,7 @@
             <div class="text-content"-->
               <h1 id = 'titre'>Historique des propositions</h1>
 <?php
+$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
 echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
 include('common.php');

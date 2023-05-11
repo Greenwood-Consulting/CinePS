@@ -1,9 +1,5 @@
 <?php
 include('header.php');
-$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-
-
-
 ?>
 
 <!DOCTYPE html>

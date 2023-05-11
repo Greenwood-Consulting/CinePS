@@ -1,6 +1,7 @@
 <?php
-include('common.php');
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+include('common.php');
+
 //Construction du tableau data_score
 $data_score = [];
 $get_film_semaine = $bdd->prepare("SELECT film, score FROM proposition WHERE semaine = ?");

@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <?php
+include('header.php');
 include('common.php');
+
 // calcul de la date de fin de la période de vote
 $fin_periode_vote = new DateTime("Fri 18:00", new DateTimeZone('Europe/Paris'));
-//echo $fin_periode_vote->format('Y-m-d H:i:s P');
 $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 
 // conversion de la date de fin en timestamp JavaScript
 $deadline_vote = strtotime($fin_periode_vote);
 $deadline_vote = $deadline_vote*1000;
 ?>
-
-
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -68,7 +66,8 @@ var x = setInterval(function() {
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-    include('header.php') 
+    include('auth_form.php');
+    include('nav.php');
   ?>
     </div>
   </nav>
