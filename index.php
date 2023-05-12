@@ -80,10 +80,8 @@ var x = setInterval(function() {
             <div class="text-content">
               <h1 class="text-warning">CinePS</h1>
               <?php
-  
 
 
-  
  $jour_aujourdhui = date("D");
 
 

@@ -1,11 +1,17 @@
 <?php
-// Get proposition_semaine
-$get_proposition_termine_semaine = $bdd->prepare("SELECT proposition_termine FROM semaine WHERE id = ?");
-$get_proposition_termine_semaine->execute([$id_current_semaine]);
-$proposition_semaine = 0;
-if($result_proposition_semaine =  $get_proposition_termine_semaine->fetch()){//la proposition a été faite
-  $proposition_semaine = $result_proposition_semaine['proposition_termine'];
-}
+
+$token = recupererToken();
+
+$curl = curl_init("http://localhost:8000/isPropositionTerminee/91");
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HTTPHEADER, [
+    'Authorization: bearer '. $token,
+    'Content-Type: application/json'
+]);
+$is_proposition_terminee = curl_exec($curl);
+curl_close($curl);
+
+$proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
 $get_proposeur = $bdd->prepare("SELECT proposeur FROM semaine WHERE id = ?");

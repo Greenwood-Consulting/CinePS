@@ -83,7 +83,7 @@ function printResultatVote($id_semaine){
     $token = recupererToken();
 
     //function nextProposeurs
-    $curl = curl_init("http://localhost:8000/filmVictorieux/82");
+    $curl = curl_init("http://localhost:8000/filmVictorieux/91");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
         'Authorization: bearer '. $token,
@@ -102,7 +102,7 @@ function printResultatVote($id_semaine){
 }
 function printUserVote($id_semaine){
   $token = recupererToken();
-  $curl = curl_init("http://localhost:8000/membreVotant/82");
+  $curl = curl_init("http://localhost:8000/membreVotant/91");
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Authorization: bearer '. $token,
@@ -134,7 +134,7 @@ function printNextproposeurs($id_semaine){
 
   //$token = recupererToken();
 
-  $curl = curl_init("http://localhost:8000/nextProposeurs/82");
+  $curl = curl_init("http://localhost:8000/nextProposeurs/91");
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   // curl_setopt($curl, CURLOPT_HTTPHEADER, [
   //   'Authorization: bearer '. $token,
@@ -152,6 +152,7 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   
+  global $bdd;
   $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);
   
@@ -219,7 +220,7 @@ function printChoixvote($id_semaine){
 
 //Affiche le tableau de tout les votes de la semaine définie par $id_semaine
 function printVotesSemaine($id_semaine){
-  $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
+  global $bdd;
   
   $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);

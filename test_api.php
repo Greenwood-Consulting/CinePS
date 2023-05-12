@@ -28,22 +28,17 @@ $token = $response_array->token;
 // $films_semaine = curl_exec($curl);
 // curl_close($curl);
 
-// $films_semaine_array = json_decode($films_semaine);
-// foreach($films_semaine_array as $film){
-//     echo $film->film->titre."<br/>";
-// }
-
-//function nextProposeurs
-$curl = curl_init("http://localhost:8000/is/proposition/terminee/83");
+$curl = curl_init("http://localhost:8000/isPropositionTerminee/86");
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_HTTPHEADER, [
     'Authorization: bearer '. $token,
     'Content-Type: application/json'
 ]);
-$membre_votant = curl_exec($curl);
+$proposition_terminée = curl_exec($curl);
+curl_close($curl);
 
-$membre_votant_array = json_decode($membre_votant);
-foreach($membre_votant_array as $membre){
-    echo $membre->votant->nom. " a voté";
+$proposition_terminée_array = json_decode($proposition_terminée);
+foreach($proposition_terminée_array as $proposition){
+    echo $proposition->proposition_termine."<br/>";
 }
 ?>
