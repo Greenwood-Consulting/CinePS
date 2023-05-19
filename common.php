@@ -1,27 +1,7 @@
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
-function recupererToken(){
-  //Récupération du token
-  $body = [
-    'username'=>'a@a.fr',
-    'password'=>'password'
-  ];
-  $json_body = json_encode($body);
-
-  $curl = curl_init("http://localhost:8000/api/login_check");
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json'
-  ]);
-  curl_setopt($curl, CURLOPT_POSTFIELDS, $json_body);
-  $response = curl_exec($curl);
-  curl_close($curl);
-  $response_array = json_decode($response);
-  $token = $response_array->token;
-
-  return $token;
-}
+include "call_api.php";
 
 // Date du jour
 $curdate=new DateTime();
@@ -56,16 +36,7 @@ function printFilmsProposes($id_semaine){
   
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   
-  $token = recupererToken();
-
-  $curl = curl_init("http://localhost:8000/filmsProposes/82");
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, [
-    'Authorization: bearer '. $token,
-    'Content-Type: application/json'
-  ]);
-  $films_semaine = curl_exec($curl);
-  curl_close($curl);
+  $film_semaine = callAPI("http://localhost:8000/filmsProposes/82");
 
   $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;
@@ -78,6 +49,7 @@ function printFilmsProposes($id_semaine){
     echo '<mark> Aucun film n\'a été proposé </mark>';
   }
 }
+
 function printResultatVote($id_semaine){
 
     $token = recupererToken();
