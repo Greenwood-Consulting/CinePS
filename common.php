@@ -36,19 +36,13 @@ function printResultatVote($id_semaine){
     }
 }
 
+// Affichage de la liste des membres qui ont déjà voté
 function printUserVote($id_semaine){
-  $token = recupererToken();
-  $curl = curl_init("http://localhost:8000/membreVotant/".$id_semaine);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, [
-      'Authorization: bearer '. $token,
-      'Content-Type: application/json'
-  ]);
-  $membre_votant = curl_exec($curl);
+  $membre_votant = callAPI("http://localhost:8000/membreVotant/".$id_semaine);
   $membre_votant_array = json_decode($membre_votant);
 
   foreach($membre_votant_array as $membre){
-      echo "<mark><b>".$membre->votant->nom. "</b> a voté</mark>";
+      echo "<mark><b>".$membre->votant->nom. "</b> a voté<br /></mark>";
   }
   /*$user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
   $user_vote->execute([$id_semaine]);
@@ -67,7 +61,6 @@ function printUserVote($id_semaine){
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-
   $next_proposeurs = callAPI("http://localhost:8000/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
 
@@ -78,7 +71,6 @@ function printNextproposeurs($id_semaine){
 }
 
 function printChoixvote($id_semaine){
-  
   global $bdd;
   $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
   $get_film_semaine->execute([$id_semaine]);
