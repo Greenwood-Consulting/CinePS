@@ -3,33 +3,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
 include "call_api.php";
 
-// Date du jour
-$curdate=new DateTime();
-
-// calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime("Fri 14:00");
-$fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
-
-// conversion de la date de fin en timestamp JavaScript
-$deadline_vote = strtotime($fin_periode_vote);
-$deadline_vote = $deadline_vote*1000;
-
-// Get état id_current_semaine
-if ($curdate->format('D')=="Fri"){ // Si nous sommes vendredi, alors id_current_semaine est défini par ce vendredi
-  $friday_current_semaine = $curdate->format('Y-m-d');
-} else { // Sinon id_current_semaine est défini par vendredi prochain
-  $friday_current_semaine = $curdate->modify('next friday')->format('Y-m-d');
-}
-$get_semaine_id = $bdd->prepare("SELECT id FROM semaine WHERE jour = ?");
-$get_semaine_id->execute([$friday_current_semaine]);
-if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défini dans la bdd
-  $id_current_semaine = $current_semaine['id'];
-}else{//Pas de semaine en cours défini dans la bdd
-  $id_current_semaine = 0;
-}
-
-//Récupération des mails
-//$requete_mail = $bdd->query("SELECT mail FROM membre");
+$json_id_current_semaine = callAPI("http://localhost:8000/api/idCurrentSemaine");
+$id_current_semaine = json_decode($json_id_current_semaine)->id_current_semaine;
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){  
