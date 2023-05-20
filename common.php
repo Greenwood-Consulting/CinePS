@@ -32,12 +32,10 @@ if($current_semaine = $get_semaine_id->fetch()){//La semaine en cours est défin
 //$requete_mail = $bdd->query("SELECT mail FROM membre");
 
 //Fonction d'affichage
-function printFilmsProposes($id_semaine){
-  
+function printFilmsProposes($id_semaine){  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   
-  $film_semaine = callAPI("http://localhost:8000/filmsProposes/82");
-
+  $films_semaine = callAPI("http://localhost:8000/filmsProposes/".$id_semaine);
   $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;
   foreach($films_semaine_array as $film){
@@ -50,19 +48,9 @@ function printFilmsProposes($id_semaine){
   }
 }
 
+// Affiche le film victorieux
 function printResultatVote($id_semaine){
-
-    $token = recupererToken();
-
-    //function nextProposeurs
-    $curl = curl_init("http://localhost:8000/filmVictorieux/91");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, [
-        'Authorization: bearer '. $token,
-        'Content-Type: application/json'
-    ]);
-    $film_victorieux = curl_exec($curl);
-
+    $film_victorieux = callAPI("http://localhost:8000/filmVictorieux/".$id_semaine);
     $film_victorieux_array = json_decode($film_victorieux);
 
     if(empty($film_victorieux_array)){//il n'y a pas de propositions 
@@ -72,9 +60,10 @@ function printResultatVote($id_semaine){
       echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
     }
 }
+
 function printUserVote($id_semaine){
   $token = recupererToken();
-  $curl = curl_init("http://localhost:8000/membreVotant/91");
+  $curl = curl_init("http://localhost:8000/membreVotant/".$id_semaine);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Authorization: bearer '. $token,
@@ -104,21 +93,12 @@ function printUserVote($id_semaine){
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
 
-  //$token = recupererToken();
-
-  $curl = curl_init("http://localhost:8000/nextProposeurs/91");
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  // curl_setopt($curl, CURLOPT_HTTPHEADER, [
-  //   'Authorization: bearer '. $token,
-  //   'Content-Type: application/json'
-  // ]);
-  $next_proposeurs = curl_exec($curl);
-
+  $next_proposeurs = callAPI("http://localhost:8000/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
+
   foreach($next_proposeurs_array as $next){
       echo "<mark>".$next->jour;
       echo " - ".$next->proposeur."</mark><br/>";
-
   }
 }
 

@@ -1,16 +1,6 @@
 <?php
 
-$token = recupererToken();
-
-$curl = curl_init("http://localhost:8000/isPropositionTerminee/91");
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_HTTPHEADER, [
-    'Authorization: bearer '. $token,
-    'Content-Type: application/json'
-]);
-$is_proposition_terminee = curl_exec($curl);
-curl_close($curl);
-
+$is_proposition_terminee = callAPI("http://localhost:8000/isPropositionTerminee/".$id_semaine);
 $proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
@@ -26,15 +16,12 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
 
-
-
 // get état vote_termine_cette_semaine
 $get_nb_votes = $bdd->prepare("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = ?");
 $get_nb_votes->execute([$id_current_semaine]);
 $nb_votes = $get_nb_votes->fetch()['nb_votes_current_semaine'];
 $get_nb_personnes = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
 $nb_personnes = $get_nb_personnes->fetch()['nb_personne'];
-
 $vote_termine_cette_semaine = (($nb_personnes - 1) == $nb_votes);
 
 // get état connecte
@@ -54,9 +41,9 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 }
 
 //indique si le thème a été proposé ou non
-$get_theme = $bdd->prepare("SELECT theme FROM semaine WHERE id = ? ");
-$get_theme->execute([$id_current_semaine]);
-$theme = $get_theme->fetch()['theme'];
+$json_semaine = callAPI("http://localhost:8000/api/semaine/".$id_current_semaine);
+$array_semaine = json_decode($json_semaine);
+$theme = $array_semaine->theme;
 $etat_theme_non_propose = $theme == "";
 
 ?>
