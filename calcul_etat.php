@@ -1,6 +1,8 @@
 <?php
 
-$is_proposition_terminee = callAPI("http://localhost:8000/isPropositionTerminee/".$id_semaine);
+// état proposition_semaine 
+// TODO : renommer proposition_semaine en is_proposition_terminée
+$is_proposition_terminee = callAPI("http://localhost:8000/isPropositionTerminee/".$id_current_semaine);
 $proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
@@ -17,12 +19,8 @@ $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
 
 // get état vote_termine_cette_semaine
-$get_nb_votes = $bdd->prepare("SELECT COUNT(*) AS nb_votes_current_semaine FROM a_vote WHERE semaine = ?");
-$get_nb_votes->execute([$id_current_semaine]);
-$nb_votes = $get_nb_votes->fetch()['nb_votes_current_semaine'];
-$get_nb_personnes = $bdd->query("SELECT COUNT(*) AS nb_personne FROM membre");
-$nb_personnes = $get_nb_personnes->fetch()['nb_personne'];
-$vote_termine_cette_semaine = (($nb_personnes - 1) == $nb_votes);
+$is_vote_termine = callAPI("http://localhost:8000/isVoteTermine/".$id_current_semaine);
+$vote_termine_cette_semaine = json_decode($is_vote_termine);
 
 // get état connecte
 $connecte = isset($_SESSION['user']);
