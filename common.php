@@ -71,28 +71,22 @@ function printNextproposeurs($id_semaine){
 }
 
 function printChoixvote($id_semaine){
-  global $bdd;
-  $get_film_semaine= $bdd->prepare("SELECT id, film AS film_id FROM proposition WHERE semaine = ?");
-  $get_film_semaine->execute([$id_semaine]);
-  
-  //$score = $get_score->fetch()['score'];
-  $get_proposeur_prenom = $bdd->prepare("SELECT proposeur FROM semaine WHERE id = ?");
-  $get_proposeur_prenom->execute([$id_semaine]);
-  $proposeur_prenom = $get_proposeur_prenom->fetch()['proposeur'];
-  $get_proposeur_id = $bdd->prepare("SELECT id FROM membre WHERE Prenom = ?");
-  $get_proposeur_id->execute([$proposeur_prenom]);
-  
-  $proposeur_id =$get_proposeur_id->fetch()['id'];
+  // prenom proposeur
+  $get_proposeur = callAPI("http://localhost:8000/getProposeur/".$id_semaine);
+  $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
+
   echo "<TABLE border = '1px'>";
 
   // Affichage du header du tableau :
-  $get_membre_header = $bdd->query('SELECT Prenom FROM membre');
+  $get_membres = callAPI("http://localhost:8000/api/membres");
+  $membres_array = json_decode($get_membres);
+
   echo "<TR>";
   echo "<TD></TD><TD></TD>";
-  while ($data_membre = $get_membre_header->fetch()){//on crée une colonne pour chaque membre
-    if($data_membre['Prenom']!= $proposeur_prenom){//On affiche tout le monde sauf le proposeur
+  foreach($membres_array as $data_membre){ //on crée une colonne pour chaque membre
+    if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
       echo "<TD>";
-      echo $data_membre['Prenom'];
+      echo $data_membre->Prenom;
       echo "</TD>";
     }
   }
@@ -100,40 +94,35 @@ function printChoixvote($id_semaine){
   echo "Score";
   echo "</TD>";
   echo "</TR>";
-  while ($proposition = $get_film_semaine->fetch()){//on crée une ligne pour chaque film de la semaine
+  // Fin affichage header
+
+  // Affichage du corps du tableau :
+  $get_propositions_et_votes = callAPI("http://localhost:8000/votes/".$id_semaine);
+  $array_propositions_et_votes = json_decode($get_propositions_et_votes);
+
+  foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
     echo "<TR>";
-    $proposition_id = $proposition['id'];
-    $get_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
-    $get_film->execute([$proposition['film_id']]);
-    
-    $data_film = $get_film->fetch();
-    echo '<TD><a class="text-dark" href = '.$data_film['imdb'].'>' .$data_film['titre'].' </a></TD>';
-    echo '<TD> '.$data_film['sortie_film'].'</TD>';
-    $get_membre = $bdd->query('SELECT id, Prenom FROM membre');
-    while ($data_membre = $get_membre->fetch()){//On affiche le vote de chaque membres
-      if($data_membre['Prenom']!= $proposeur_prenom){//On affiche pas le proposeur car il ne vote pas
+
+    // titre avec lien imdb
+    echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
+    echo '<TD> '.$proposition_et_votes->film->sortieFilm.'</TD>';
+
+    foreach($proposition_et_votes->vote as $vote){
+      if($vote->membre != $proposeur_prenom){
         echo "<TD>";
-        $prenom = $data_membre['Prenom'];
-        $id_membre = $data_membre['id'];
-        $get_vote = $bdd->prepare("SELECT vote FROM votes WHERE membre = ? AND proposition = ?");
-        $get_vote->execute([$id_membre, $proposition_id]);
-        if($vote = $get_vote->fetch()){//On affiche les votes
-          echo $vote['vote'];
-        }
+        echo $vote->vote;
         echo "</TD>";
       }
     }
-    $get_score = $bdd->prepare("SELECT score FROM proposition WHERE id = ?");
-    $get_score->execute([$proposition_id]);
-    $score = $get_score->fetch();
+
+    // Colonne score
     echo "<TD>";
-    echo $score['score'];
+    echo $proposition_et_votes->score;
     echo "</TD>";
+
     echo "</TR>";
   }
   echo "</TABLE>";
-
-  echo "klfegplep".$proposition_id;
 }
 
 
@@ -166,6 +155,8 @@ function printVotesSemaine($id_semaine){
       } 
     }
     echo "<TR>";
+    // Fin affichage header
+
     while ($proposition = $get_film_semaine->fetch()){//on crée une ligne pour chaque film de la semaine
       $proposition_id = $proposition['id'];
       $get_film = $bdd->prepare('SELECT titre, sortie_film, imdb FROM film WHERE id = ?');
