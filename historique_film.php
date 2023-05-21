@@ -37,23 +37,21 @@
 
 echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
 include('common.php');
-include('calcul_etat.php');
 
-  $requete_jour_correspondant = $bdd->prepare("SELECT jour FROM semaine WHERE id = ?");
-  $requete_jour_correspondant->execute([$id_current_semaine]);
-  $jour_correspondant_id_semaine = $requete_jour_correspondant->fetch()['jour'];
-  $historique_film = $bdd->prepare("SELECT id, proposeur, jour FROM semaine WHERE jour <= ? ORDER BY jour DESC");
-  $historique_film->execute([$jour_correspondant_id_semaine]);
-  while ($semaine = $historique_film->fetch()){//tant que il y a un proposeur pour une semaine défini
-    $id_semaine = $semaine['id'];
-    $jour_semaine = $semaine['jour'];
-    $proposeur_semaine = $semaine['proposeur'];
-    if(!(($id_semaine == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
-      echo " <h2 > Les propositions de ".$proposeur_semaine;
-      echo " Pour la semaine du ".$jour_semaine. "</h2><br/>";
-      printVotesSemaine($id_semaine);
-    }
+// On récupère les anciennes semaines
+$get_anciennes_semaines = callAPI("http://localhost:8000/api/anciennesSemaines");
+$array_anciennes_semaines = json_decode($get_anciennes_semaines);
+
+foreach($array_anciennes_semaines as $semaine){
+  // création d'une DateTime afin de pouvoir formater
+  $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
+  if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
+    // TODO gérer le if dans service CinePS-API, pas ici
+    echo "<h2 > Les propositions de ".$semaine->proposeur;
+    echo "Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+    printChoixvote($semaine->id);
   }
+}
 
 ?>
   </div>

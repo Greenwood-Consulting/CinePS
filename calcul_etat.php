@@ -15,7 +15,7 @@ if($requete_proposeur_cette_semaine = $get_proposeur->fetch()){//Il y a un propo
 }
 $is_proposeur = false;
 if(isset($_SESSION['user'])){//utilisateur connecté
-$is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
+  $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
 
 // get état vote_termine_cette_semaine
