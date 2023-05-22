@@ -6,13 +6,9 @@ $is_proposition_terminee = callAPI("/isPropositionTerminee/".$id_current_semaine
 $proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
-$get_proposeur = $bdd->prepare("SELECT proposeur FROM semaine WHERE id = ?");
-$get_proposeur->execute([$id_current_semaine]);
-if($requete_proposeur_cette_semaine = $get_proposeur->fetch()){//Il y a un proposeur 
-  $proposeur_cette_semaine = $requete_proposeur_cette_semaine['proposeur'];
-}else{//Il n'y a pas de proposeur  
-  $proposeur_cette_semaine = 0;
-}
+$current_semaine = callAPI("/api/currentSemaine");
+$array_current_semaine = json_decode($current_semaine);
+$proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
 $is_proposeur = false;
 if(isset($_SESSION['user'])){//utilisateur connecté
   $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
