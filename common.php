@@ -65,8 +65,10 @@ function printNextproposeurs($id_semaine){
   $next_proposeurs_array = json_decode($next_proposeurs);
 
   foreach($next_proposeurs_array as $next){
-      echo "<mark>".$next->jour;
-      echo " - ".$next->proposeur."</mark><br/>";
+    // création d'une DateTime afin de pouvoir formater
+    $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $next->jour);
+    echo "<mark>".$dateSemaine->format('Y-m-d');
+    echo " - ".$next->proposeur."</mark><br/>";
   }
 }
 
