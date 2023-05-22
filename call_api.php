@@ -24,7 +24,7 @@ function recupererToken(){
 function callAPI($entry_point){
     $token = recupererToken();
 
-    $curl = curl_init($entry_point);
+    $curl = curl_init("http://localhost:8000".$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Authorization: bearer '. $token,

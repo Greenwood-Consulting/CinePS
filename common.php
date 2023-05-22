@@ -3,14 +3,14 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
 include "call_api.php";
 
-$json_id_current_semaine = callAPI("http://localhost:8000/api/idCurrentSemaine");
+$json_id_current_semaine = callAPI("/api/idCurrentSemaine");
 $id_current_semaine = json_decode($json_id_current_semaine)->id_current_semaine;
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   
-  $films_semaine = callAPI("http://localhost:8000/filmsProposes/".$id_semaine);
+  $films_semaine = callAPI("/filmsProposes/".$id_semaine);
   $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;
   foreach($films_semaine_array as $film){
@@ -25,7 +25,7 @@ function printFilmsProposes($id_semaine){
 
 // Affiche le film victorieux
 function printResultatVote($id_semaine){
-    $film_victorieux = callAPI("http://localhost:8000/filmVictorieux/".$id_semaine);
+    $film_victorieux = callAPI("/filmVictorieux/".$id_semaine);
     $film_victorieux_array = json_decode($film_victorieux);
 
     if(empty($film_victorieux_array)){//il n'y a pas de propositions 
@@ -38,7 +38,7 @@ function printResultatVote($id_semaine){
 
 // Affichage de la liste des membres qui ont déjà voté
 function printUserVote($id_semaine){
-  $membre_votant = callAPI("http://localhost:8000/membreVotant/".$id_semaine);
+  $membre_votant = callAPI("/membreVotant/".$id_semaine);
   $membre_votant_array = json_decode($membre_votant);
 
   foreach($membre_votant_array as $membre){
@@ -61,7 +61,7 @@ function printUserVote($id_semaine){
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-  $next_proposeurs = callAPI("http://localhost:8000/nextProposeurs/".$id_semaine);
+  $next_proposeurs = callAPI("/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
 
   foreach($next_proposeurs_array as $next){
@@ -74,13 +74,13 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   // prenom proposeur
-  $get_proposeur = callAPI("http://localhost:8000/getProposeur/".$id_semaine);
+  $get_proposeur = callAPI("/getProposeur/".$id_semaine);
   $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
 
   echo "<TABLE border = '1px'>";
 
   // Affichage du header du tableau :
-  $get_membres = callAPI("http://localhost:8000/api/membres");
+  $get_membres = callAPI("/api/membres");
   $membres_array = json_decode($get_membres);
 
   echo "<TR>";
@@ -99,7 +99,7 @@ function printChoixvote($id_semaine){
   // Fin affichage header
 
   // Affichage du corps du tableau :
-  $get_propositions_et_votes = callAPI("http://localhost:8000/votes/".$id_semaine);
+  $get_propositions_et_votes = callAPI("/votes/".$id_semaine);
   $array_propositions_et_votes = json_decode($get_propositions_et_votes);
 
   foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine

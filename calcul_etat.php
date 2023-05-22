@@ -2,7 +2,7 @@
 
 // état proposition_semaine 
 // TODO : renommer proposition_semaine en is_proposition_terminée
-$is_proposition_terminee = callAPI("http://localhost:8000/isPropositionTerminee/".$id_current_semaine);
+$is_proposition_terminee = callAPI("/isPropositionTerminee/".$id_current_semaine);
 $proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
@@ -19,7 +19,7 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 }
 
 // get état vote_termine_cette_semaine
-$is_vote_termine = callAPI("http://localhost:8000/isVoteTermine/".$id_current_semaine);
+$is_vote_termine = callAPI("/isVoteTermine/".$id_current_semaine);
 $vote_termine_cette_semaine = json_decode($is_vote_termine);
 
 // get état connecte
@@ -39,7 +39,7 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 }
 
 //indique si le thème a été proposé ou non
-$json_semaine = callAPI("http://localhost:8000/api/semaine/".$id_current_semaine);
+$json_semaine = callAPI("/api/semaine/".$id_current_semaine);
 $array_semaine = json_decode($json_semaine);
 $theme = $array_semaine->theme;
 $etat_theme_non_propose = $theme == "";

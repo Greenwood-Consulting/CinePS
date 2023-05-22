@@ -39,7 +39,7 @@ echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'a
 include('common.php');
 
 // On récupère les anciennes semaines
-$get_anciennes_semaines = callAPI("http://localhost:8000/api/anciennesSemaines");
+$get_anciennes_semaines = callAPI("/api/anciennesSemaines");
 $array_anciennes_semaines = json_decode($get_anciennes_semaines);
 
 foreach($array_anciennes_semaines as $semaine){
