@@ -77,7 +77,7 @@ function printChoixvote($id_semaine){
   $get_proposeur = callAPI("/getProposeur/".$id_semaine);
   $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
 
-
+  // récupération des propositions pour tester s'il a des propositions
   $get_propositions = callAPI("/filmsProposes/".$id_semaine);
   $propositions_array = json_decode($get_propositions);
 
@@ -88,6 +88,7 @@ function printChoixvote($id_semaine){
     $get_membres = callAPI("/api/membres");
     $membres_array = json_decode($get_membres);
 
+    // Récupération des propositions avec votes
     $get_propositions_et_votes = callAPI("/votes/".$id_semaine);
     $array_propositions_et_votes = json_decode($get_propositions_et_votes);
 
@@ -110,8 +111,6 @@ function printChoixvote($id_semaine){
     // Fin affichage header
 
     // Affichage du corps du tableau :
-
-
     foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
       echo "<TR>";
 
