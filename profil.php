@@ -17,7 +17,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 <body>
     <?php
     if(isset($_SESSION['user'])){//Si l'user est connecté on affiche ses données personnelles
-        $profil_connecte =$bdd->prepapre("SELECT Nom, Prenom, mail, mdp FROM membre WHERE Prenom = ?");
+        $profil_connecte =$bdd->prepare("SELECT Nom, Prenom, mail, mdp FROM membre WHERE Prenom = ?");
         $profil_connecte->execute([$_SESSION['user']]);
         $data_profil_connecte = $profil_connecte->fetch();
         echo $data_profil_connecte['Nom'].' '. $data_profil_connecte['Prenom'].' '. $data_profil_connecte['mail'];
