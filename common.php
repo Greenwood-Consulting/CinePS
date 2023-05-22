@@ -77,54 +77,65 @@ function printChoixvote($id_semaine){
   $get_proposeur = callAPI("/getProposeur/".$id_semaine);
   $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
 
-  echo "<TABLE border = '1px'>";
 
-  // Affichage du header du tableau :
-  $get_membres = callAPI("/api/membres");
-  $membres_array = json_decode($get_membres);
+  $get_propositions = callAPI("/filmsProposes/".$id_semaine);
+  $propositions_array = json_decode($get_propositions);
 
-  echo "<TR>";
-  echo "<TD></TD><TD></TD>";
-  foreach($membres_array as $data_membre){ //on crée une colonne pour chaque membre
-    if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
-      echo "<TD>";
-      echo $data_membre->Prenom;
-      echo "</TD>";
-    }
-  }
-  echo "<TD>";
-  echo "Score";
-  echo "</TD>";
-  echo "</TR>";
-  // Fin affichage header
+  if(count($propositions_array)==0){
+    echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
+  }else{
+    // Récupération de la liste des membres (pour le header)
+    $get_membres = callAPI("/api/membres");
+    $membres_array = json_decode($get_membres);
 
-  // Affichage du corps du tableau :
-  $get_propositions_et_votes = callAPI("/votes/".$id_semaine);
-  $array_propositions_et_votes = json_decode($get_propositions_et_votes);
+    $get_propositions_et_votes = callAPI("/votes/".$id_semaine);
+    $array_propositions_et_votes = json_decode($get_propositions_et_votes);
 
-  foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
+    echo "<TABLE border = '1px'>";
+
+    // Affichage du header du tableau :
     echo "<TR>";
-
-    // titre avec lien imdb
-    echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
-    echo '<TD> '.$proposition_et_votes->film->sortieFilm.'</TD>';
-
-    foreach($proposition_et_votes->vote as $vote){
-      if($vote->membre != $proposeur_prenom){
+    echo "<TD></TD><TD></TD>";
+    foreach($membres_array as $data_membre){ //on crée une colonne pour chaque membre
+      if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
         echo "<TD>";
-        echo $vote->vote;
+        echo $data_membre->Prenom;
         echo "</TD>";
       }
     }
-
-    // Colonne score
     echo "<TD>";
-    echo $proposition_et_votes->score;
+    echo "Score";
     echo "</TD>";
-
     echo "</TR>";
+    // Fin affichage header
+
+    // Affichage du corps du tableau :
+
+
+    foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
+      echo "<TR>";
+
+      // titre avec lien imdb
+      echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
+      echo '<TD> '.$proposition_et_votes->film->sortieFilm.'</TD>';
+
+      foreach($proposition_et_votes->vote as $vote){
+        if($vote->membre != $proposeur_prenom){
+          echo "<TD>";
+          echo $vote->vote;
+          echo "</TD>";
+        }
+      }
+
+      // Colonne score
+      echo "<TD>";
+      echo $proposition_et_votes->score;
+      echo "</TD>";
+
+      echo "</TR>";
+    }
+    echo "</TABLE>";
   }
-  echo "</TABLE>";
 }
 
 
