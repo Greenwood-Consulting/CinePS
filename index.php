@@ -161,21 +161,20 @@ if($connecte){//l'utilisateur est connecté
             ?>
             <form method="POST" action="save_vote.php">
             <?php
-            $vote = $bdd->prepare("SELECT id AS proposition_id, film AS film_id FROM proposition WHERE semaine = ?");
-            $vote->execute([$id_current_semaine]);
-              echo "<table>";
-              while ($film = $vote->fetch()){//on affiche le tableau de vote
-                $get_titre_imdb_film = $bdd->prepare('SELECT titre, imdb FROM film WHERE id = ?');
-                $get_titre_imdb_film->execute([$film['film_id']]);
-                $titre_imdb_film = $get_titre_imdb_film->fetch();
-                
-                echo '<tr><td><mark><a class="text-dark" href = '.$titre_imdb_film['imdb'].'>' .$titre_imdb_film['titre'].' </a></td><td><input class="text-dark" type="number" name="'.$film['proposition_id'].'" value="0" min="0" max="6">'.'</mark> </td></tr>';
-              }
-              echo "</table>";
-              ?>
-              <button type="submit" class="btn btn-warning">Voter</button>
-              <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
-              <?php
+            // récupération de la semaine courrante (contenant les propositions)
+            $current_semaine = callAPI("/api/currentSemaine");
+            $array_current_semaine = json_decode($current_semaine);
+            $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
+
+            echo "<table>";
+            foreach($array_current_semaine[0]->propositions as $proposition){
+              echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+            }
+            echo "</table>";
+            ?>
+            <button type="submit" class="btn btn-warning">Voter</button>
+            <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
+            <?php
           }
         }
        
@@ -223,7 +222,6 @@ if($connecte){//l'utilisateur est connecté
     if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
       if($vote_termine_cette_semaine){//le vote est terminé et pas connecté
         printResultatVote($id_current_semaine);
-
       }else{//le vote n'est pas terminé mais pas connecté
         printFilmsProposes($id_current_semaine);
       }
@@ -265,8 +263,4 @@ printNextproposeurs($id_current_semaine);
 
 
 
-
-  
-  
-  
 </html>
