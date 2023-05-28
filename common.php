@@ -37,7 +37,7 @@ function printResultatVote($id_semaine){
 }
 
 // Affichage de la liste des membres qui ont déjà voté
-function printUserVote($id_semaine){
+function printUserAyantVote($id_semaine){
   $membre_votant = callAPI("/membreVotant/".$id_semaine);
   $membre_votant_array = json_decode($membre_votant);
 

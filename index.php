@@ -93,9 +93,8 @@ $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
 
-
-
-printUserVote($id_current_semaine);
+// Affichage de la liste des utilisateurs ayant déjà voté
+printUserAyantVote($id_current_semaine);
 
 
 //Proposition comportement 1 : on vient du bouton end_proposition
