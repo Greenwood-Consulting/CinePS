@@ -6,25 +6,20 @@ session_start();
 
 if(isset($_POST['user'])){//si l'utilisateur est connecté
 
-    $prenom = $_POST['user'];
+    $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
+    $user = callAPI("/api/membres/".$id_membre);
+    $array_user = json_decode($user);
 
-    $get_mdp = $bdd->prepare('SELECT mdp FROM membre WHERE Prenom = ?');
-    $get_mdp->execute(array($prenom));
-    $data_get_mdp = $get_mdp->fetch();
-    $row = $get_mdp->rowCount();
-
-    if($row == 1){//On vérifie qui'il y est un mdp pour l'utilisateur connecté
-
+    if(! empty($array_user)){//On vérifie qui'il y est un mdp pour l'utilisateur connecté
         //$password = hash('sha256', $password);
 
-        if($data_get_mdp['mdp'] == $password){//Le mot de passe correspond on autorise la connection
-            $_SESSION['user'] = $prenom;     
+        if($array_user->mdp == $password){//Le mot de passe correspond on autorise la connection
+            $_SESSION['user'] = $array_user->id;     
         }else{//sinon on refuse la connection
             echo 'Le mdp n\'est pas valide';
         } 
-
     }else{//on refuse la connection
         echo 'Cet utilisateur n\'existe pas dans la base de données';
     } 
@@ -35,14 +30,14 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>";
 }
 else{ //Sinon on propose la connexion
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
-    $affichage_membre = $bdd->query('SELECT * FROM membre');
-    echo'<form method="post" action="index.php">
-            <label>Membres</label>
-                <select class="text-dark" name="user">';
+    $users = callAPI("/api/membres");
+    $array_users = json_decode($users);
 
-    while($data = $affichage_membre->fetch()){ //Afficher un utlisateur
-        echo"<option class='text-dark' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+    echo'<form method="post" action="index.php">
+    <label>Membres</label>
+        <select class="text-dark" name="user">';
+    foreach($array_users as $user){ //Afficher un utlisateur
+        echo"<option class='text-dark' value=".$user->id.">". $user->Nom." ".$user->Prenom."</option>";
     }
     echo"</select>";
 
