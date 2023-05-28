@@ -16,7 +16,7 @@ function printFilmsProposes($id_semaine){
   foreach($films_semaine_array as $film){
     $un_film_propose = true;
     echo '<mark><a class="text-dark" href = '.$film->film->imdb.'>' .$film->film->titre.' </a>';
-    echo $film->film->sortieFilm.'</mark></br>';
+    echo $film->film->sortie_film.'</mark></br>';
   }
   if(!$un_film_propose){//si aucun film n'est proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
@@ -42,7 +42,7 @@ function printUserVote($id_semaine){
   $membre_votant_array = json_decode($membre_votant);
 
   foreach($membre_votant_array as $membre){
-      echo "<mark><b>".$membre->votant->nom. "</b> a voté<br /></mark>";
+      echo "<mark><b>".$membre->votant->Nom. "</b> a voté<br /></mark>";
   }
   /*$user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
   $user_vote->execute([$id_semaine]);
