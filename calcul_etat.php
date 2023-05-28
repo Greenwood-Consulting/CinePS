@@ -25,13 +25,8 @@ $connecte = isset($_SESSION['user']);
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   //TODO: Que se passe-t-il si une injection se glisse à la place de la session user
-  $user = $bdd->prepare("SELECT id FROM membre WHERE Prenom = ?");
-  $user->execute([$_SESSION['user']]);
-  $id_utlisateur_connecte = $user->fetch()['id'];
-  $get_current_user_a_vote = $bdd->prepare("SELECT COUNT(votant) AS a_vote_current_user_semaine FROM a_vote WHERE (votant = ? AND semaine = ?)");
-  $get_current_user_a_vote->execute([$id_utlisateur_connecte, $id_current_semaine]);
-
-  $current_user_a_vote=$get_current_user_a_vote->fetch()['a_vote_current_user_semaine']>0;
+  $user = callAPI("/aVoteCurrentSemaine/".$_SESSION['user']);
+  $current_user_a_vote = json_decode($user);
 }
 
 //indique si le thème a été proposé ou non
