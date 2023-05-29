@@ -107,27 +107,30 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 
 //Propostion comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
-  //$titre_film = $bdd->quote($_POST['titre_film']);
+  // préparation du body de la requête POST
   $titre_film = addslashes($_POST['titre_film']);
-  $ajout_du_lien_imdb = addslashes($_POST['lien_imdb']);
-  $date = date('Y-m-d');
-  $sortie_film = addslashes($_POST['date']);    
-  $ajout_film = $bdd->prepare("INSERT INTO `film` (`titre`, `date`, `sortie_film`, `imdb`) VALUES (?,?,?,?)");
-  $ajout_film->execute([$titre_film, $date, $sortie_film, $ajout_du_lien_imdb]);
-  $last_id = $bdd->lastInsertId();
-  $ajout_de_proposition = $bdd->prepare("INSERT INTO `proposition` (`semaine`, `film`,`score`) VALUES (?, ? , ?)  ");
-  $ajout_de_proposition->execute([$id_current_semaine, $last_id, 36]);
-  
+  $sortie_film = addslashes($_POST['date']); 
+  $imdb_film = addslashes($_POST['lien_imdb']);  
+  $array_proposition = array(
+    'titre_film' => $titre_film,
+    'sortie_film' => $sortie_film,
+    'imdb_film' => $imdb_film
+  );
+  $json_proposition = json_encode($array_proposition);
+
+  // call API
+  $json_proposition = callAPI_POST("/api/proposition", $json_proposition);
+  $array_proposition = json_decode($json_proposition);
+
   echo '<br/>';
   echo '<br/>';
   echo '<br/>';
 }
 
 if(isset($_POST['new_theme'])){//si on valide le theme
-
-$theme_film = addslashes($_POST['theme_film']);
-$update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
-$update_theme->execute([$id_current_semaine]);
+  $theme_film = addslashes($_POST['theme_film']);
+  $update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
+  $update_theme->execute([$id_current_semaine]);
 }
 ?>
 <div class="container-fluid mt-9">
