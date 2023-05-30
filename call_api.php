@@ -51,4 +51,21 @@ function callAPI_POST($entry_point, $body){
     return $api_response;
 }
 
+function callAPI_PATCH($entry_point, $body){
+    $token = recupererToken();
+
+    $curl = curl_init("http://localhost:8000".$entry_point);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+      'Authorization: bearer '. $token,
+      'Content-Type: application/json',
+      'Content-Length: ' . strlen($body)
+    ]);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+    $api_response = curl_exec($curl);
+    curl_close($curl);
+    return $api_response;
+}
+
 ?>

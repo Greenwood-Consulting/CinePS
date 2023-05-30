@@ -99,8 +99,16 @@ printUserAyantVote($id_current_semaine);
 
 //Proposition comportement 1 : on vient du bouton end_proposition
 if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-  $update_status_proposition= $bdd->prepare('UPDATE semaine SET proposition_termine = 1 WHERE id = ?');
-  $update_status_proposition->execute([$id_current_semaine]);
+  // préparation du body de la requête PATCH
+  $array_semaine = array(
+    'proposition_terminee' => 1
+  );
+  $json_semaine = json_encode($array_semaine);
+
+  // call API
+  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
+  $array_semaine = json_decode($json_semaine);
+
   echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
 }
 
@@ -128,9 +136,15 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 }
 
 if(isset($_POST['new_theme'])){//si on valide le theme
-  $theme_film = addslashes($_POST['theme_film']);
-  $update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
-  $update_theme->execute([$id_current_semaine]);
+  // préparation du body de la requête POST
+  $array_semaine = array(
+    'theme' => $_POST['theme_film']
+  );
+  $json_semaine = json_encode($array_semaine);
+
+  // call API
+  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
+  $array_semaine = json_decode($json_semaine);
 }
 ?>
 <div class="container-fluid mt-9">
@@ -191,10 +205,9 @@ if($connecte){//l'utilisateur est connecté
           <form method="POST" action="index.php">
           <label> Proposition de films:</label>
           <?php
-          if($etat_theme_non_propose){//si le thème n'est pas rentrer on affiche le formulaire
+          if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
             echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
                   <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-            
           }
           ?>
           
