@@ -1,21 +1,16 @@
 <?php
 include('common.php');
+
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 //Construction du tableau data_score
 $data_score = [];
-$get_film_semaine = $bdd->prepare("SELECT film, score FROM proposition WHERE semaine = ?");
-$get_film_semaine->execute([$id_current_semaine]);
+$score_film= callAPI("/filmsProposes/".$id_current_semaine);
+$array_score_film = json_decode($score_film);
+foreach($array_score_film as $film){
+  array_push($data_score, array("Film" => $film->film->titre, "Score" => $film->score));
 
-while($film_semaine = $get_film_semaine->fetch()){
-  $get_titre_film = $bdd->prepare("SELECT titre FROM film WHERE id = ?");
-  $get_titre_film->execute([$film_semaine['film']]);
-  $titre_film = $get_titre_film->fetch()['titre'];
-  array_push($data_score, array("Film" => $titre_film, "Score" => $film_semaine['score']));
 }
-
 $count_data_score = count($data_score);
-
-
 
 //construction du tableau data_proposeur
 $data_proposeurs = [];
@@ -30,15 +25,11 @@ $count_data_proposeurs = count($data_proposeurs);
 
 //Construction du tableau data_année
 $data_annee = [];
-$get_film_annee = $bdd->query("SELECT sortie_film FROM film");
-
+$films = callAPI("/api/Allfilms");
+$array_films = json_decode($films);
 $films_par_decennie = [];
-
-
-
-while($film = $get_film_annee->fetch()){
-  $date_sortie = $film['sortie_film'];
-  $decennie = intdiv($date_sortie, 10)*10;
+foreach($array_films as $film){
+  $decennie = intdiv($film->sortie_film, 10)*10;
   if(isset($films_par_decennie[$decennie])){
     $nb_films = $films_par_decennie[$decennie];
     $films_par_decennie[$decennie] = $nb_films + 1;
@@ -51,6 +42,23 @@ foreach($films_par_decennie as $decennie => $nb_films){
 }
 
 $count_data_annee = count($data_annee);
+
+
+// while($film = $get_film_annee->fetch()){
+//   $date_sortie = $film['sortie_film'];
+//   $decennie = intdiv($date_sortie, 10)*10;
+//   if(isset($films_par_decennie[$decennie])){
+//     $nb_films = $films_par_decennie[$decennie];
+//     $films_par_decennie[$decennie] = $nb_films + 1;
+//   }else{
+//     $films_par_decennie[$decennie] = 1;
+//   }
+// }
+// foreach($films_par_decennie as $decennie => $nb_films){
+//   array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
+// }
+
+// $count_data_annee = count($data_annee);
 
 
 ?>
