@@ -10,7 +10,7 @@ $id_current_semaine = json_decode($json_id_current_semaine)->id_current_semaine;
 function printFilmsProposes($id_semaine){  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
   
-  $films_semaine = callAPI("/filmsProposes/".$id_semaine);
+  $films_semaine = callAPI("/api/filmsProposes/".$id_semaine);
   $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;
   foreach($films_semaine_array as $film){
@@ -25,7 +25,7 @@ function printFilmsProposes($id_semaine){
 
 // Affiche le film victorieux
 function printResultatVote($id_semaine){
-    $film_victorieux = callAPI("/filmVictorieux/".$id_semaine);
+    $film_victorieux = callAPI("/api/filmVictorieux/".$id_semaine);
     $film_victorieux_array = json_decode($film_victorieux);
 
     if(empty($film_victorieux_array)){//il n'y a pas de propositions 
@@ -38,7 +38,7 @@ function printResultatVote($id_semaine){
 
 // Affichage de la liste des membres qui ont déjà voté
 function printUserAyantVote($id_semaine){
-  $membre_votant = callAPI("/membreVotant/".$id_semaine);
+  $membre_votant = callAPI("/api/membreVotant/".$id_semaine);
   $membre_votant_array = json_decode($membre_votant);
 
   foreach($membre_votant_array as $membre){
@@ -61,7 +61,7 @@ function printUserAyantVote($id_semaine){
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-  $next_proposeurs = callAPI("/nextProposeurs/".$id_semaine);
+  $next_proposeurs = callAPI("/api/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
 
   foreach($next_proposeurs_array as $proposition){
@@ -74,11 +74,11 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   // prenom proposeur
-  $get_proposeur = callAPI("/getProposeur/".$id_semaine);
+  $get_proposeur = callAPI("/api/getProposeur/".$id_semaine);
   $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
 
   // récupération des propositions pour tester s'il a des propositions
-  $get_propositions = callAPI("/filmsProposes/".$id_semaine);
+  $get_propositions = callAPI("/api/filmsProposes/".$id_semaine);
   $propositions_array = json_decode($get_propositions);
 
   if(count($propositions_array)==0){
@@ -89,7 +89,7 @@ function printChoixvote($id_semaine){
     $membres_array = json_decode($get_membres);
 
     // Récupération des propositions avec votes
-    $get_propositions_et_votes = callAPI("/votes/".$id_semaine);
+    $get_propositions_et_votes = callAPI("/api/votes/".$id_semaine);
     $array_propositions_et_votes = json_decode($get_propositions_et_votes);
 
     echo "<TABLE border = '1px'>";

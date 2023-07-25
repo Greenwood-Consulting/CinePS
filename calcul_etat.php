@@ -2,7 +2,7 @@
 
 // état proposition_semaine 
 // TODO : renommer proposition_semaine en is_proposition_terminée
-$is_proposition_terminee = callAPI("/isPropositionTerminee/".$id_current_semaine);
+$is_proposition_terminee = callAPI("/api/isPropositionTerminee/".$id_current_semaine);
 $proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
 
 //Calcule etat is_proposeur
@@ -15,7 +15,7 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 }
 
 // get état vote_termine_cette_semaine
-$is_vote_termine = callAPI("/isVoteTermine/".$id_current_semaine);
+$is_vote_termine = callAPI("/api/isVoteTermine/".$id_current_semaine);
 $vote_termine_cette_semaine = json_decode($is_vote_termine);
 
 // get état connecte
@@ -25,7 +25,7 @@ $connecte = isset($_SESSION['user']);
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   //TODO: Que se passe-t-il si une injection se glisse à la place de la session user
-  $user = callAPI("/aVoteCurrentSemaine/".$_SESSION['user']);
+  $user = callAPI("/api/aVoteCurrentSemaine/".$_SESSION['user']);
   $current_user_a_vote = json_decode($user);
 }
 
