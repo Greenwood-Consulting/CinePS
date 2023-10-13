@@ -212,7 +212,6 @@ function printVotesSemaine($id_semaine){
     $proposeur_prenom = $get_proposeur_prenom->fetch()['proposeur'];
     $get_proposeur_id = $bdd->prepare("SELECT id FROM membre WHERE Prenom = ?");
     $get_proposeur_id->execute([$proposeur_prenom]);
-    $proposeur_id =$get_proposeur_id->fetch()['id'];
     echo "<TABLE border = '1px'>";
 
     // Affichage du header du tableau :
