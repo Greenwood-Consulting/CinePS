@@ -4,7 +4,7 @@ include('common.php');
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 //Construction du tableau data_score
 $data_score = [];
-$score_film= callAPI("/filmsProposes/".$id_current_semaine);
+$score_film= callAPI("/api/filmsProposes/".$id_current_semaine);
 $array_score_film = json_decode($score_film);
 foreach($array_score_film as $film){
   array_push($data_score, array("Film" => $film->film->titre, "Score" => $film->score));
@@ -14,10 +14,10 @@ $count_data_score = count($data_score);
 
 //construction du tableau data_proposeur
 $data_proposeurs = [];
-$get_proposeurs = $bdd->query("SELECT proposeur, COUNT(id) AS nb_proposeurs FROM semaine GROUP BY proposeur");
-
-while($proposeurs = $get_proposeurs->fetch()){
-  array_push($data_proposeurs, array("Proposeur" => $proposeurs['proposeur'], "nombre" => $proposeurs['nb_proposeurs']));
+$get_proposeurs = callAPI("/api/getNbPropositionsParProposeur");
+$array_proposeurs = json_decode($get_proposeurs);
+foreach($array_proposeurs as $proposeurs){
+  array_push($data_proposeurs, array("Proposeur" => $proposeurs->proposeur, "nombre" => $proposeurs->nb_semaines));
 }
 
 $count_data_proposeurs = count($data_proposeurs);
