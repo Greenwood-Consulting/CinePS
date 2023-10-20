@@ -16,8 +16,16 @@
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
         $mail = addslashes($_POST['email']);
-        $new_membre = $bdd->prepare("INSERT INTO `membre` (`Nom`, `Prenom`, `mail`, `mdp`) VALUES (?,?,?, 'Toto')");
-        $new_membre->execute([$nom_de_famille, $prenom, $mail]);
+
+        $array_membre = array(
+            "nom" => $nom_de_famille,
+            "prenom" => $prenom,
+            "mail" => $mail,
+            "mdp" => "Toto"
+        );
+        $json_membre = json_encode($array_membre);
+        $membre = callAPI_POST("/api/newmembre", $json_membre);
+        $new_membre = json_decode($membre);
    
     }
 ?>
