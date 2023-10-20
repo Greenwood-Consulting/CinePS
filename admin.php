@@ -52,19 +52,35 @@
 <?php
 //si il clique sur le bouton new_proposeur
 if(isset($_POST['new_proposeur'])){
-    $nom_proposeur = addslashes($_POST['user']);
+    $id_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
-    $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`, `theme`) VALUES (?,?,?,?)");
-    $ajout_proposeur->execute([$date_to_insert, $nom_proposeur, '0', ""]);
+    // $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`, `theme`) VALUES (?,?,?,?)");
+
+    $array_semaine = array(
+        "proposeur_id" => $id_proposeur,
+        "jour" => $date_proposeur,
+        "proposition_termine" => false,
+        "theme" => ""
+    );
+    $json_semaine = json_encode($array_semaine);
+
+    $semaine = callAPI_POST("/api/newSemaine", $json_semaine);
+    $new_semaine = json_decode($semaine);
+    echo "<pre>";
+    print_r($new_semaine);
+    echo "</pre>";
+
 }
-$membres = $bdd->query('SELECT * FROM membre');
+//$membres = $bdd->query('SELECT * FROM membre');
+$membres_API = callAPI("/api/membres");
+$decode_membre = json_decode($membres_API);
 echo'<form method="post" action="">
         <label>Membres</label>
             <select class="text-dark" name="user">';
             
-while($data = $membres->fetch()){ //Afficher un utlisateur dans le dropdown
-    echo"<option class='text-dark' value=".$data['Prenom'].">". $data['Nom']." ".$data['Prenom']."</option>";
+foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
+    echo"<option class='text-dark' value=".$membre->id.">". $membre->Nom." ".$membre->Prenom."</option>";
 }
 echo"<input type='date' name='date'>";
 echo"</select>
