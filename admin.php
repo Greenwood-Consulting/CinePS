@@ -55,7 +55,6 @@ if(isset($_POST['new_proposeur'])){
     $id_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
-    // $ajout_proposeur = $bdd->prepare("INSERT INTO `semaine` (`jour`, `proposeur`, `proposition_termine`, `theme`) VALUES (?,?,?,?)");
 
     $array_semaine = array(
         "proposeur_id" => $id_proposeur,
@@ -67,12 +66,8 @@ if(isset($_POST['new_proposeur'])){
 
     $semaine = callAPI_POST("/api/newSemaine", $json_semaine);
     $new_semaine = json_decode($semaine);
-    echo "<pre>";
-    print_r($new_semaine);
-    echo "</pre>";
 
 }
-//$membres = $bdd->query('SELECT * FROM membre');
 $membres_API = callAPI("/api/membres");
 $decode_membre = json_decode($membres_API);
 echo'<form method="post" action="">
