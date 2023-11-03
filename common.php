@@ -1,5 +1,4 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 
 include "call_api.php";
 
