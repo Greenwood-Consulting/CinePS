@@ -2,7 +2,7 @@
 // Récupérer un tolen d'accàs l'API
 function recupererToken(){
     $body = [
-      'username'=>'a@a.fr',
+      'email'=>'a@a.fr',
       'password'=>'password'
     ];
     $json_body = json_encode($body);
