@@ -74,7 +74,7 @@ function printNextproposeurs($id_semaine){
 function printChoixvote($id_semaine){
   // prenom proposeur
   $get_proposeur = callAPI("/api/getProposeur/".$id_semaine);
-  $proposeur_prenom = json_decode($get_proposeur)[0]->proposeur;
+  $proposeur_prenom = json_decode($get_proposeur)->Prenom;
 
   // récupération des propositions pour tester s'il a des propositions
   $get_propositions = callAPI("/api/filmsProposes/".$id_semaine);
@@ -115,7 +115,7 @@ function printChoixvote($id_semaine){
 
       // titre avec lien imdb
       echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
-      echo '<TD> '.$proposition_et_votes->film->sortieFilm.'</TD>';
+      echo '<TD> '.$proposition_et_votes->film->sortie_film.'</TD>';
 
       foreach($proposition_et_votes->vote as $vote){
         if($vote->membre != $proposeur_prenom){
