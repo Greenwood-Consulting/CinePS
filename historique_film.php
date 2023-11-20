@@ -48,7 +48,7 @@ foreach($array_anciennes_semaines as $semaine){
   if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
     // TODO gérer le if dans service CinePS-API, pas ici
     echo "<h2 > Les propositions de ".$semaine->proposeur->Nom;
-    echo "Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+    echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
     echo "<p><b>Thème : ".$semaine->theme."</b></p>";
 
     printChoixvote($semaine->id);
