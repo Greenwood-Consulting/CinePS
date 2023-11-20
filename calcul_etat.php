@@ -31,9 +31,7 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 }
 
 //indique si le thème a été proposé ou non
-$json_semaine = callAPI("/api/semaine/".$id_current_semaine);
-$array_semaine = json_decode($json_semaine);
-$theme = $array_semaine->theme;
+$theme = $array_current_semaine[0]->theme;
 $etat_theme_non_propose = $theme == "";
 
 ?>
