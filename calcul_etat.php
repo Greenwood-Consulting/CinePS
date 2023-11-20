@@ -1,9 +1,6 @@
 <?php
 
-// état proposition_semaine 
-// TODO : renommer proposition_semaine en is_proposition_terminée
-$is_proposition_terminee = callAPI("/api/isPropositionTerminee/".$id_current_semaine);
-$proposition_semaine = json_decode($is_proposition_terminee)[0]->proposition_termine;
+
 
 //Calcule etat is_proposeur
 $current_semaine = callAPI("/api/currentSemaine");
@@ -13,6 +10,10 @@ $is_proposeur = false;
 if(isset($_SESSION['user'])){//utilisateur connecté
   $is_proposeur = $_SESSION['user'] == $proposeur_cette_semaine;
 }
+
+// état proposition_semaine 
+// TODO : renommer proposition_seme;aine en is_proposition_terminée
+$proposition_semaine = $array_current_semaine[0]->proposition_termine;
 
 // get état vote_termine_cette_semaine
 $is_vote_termine = callAPI("/api/isVoteTermine/".$id_current_semaine);
