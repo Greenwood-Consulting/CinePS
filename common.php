@@ -26,12 +26,18 @@ function printFilmsProposes($id_semaine){
 function printResultatVote($id_semaine){
     $film_victorieux = callAPI("/api/filmVictorieux/".$id_semaine);
     $film_victorieux_array = json_decode($film_victorieux);
-
     if(empty($film_victorieux_array)){//il n'y a pas de propositions 
       echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
-    }else{//Affiche le film victorieux
+    }elseif(count($film_victorieux_array) == 1){//Affiche le film victorieux
       $film_victorieux = $film_victorieux_array[0]->film;
       echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
+    }else{
+      $film_victorieux = $film_victorieux_array[0]->film;
+      echo '<mark>Tous les utilisateurs ont voté. Il y a égalité entre les films suivants : <br/>';
+      foreach($film_victorieux_array as $film_egalite) {
+        echo $film_egalite->film->titre.'<br/>';
+      }
+      echo '</mark>';
     }
 }
 
