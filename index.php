@@ -2,6 +2,7 @@
 <html lang="en">
 
 <?php
+session_start();
 include('common.php');
 // calcul de la date de fin de la période de vote
 $fin_periode_vote = new DateTime("Fri 16:00");
