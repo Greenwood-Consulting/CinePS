@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 //Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
 // si l'utilisateur se présente
