@@ -65,7 +65,6 @@ $tous = new stdClass();
 $tous->Nom = "Tous les utilisateurs";
 $tous->id = 0;
 $array_proposeurs['tous'] = $tous;
-echo "<p>";
 echo'<form method="post" action="historique_film.php">
     <label>Membres</label>
         <select class="text-dark" name="user">';
@@ -75,7 +74,6 @@ foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
 echo"</select>";
 echo '<button type="submit" name="submit_button">Afficher le message</button>';
 echo "</form>";
-echo "</p>";
 if (isset($_POST['submit_button']) && $_POST['user'] != 0) {
    // Afficher les propositions du membre sélectionné
    $selectedUserId = $_POST['user'];
