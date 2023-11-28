@@ -1,12 +1,15 @@
 <?php
-include('header.php');
+session_start();
 include('common.php');
+include('header.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté
 $array_body_avote = array();
-$json_body_avote = json_encode($array_avote);
+$json_body_avote = json_encode($array_body_avote);
+echo 'session'. $_SESSION['user'];
 $json_avote = callAPI_POST("/api/avote/".$_SESSION['user'], $json_body_avote);
 $array_avote = json_decode($json_avote);
+
 
 if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
     foreach($_POST as $proposition_id=>$film_vote){// Mise à jour des scroes de tous les films
