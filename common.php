@@ -42,26 +42,18 @@ function printResultatVote($id_semaine){
 }
 
 // Affichage de la liste des membres qui ont déjà voté
-function printUserAyantVote($id_semaine){
-  $membre_votant = callAPI("/api/membreVotant/".$id_semaine);
-  $membre_votant_array = json_decode($membre_votant);
+function printUserAyantVote(){
+  $current_semaine_json = callAPI("/api/currentSemaine");
+  $current_semaine_array = json_decode($current_semaine_json);
+  $votants_array = $current_semaine_array[0]->votants;
+  
 
-  foreach($membre_votant_array as $membre){
-      echo "<mark><b>".$membre->votant->Nom. "</b> a voté<br /></mark>";
+  foreach($votants_array as $votant){
+    echo "<mark><b>".$votant->votant->Nom. "</b> a voté<br/></mark>";
   }
-  /*$user_vote = $bdd->prepare("SELECT votant AS votant_id FROM a_vote WHERE semaine = ?");
-  $user_vote->execute([$id_semaine]);
-  $une_personne_a_vote = false;
-  while($data = $user_vote->fetch()){//A chaque tour un votant
-    $une_personne_a_vote = true;
-    $user_qui_a_vote = $data['votant_id'];
-    $user_a_vote = $bdd->prepare('SELECT Prenom FROM membre WHERE id = ?');
-    $user_a_vote->execute([$user_qui_a_vote]);
-    echo '<mark><b>' .$user_a_vote->fetch()['Prenom'].' a voté</b></mark><br/>';
-  }
-  if(!$une_personne_a_vote){//Personne n'a voté
+  if(empty($votants_array)){//Personne n'a voté
     echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
-  }*/
+  }
 }
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
