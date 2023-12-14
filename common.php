@@ -2,8 +2,10 @@
 
 include "call_api.php";
 
-$json_id_current_semaine = callAPI("/api/idCurrentSemaine");
-$id_current_semaine = json_decode($json_id_current_semaine)->id_current_semaine;
+$json_current_semaine = callAPI("/api/currentSemaine");
+$current_semaine = json_decode($json_current_semaine);
+$id_current_semaine = $current_semaine[0]->id;
+
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){  
