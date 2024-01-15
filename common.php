@@ -3,14 +3,14 @@
 include "call_api.php";
 
 $json_current_semaine = callAPI("/api/currentSemaine");
-$current_semaine = json_decode($json_current_semaine);
-$id_current_semaine = $current_semaine[0]->id;
+$array_current_semaine = json_decode($json_current_semaine);
+$id_current_semaine = $array_current_semaine[0]->id;
 
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
-  
+
   $films_semaine = callAPI("/api/filmsProposes/".$id_semaine);
   $films_semaine_array = json_decode($films_semaine);
   $un_film_propose = false;

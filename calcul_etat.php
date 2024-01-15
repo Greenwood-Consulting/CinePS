@@ -3,8 +3,6 @@
 
 
 //Calcule etat is_proposeur
-$current_semaine = callAPI("/api/currentSemaine");
-$array_current_semaine = json_decode($current_semaine);
 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur->id;
 $is_proposeur = false;
 if(isset($_SESSION['user'])){//utilisateur connecté
