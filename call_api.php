@@ -6,7 +6,6 @@ function recupererToken(){
       'password'=>'password'
     ];
     $json_body = json_encode($body);
-  
     $curl = curl_init("http://localhost:8000/api/login_check");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
@@ -34,7 +33,6 @@ function callAPI($entry_point){
       'Content-Type: application/json'
     ]);
     $api_response = curl_exec($curl);
-
     $decoded_response = json_decode($api_response);
     // Si le token est expiré, on génère un nouveau token
     if (is_object($decoded_response) && isset($decoded_response->code) && $decoded_response->code == "401") {
@@ -52,7 +50,6 @@ function callAPI($entry_point){
 }
 
 function callAPI_POST($entry_point, $body){
-
     $curl = curl_init("http://localhost:8000".$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
@@ -78,7 +75,6 @@ function callAPI_POST($entry_point, $body){
 }
 
 function callAPI_PATCH($entry_point, $body){
-
     $curl = curl_init("http://localhost:8000".$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
