@@ -6,7 +6,7 @@ function recupererToken(){
       'password'=>'password'
     ];
     $json_body = json_encode($body);
-  
+
     $curl = curl_init("http://localhost:8000/api/login_check");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [

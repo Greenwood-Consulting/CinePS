@@ -5,7 +5,7 @@
 session_start();
 include('common.php');
 // calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime("Fri 16:00");
+$fin_periode_vote = new DateTime("Fri 18:00", new DateTimeZone('Europe/Paris'));
 $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 
 // conversion de la date de fin en timestamp JavaScript
@@ -37,7 +37,7 @@ var deadline_vote = <?php echo $deadline_vote; ?>;
 
 var x = setInterval(function() {
     var now = new Date().getTime();
-    var t = deadline_vote - now;
+        var t = deadline_vote - now;
     var days = Math.floor(t / (1000 * 60 * 60 * 24));
     var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
     var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
@@ -150,6 +150,8 @@ if(isset($_POST['new_theme'])){//si on valide le theme
 ?>
 <div class="container-fluid mt-9">
 <?php
+
+echo '<span class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</span>';
 
 include('calcul_etat.php');
 
