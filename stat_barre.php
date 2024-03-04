@@ -147,7 +147,7 @@ $count_data_annee = count($data_annee);
       data_proposeurs.addRows([
         <?php
           for($i=0;$i<$count_data_proposeurs;$i++){
-            echo "['" . $data_proposeurs[$i]['Proposeur'] . "'," . $data_proposeurs[$i]['nombre'] . "],";
+            echo "['" . addslashes($data_proposeurs[$i]['Proposeur']) . "'," . $data_proposeurs[$i]['nombre'] . "],";
           } 
         ?>
       ]);
