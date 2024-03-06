@@ -152,6 +152,7 @@ if(isset($_POST['new_theme'])){//si on valide le theme
 <?php
 
 echo '<span class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</span>';
+echo '<br/>';
 
 include('calcul_etat.php');
 
