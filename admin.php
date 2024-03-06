@@ -10,7 +10,6 @@
 <body>
     <h2 class="container-fluid p-5 bg-primary text-white text-center">Inscription</h2>
     <?php
-    $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
     include('common.php');
     if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
         $nom_de_famille = addslashes($_POST['name']);
