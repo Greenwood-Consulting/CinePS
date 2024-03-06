@@ -1,7 +1,6 @@
 <?php
 include('common.php');
 
-$bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
 //Construction du tableau data_score
 $data_score = [];
 $score_film= callAPI("/api/filmsProposes/".$id_current_semaine);

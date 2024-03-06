@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <?php
-session_start();
+include('header.php');
 include('common.php');
 // calcul de la date de fin de la période de vote
 $fin_periode_vote = new DateTime("Fri 18:00", new DateTimeZone('Europe/Paris'));
@@ -14,7 +11,8 @@ $deadline_vote = $deadline_vote*1000;
 ?>
 
 
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -55,6 +53,7 @@ var x = setInterval(function() {
   <title>CinePS</title>  
   
 <link href="./main.3f6952e4.css" rel="stylesheet">
+
 </head>             
 <body class="minimal">
 
@@ -68,7 +67,8 @@ var x = setInterval(function() {
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-    include('header.php') 
+    include('auth_form.php');
+    include('nav.php');
   ?>
     </div>
   </nav>
