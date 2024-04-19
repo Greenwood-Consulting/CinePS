@@ -54,12 +54,14 @@ if(isset($_POST['new_proposeur'])){
     $id_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
+    $typeSemaine = $_POST['typeSemaine'];
 
     $array_semaine = array(
         "proposeur_id" => $id_proposeur,
         "jour" => $date_proposeur,
         "proposition_termine" => false,
-        "theme" => ""
+        "theme" => "",
+        "type" => $typeSemaine
     );
     $json_semaine = json_encode($array_semaine);
 
@@ -76,8 +78,16 @@ echo'<form method="post" action="">
 foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
     echo"<option class='text-dark' value=".$membre->id.">". $membre->Nom." ".$membre->Prenom."</option>";
 }
+
 echo"<input type='date' name='date'>";
 echo"</select>
+
+<select class='text-dark' name='typeSemaine'>
+    <option class='text-dark' value='PSAvecFilm'>PS Standard avec Film</option>
+    <option class='text-dark' value='PSSansFilm'>PS sans Film</option>
+    <option class='text-dark' value='PasDePS'>Pas de PS</option>
+    </select>
+
 <button type='submit' name='new_proposeur'>Soumettre</button>
 </form>";
 printNextproposeurs($id_current_semaine);
