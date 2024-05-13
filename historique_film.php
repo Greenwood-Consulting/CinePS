@@ -40,7 +40,7 @@ include('common.php');
 
 
 
-if(isset($_POST['submit_button'])){
+if(isset($_POST['member_filter'])){
   $id_membre = $_POST['user'];
   $json_array_id_membre = callAPI("/api/membres/". $id_membre);
   $array_id_membre = json_decode($json_array_id_membre);
@@ -59,7 +59,7 @@ echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'a
 $get_anciennes_semaines = callAPI("/api/anciennesSemaines");
 $array_anciennes_semaines = json_decode($get_anciennes_semaines);
 
-
+// Affichage du dropdown de sélection du membre pour filtrer
 $array_proposeurs = array();
 foreach($array_anciennes_semaines as $semaine){
   $array_proposeurs[$semaine->proposeur->Nom] = $semaine->proposeur;
@@ -75,9 +75,11 @@ foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
      echo"<option class='text-dark' value=".$proposeur->id.">". $proposeur->Nom."</option>";
 }
 echo"</select>";
-echo '<button type="submit" name="submit_button">Afficher le message</button>';
+echo '<button type="submit" name="member_filter">Filtrer</button>';
 echo "</form>";
-if (isset($_POST['submit_button']) && $_POST['user'] != 0) {
+
+
+if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
    // Afficher les propositions du membre sélectionné
    $selectedUserId = $_POST['user'];
   foreach ($array_anciennes_semaines as $semaine) {
