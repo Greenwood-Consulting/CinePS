@@ -204,4 +204,131 @@ echo "</TABLE>";
 
   }
 
+
+
+  function printChoixvoteFromArray($array_semaine, $array_historique_membres){
+    // prenom proposeur
+    $proposeur_prenom = $array_semaine->proposeur->Nom;
+  
+    // récupération des propositions
+    $get_propositions = $array_semaine->propositions;
+   
+    $film_victorieux_id = $array_semaine->film_victorieux->id;
+  
+    if(count($get_propositions)==0){
+      echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
+    }else{
+  
+      // Récupération des propositions avec votes
+      $array_propositions_et_votes = $array_semaine->propositions;
+  
+  
+      echo "<TABLE border = '1px'>";
+     
+      // Affichage du header du tableau :
+      echo "<TR>";
+      echo "<TD></TD><TD></TD>";
+      foreach($array_historique_membres as $data_membre){ //on crée une colonne pour chaque membre
+        if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
+          echo "<TD>";
+          echo $data_membre->Prenom;
+          echo "</TD>";
+        }
+      }
+      echo "<TD>";
+      echo "Score";
+      echo "</TD>";
+      echo "<TD>";
+      echo "Note";
+      echo "</TD>";
+      echo "</TR>";
+      // Fin affichage header
+      
+      // Affichage du corps du tableau :
+      foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
+        echo "<TR>";
+  
+        // titre avec lien imdb
+        echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
+        echo '<TD> '.$proposition_et_votes->film->sortie_film.'</TD>';
+  
+        // Ajoutez une variable pour stocker la somme des notes
+        $sumOfNotes = 0;
+  
+        foreach($proposition_et_votes->vote as $vote){
+          if($vote->membre != $proposeur_prenom){
+            echo "<TD>";
+            echo $vote->vote;
+            echo "</TD>";
+  
+          }
+        }
+  
+        // Colonne score
+        echo "<TD>";
+        echo $proposition_et_votes->score;
+        echo "</TD>";
+        //Colonne Note
+        echo "<TD>";
+  
+
+  
+        $id_proposition = $proposition_et_votes->id;
+  
+
+
+        if($film_victorieux_id == $id_proposition){
+  
+          // Parcourir le tableau des notes et calcul de la moyenne
+          $nb_notes = 0;
+          $current_user_a_note = false;
+          for ($i = 0; $i < count($array_propositions_et_votes[0]->note); $i ++)
+          {
+            if(is_int($array_propositions_et_votes[0]->note[$i]->note)){
+              if($array_propositions_et_votes[0]->note[$i]->membre == $_SESSION['user']){
+                $current_user_a_note = true;
+              }
+              $sumOfNotes= $sumOfNotes + $array_propositions_et_votes[0]->note[$i]->note;
+              $nb_notes = $nb_notes + 1;
+            }
+          }
+  
+  
+            // Calculer la moyenne
+            if($nb_notes !== 0){
+              $moyenne = $sumOfNotes/ $nb_notes;
+            }
+  
+  
+            if(!$current_user_a_note){
+            echo "<form method='POST' action='save_note.php'>";
+  
+            echo '<select name="note" id="'.$id_proposition.'">';
+            echo '<option value="1">1</option>';
+            echo '<option value="2">2</option>';
+            echo '<option value="3">3</option>';
+            echo '<option value="4">4</option>';
+            echo '<option value="5">5</option>';
+            echo '<option value="6">6</option>';
+            echo '<option value="7">7</option>';
+            echo '<option value="8">8</option>';
+            echo '<option value="9">9</option>';
+            echo '<option value="10">10</option>';
+            echo '</select>';
+            echo "<button type='submit' name='id_proposition' value='".$id_proposition."'>Noter</button>";
+            echo "</TD>";
+            echo "</form>";
+  
+            }else{
+              echo $moyenne;
+            }
+        }
+    
+    echo "</TR>";
+  }
+  
+  echo "</TABLE>";
+      }
+  
+    }
 ?>

@@ -56,12 +56,17 @@ echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'a
 
 
 // On récupère les anciennes semaines
-$get_anciennes_semaines = callAPI("/api/anciennesSemaines");
-$array_anciennes_semaines = json_decode($get_anciennes_semaines);
+$get_historique = callAPI("/api/historique");
+$array_historique = json_decode($get_historique);
+
+
+$array_historique_semaines = $array_historique->semaines;
+$array_historique_membres = $array_historique->membres;
 
 // Affichage du dropdown de sélection du membre pour filtrer
 $array_proposeurs = array();
-foreach($array_anciennes_semaines as $semaine){
+foreach($array_historique_semaines as $semaine){
+
   $array_proposeurs[$semaine->proposeur->Nom] = $semaine->proposeur;
 }
 $tous = new stdClass();
@@ -80,9 +85,9 @@ echo "</form>";
 
 
 if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
-   // Afficher les propositions du membre sélectionné
-   $selectedUserId = $_POST['user'];
-  foreach ($array_anciennes_semaines as $semaine) {
+  // Afficher les propositions du membre sélectionné
+  $selectedUserId = $_POST['user'];
+  foreach ($array_historique_semaines['semaines'] as $semaine) {
     if (($semaine->proposeur->id == $selectedUserId) && !(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)) {
         $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
         echo "<h2> Les propositions de " . $semaine->proposeur->Nom;
@@ -93,7 +98,8 @@ if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
   }
 }
 else{
-  foreach($array_anciennes_semaines as $semaine){
+  // Afficher les propositions de tous les membres
+  foreach($array_historique_semaines as $semaine){
     // création d'une DateTime afin de pouvoir formater
     $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
     if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
@@ -102,7 +108,10 @@ else{
       echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
       echo "<p><b>Thème : ".$semaine->theme."</b></p>";
   
-      printChoixvote($semaine->id);
+      printChoixvoteFromArray($semaine, $array_historique_membres);
+
+
+
     }
   }
 }
