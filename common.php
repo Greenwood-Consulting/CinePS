@@ -213,7 +213,7 @@ echo "</TABLE>";
     // récupération des propositions
     $get_propositions = $array_semaine->propositions;
    
-    $film_victorieux_id = $array_semaine->film_victorieux->id;
+    $film_victorieux = $array_semaine->film_victorieux;
   
     if(count($get_propositions)==0){
       echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
@@ -277,7 +277,7 @@ echo "</TABLE>";
   
 
 
-        if($film_victorieux_id == $id_proposition){
+        if($film_victorieux->id == $id_proposition){
   
           // Parcourir le tableau des notes et calcul de la moyenne
           $nb_notes = 0;
