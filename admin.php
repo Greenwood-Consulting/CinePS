@@ -108,6 +108,35 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
+
+
+
+$bdd = new PDO('mysql:host=localhost;dbname=apicineps','root','');
+
+$get_membres = $bdd->prepare("SELECT * FROM membre");
+$get_membres->execute();
+$membres = $get_membres->fetchAll(PDO::FETCH_OBJ);
+
+
+foreach($membres as $membre) {
+    echo $membre->nom;
+    echo "<form method='post' action='admin.php'>";
+    echo "<input type='hidden' name='id' value='$membre->id'>";
+    echo "<button type='submit' name='actif' value='1'>Activer</button>";
+    echo "<button type='submit' name='actif' value='0'>Désactiver</button>";
+    echo "</form>";
+    echo "<br/><br/>";
+}
+
+if(isset($_POST['id']) && isset($_POST['actif'])){
+    $id = $_POST['id'];
+    $actif = $_POST['actif'];
+
+    $statut_activation = array("actif" => $actif);
+    $json_statut_activation = json_encode($statut_activation);
+
+    callAPI_PATCH("/api/actifMembre/".$id, $json_statut_activation);
+}
 ?>
 
 </body>
