@@ -89,7 +89,7 @@ var x = setInterval(function() {
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 16:00");
+$fin = new DateTime("Fri 18:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
@@ -137,15 +137,28 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 }
 
 if(isset($_POST['new_theme'])){//si on valide le theme
-  // préparation du body de la requête POST
-  $array_semaine = array(
-    'theme' => $_POST['theme_film']
-  );
-  $json_semaine = json_encode($array_semaine);
 
-  // call API
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+$theme_film = addslashes($_POST['theme_film']);
+$update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
+$update_theme->execute([$id_current_semaine]);
+}
+
+//Propostion comportement 2 : on vient du bouton generation gpt
+if(isset($_POST['generationgpt'])){//si un nouveau film est proposé
+
+  $filmgpt = array();
+
+  // Encodez les données en JSON
+  $json_filmgpt = json_encode($filmgpt);
+
+
+  $json_filmgpt = callAPI_POST("/api/propositionOpenAI", $json_filmgpt);
+  $array_filmgpt = json_decode($json_filmgpt);
+
+
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
 }
 ?>
 <div class="container-fluid mt-9">
@@ -204,12 +217,20 @@ if($connecte){//l'utilisateur est connecté
         
           echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
           printFilmsProposes($id_current_semaine);
+
           echo '<br/><br />';
           ?>
+          
+          <?php
+          //echo '<button type="submit" name="generationgpt" class="btn btn-warning">Générer les proposition</button> ';
+          ?> 
           <form method="POST" action="index.php">
           <label> Proposition de films:</label>
           <?php
+
+          
           if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
+            echo "thème non proposé";
             echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
                   <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
           }
@@ -220,7 +241,8 @@ if($connecte){//l'utilisateur est connecté
           <input type="number" name="date"  placeholder="Année" class="text-dark" >
           
           <?php
-          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button> ';
+
           echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button>';
           ?>
           </form>
