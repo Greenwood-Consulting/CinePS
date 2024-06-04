@@ -49,7 +49,7 @@
 </br>
 <h2 class="container-fluid p-5 bg-secondary text-white text-center"> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
-//si il clique sur le bouton new_proposeur
+//si il clique sur le bouton new_proposeur, création d'une nouvelle semaine
 if(isset($_POST['new_proposeur'])){
     $id_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
