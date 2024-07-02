@@ -54,10 +54,12 @@ if(isset($_POST['new_proposeur'])){
     $id_proposeur = addslashes($_POST['user']);
     $date_proposeur = addslashes($_POST['date']);
     $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
+    $type_semaine = $_POST['typeSemaine'];
 
     $array_semaine = array(
         "proposeur_id" => $id_proposeur,
         "jour" => $date_proposeur,
+        "type_semaine" => $type_semaine,
         "proposition_termine" => false,
         "theme" => ""
     );
@@ -69,17 +71,37 @@ if(isset($_POST['new_proposeur'])){
 }
 $membres_API = callAPI("/api/membres");
 $decode_membre = json_decode($membres_API);
-echo'<form method="post" action="">
-        <label>Membres</label>
-            <select class="text-dark" name="user">';
-            
-foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
-    echo"<option class='text-dark' value=".$membre->id.">". $membre->Nom." ".$membre->Prenom."</option>";
-}
-echo"<input type='date' name='date'>";
-echo"</select>
-<button type='submit' name='new_proposeur'>Soumettre</button>
+echo '<form method="post" action="">';
+
+// Membre proposeur
+echo '  <label>Membres</label>
+        <select class="text-dark" name="user">';
+            foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
+                echo"<option class='text-dark' value=".$membre->id.">". $membre->Nom." ".$membre->Prenom."</option>";
+            }
+echo "  </select>";
+echo "  <br/>";
+
+// Date de la semaine
+echo "  <label>Date</label>";
+echo "  <input type='date' name='date'>";
+echo "  <br/>";
+
+// Type de semaine
+echo "  <label>Type de PS</label>";
+echo '  <select class="text-dark" name="typeSemaine">';
+echo "       <option class='text-dark' value='AvecFilm'>PS avec film</option>";
+echo "       <option class='text-dark' value='PSSansFilm'>PS sans film</option>";
+echo "       <option class='text-dark' value='PasDePS'>Pas de PS</option>";
+echo "  </select>";
+echo "  <br/>";
+
+// Submit
+echo "<button type='submit' name='new_proposeur'>Créer une semaine</button>
 </form>";
+
+echo "<h2>Prochaines Semaine</h2>";
+
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
