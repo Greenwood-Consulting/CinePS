@@ -62,7 +62,7 @@ if(isset($_POST['new_proposeur'])){
         "type_semaine" => $type_semaine,
         "proposition_termine" => false,
         "theme" => "",
-        "type" => $typeSemaine
+        "type_semaine" => $type_semaine
     );
     $json_semaine = json_encode($array_semaine);
 
@@ -70,6 +70,8 @@ if(isset($_POST['new_proposeur'])){
     $new_semaine = json_decode($semaine);
 
 }
+
+// Nouvelle semaine
 $membres_API = callAPI("/api/membres");
 $decode_membre = json_decode($membres_API);
 echo '<form method="post" action="">';
