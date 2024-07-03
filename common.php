@@ -63,21 +63,11 @@ function printNextproposeurs($id_semaine){
   $next_proposeurs = callAPI("/api/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
 
-  foreach($next_proposeurs_array as $semaine){
+  foreach($next_proposeurs_array as $proposition){
     // création d'une DateTime afin de pouvoir formater
-    $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
+    $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $proposition->jour);
     echo "<mark>".$dateSemaine->format('Y-m-d');
-    if ($semaine->type == 'AvecFilm'){
-      echo " - ".$semaine->proposeur->Nom."</mark>";
-    }
-    if ($semaine->type == 'PSSansFilm'){
-      echo " - Pas de Film</mark>";
-    }
-    if ($semaine->type == 'PasDePS'){
-      echo " - Pas de PS</mark>";
-    }
-    echo "<br/>";
-
+    echo " - ".$proposition->proposeur->Nom."</mark><br/>";
   }
 }
 
