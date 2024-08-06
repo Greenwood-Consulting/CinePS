@@ -67,6 +67,8 @@ if(isset($_POST['new_proposeur'])){
     $new_semaine = json_decode($semaine);
 
 }
+
+//Formulaire de création de semaine
 $membres_API = callAPI("/api/membres");
 $decode_membre = json_decode($membres_API);
 echo'<form method="post" action="">
@@ -83,18 +85,12 @@ echo"</select>
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
-
-
-
-$bdd = new PDO('mysql:host=localhost;dbname=apicineps','root','');
-
-$get_membres = $bdd->prepare("SELECT * FROM membre");
-$get_membres->execute();
-$membres = $get_membres->fetchAll(PDO::FETCH_OBJ);
+$get_membres = callAPI("/api/membres");
+$membres = json_decode($get_membres);
 
 
 foreach($membres as $membre) {
-    echo $membre->nom;
+    echo $membre->Nom;
     echo "<form method='post' action='admin.php'>";
     echo "<input type='hidden' name='id' value='$membre->id'>";
     echo "<button type='submit' name='actif' value='1' class='actif'>Activer</button>";

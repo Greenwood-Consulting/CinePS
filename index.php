@@ -138,9 +138,15 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 
 if(isset($_POST['new_theme'])){//si on valide le theme
 
-$theme_film = addslashes($_POST['theme_film']);
-$update_theme = $bdd->prepare("UPDATE semaine SET theme = '".$theme_film."'  WHERE id = ?");
-$update_theme->execute([$id_current_semaine]);
+ // préparation du body de la requête POST
+ $array_semaine = array(
+  'theme' => $_POST['theme_film']
+);
+$json_semaine = json_encode($array_semaine);
+
+// call API
+$json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
+$array_semaine = json_decode($json_semaine);
 }
 
 //Propostion comportement 2 : on vient du bouton generation gpt
