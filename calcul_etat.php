@@ -32,6 +32,5 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 $theme = $array_current_semaine[0]->theme;
 $etat_theme_non_propose = $theme == "";
 
-print_r($theme);
 
 ?>
