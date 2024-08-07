@@ -180,38 +180,41 @@ if ($array_current_semaine[0]->type == "AvecFilm") {
           /*printChoixvote($id_current_semaine);*/
 
         }else{//le vote n'est pas terminé
-          //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
-          if($is_proposeur){//si l'user est proposeur
-            echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
-          }else{//sinon il ne l'est pas
-            if($current_user_a_vote){//l'user a voté
-              echo '<mark>Vous avez déjà voté</mark>';
-            }else{//l'user n'a pas voté
-              echo'<h2 class="text-warning">Vous devez voter </h2>';
-              echo "<br />";
-              echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
-              echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
-              echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
-              ?>
-              <form method="POST" action="save_vote.php">
-              <?php
-              // récupération de la semaine courrante (contenant les propositions)
-              $current_semaine = callAPI("/api/currentSemaine");
-              $array_current_semaine = json_decode($current_semaine);
-              $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
+          if(!$is_actif){//si il y a des membres actifs
+            echo "Votre compte a été desactivé";
+          }else{
+            //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
+            if($is_proposeur){//si l'user est proposeur
+              echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
+            }else{//sinon il ne l'est pas
+              if($current_user_a_vote){//l'user a voté
+                echo '<mark>Vous avez déjà voté</mark>';
+              }else{//l'user n'a pas voté
+                echo'<h2 class="text-warning">Vous devez voter </h2>';
+                echo "<br />";
+                echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
+                echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
+                echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
+                ?>
+                <form method="POST" action="save_vote.php">
+                <?php
+                // récupération de la semaine courrante (contenant les propositions)
+                $current_semaine = callAPI("/api/currentSemaine");
+                $array_current_semaine = json_decode($current_semaine);
+                $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
 
-              echo "<table>";
-              foreach($array_current_semaine[0]->propositions as $proposition){
-                echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+                echo "<table>";
+                foreach($array_current_semaine[0]->propositions as $proposition){
+                  echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+                }
+                echo "</table>";
+                ?>
+                <button type="submit" class="btn btn-warning">Voter</button>
+                <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
+                <?php
               }
-              echo "</table>";
-              ?>
-              <button type="submit" class="btn btn-warning">Voter</button>
-              <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
-              <?php
             }
           }
-        
         }
       }else{//la proposition n'est pas encore faite
         if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
