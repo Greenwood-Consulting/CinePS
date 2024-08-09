@@ -89,7 +89,7 @@ var x = setInterval(function() {
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
-$fin = new DateTime("Fri 16:00");
+$fin = new DateTime("Fri 18:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
 
@@ -137,15 +137,34 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
 }
 
 if(isset($_POST['new_theme'])){//si on valide le theme
-  // préparation du body de la requête POST
-  $array_semaine = array(
-    'theme' => $_POST['theme_film']
-  );
-  $json_semaine = json_encode($array_semaine);
 
-  // call API
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+ // préparation du body de la requête POST
+ $array_semaine = array(
+  'theme' => $_POST['theme_film']
+);
+$json_semaine = json_encode($array_semaine);
+
+// call API
+$json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
+$array_semaine = json_decode($json_semaine);
+}
+
+//Propostion comportement 2 : on vient du bouton generation gpt
+if(isset($_POST['generationgpt'])){//si un nouveau film est proposé
+
+  $filmgpt = array();
+
+  // Encodez les données en JSON
+  $json_filmgpt = json_encode($filmgpt);
+
+
+  $json_filmgpt = callAPI_POST("/api/propositionOpenAI", $json_filmgpt);
+  $array_filmgpt = json_decode($json_filmgpt);
+
+
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
 }
 ?>
 <div class="container-fluid mt-9">
@@ -155,6 +174,7 @@ echo '<span class="text-warning">Il vous reste <div id="demo"></div> avant la fi
 echo '<br/>';
 
 include('calcul_etat.php');
+
 
 if($connecte){//l'utilisateur est connecté
   if($vote_period){//nous sommes en période de vote
@@ -166,50 +186,61 @@ if($connecte){//l'utilisateur est connecté
         /*printChoixvote($id_current_semaine);*/
 
       }else{//le vote n'est pas terminé
-        //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
-        if($is_proposeur){//si l'user est proposeur
-          echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
-        }else{//sinon il ne l'est pas
-          if($current_user_a_vote){//l'user a voté
-            echo '<mark>Vous avez déjà voté</mark>';
-          }else{//l'user n'a pas voté
-            echo'<h2 class="text-warning">Vous devez voter </h2>';
-            echo "<br />";
-            echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
-            echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
-            echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
-            ?>
-            <form method="POST" action="save_vote.php">
-            <?php
-            // récupération de la semaine courrante (contenant les propositions)
-            $current_semaine = callAPI("/api/currentSemaine");
-            $array_current_semaine = json_decode($current_semaine);
-            $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
+        if(!$is_actif){//si il y a des membres actifs
+          echo "Votre compte a été desactivé";
+        }else{
+          //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
+          if($is_proposeur){//si l'user est proposeur
+            echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
+          }else{//sinon il ne l'est pas
+            if($current_user_a_vote){//l'user a voté
+              echo '<mark>Vous avez déjà voté</mark>';
+            }else{//l'user n'a pas voté
+              echo'<h2 class="text-warning">Vous devez voter </h2>';
+              echo "<br />";
+              echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
+              echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
+              echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
+              ?>
+              <form method="POST" action="save_vote.php">
+              <?php
+              // récupération de la semaine courrante (contenant les propositions)
+              $current_semaine = callAPI("/api/currentSemaine");
+              $array_current_semaine = json_decode($current_semaine);
+              $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
 
-            echo "<table>";
-            foreach($array_current_semaine[0]->propositions as $proposition){
-              echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
+              echo "<table>";
+              foreach($array_current_semaine[0]->propositions as $proposition){
+                echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="1" min="1" max="6">'.'</mark> </td></tr>';
+              }
+              echo "</table>";
+              ?>
+              <button type="submit" class="btn btn-warning">Voter</button>
+              <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
+              <?php
             }
-            echo "</table>";
-            ?>
-            <button type="submit" class="btn btn-warning">Voter</button>
-            <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
-            <?php
           }
         }
-       
-      }
+    }
     }else{//la proposition n'est pas encore faite
       if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
         
           echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
           printFilmsProposes($id_current_semaine);
+
           echo '<br/><br />';
           ?>
+          
+          <?php
+          //echo '<button type="submit" name="generationgpt" class="btn btn-warning">Générer les proposition</button> ';
+          ?> 
           <form method="POST" action="index.php">
           <label> Proposition de films:</label>
           <?php
+
+          
           if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
+            echo "thème non proposé";
             echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
                   <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
           }
@@ -220,7 +251,8 @@ if($connecte){//l'utilisateur est connecté
           <input type="number" name="date"  placeholder="Année" class="text-dark" >
           
           <?php
-          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button> ';
+
           echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button>';
           ?>
           </form>
