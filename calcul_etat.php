@@ -1,7 +1,6 @@
 <?php
 
 
-
 //Calcule etat is_proposeur
 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur->id;
 $is_proposeur = false;
@@ -32,4 +31,14 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 $theme = $array_current_semaine[0]->theme;
 $etat_theme_non_propose = $theme == "";
 
+
+// Récupérer les membres depuis l'API
+if(isset($_SESSION['user'])){//si l'utilisateur est connecté
+  $get_membre = callAPI("/api/membres/" . $_SESSION['user']);
+  $array_membres = json_decode($get_membre);
+
+  //indique si le membre est actif ou non
+  $actif = $array_membres->actif;
+  $is_actif = $actif == 1;
+}
 ?>

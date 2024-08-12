@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="admin.css">
     <title>Admin</title>
 </head>
 <body>
-    <h2 class="container-fluid p-5 bg-primary text-white text-center">Inscription</h2>
+    <h2>Inscription</h2>
     <?php
     include('common.php');
     if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
@@ -47,7 +47,7 @@
 </br>
     
 </br>
-<h2 class="container-fluid p-5 bg-secondary text-white text-center"> Choix du proposeur pour la semaine souhaitée </h2>
+<h2> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
 //si il clique sur le bouton new_proposeur, création d'une nouvelle semaine
 if(isset($_POST['new_proposeur'])){
@@ -71,7 +71,7 @@ if(isset($_POST['new_proposeur'])){
 
 }
 
-// Nouvelle semaine
+//Formulaire de création de semaine
 $membres_API = callAPI("/api/membres");
 $decode_membre = json_decode($membres_API);
 echo '<form method="post" action="">';
@@ -108,6 +108,29 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
+$get_membres = callAPI("/api/membres");
+$membres = json_decode($get_membres);
+
+
+foreach($membres as $membre) {
+    echo $membre->Nom;
+    echo "<form method='post' action='admin.php'>";
+    echo "<input type='hidden' name='id' value='$membre->id'>";
+    echo "<button type='submit' name='actif' value='1' class='actif'>Activer</button>";
+    echo "<button type='submit' name='actif' value='0' class='inactif'>Désactiver</button>";
+    echo "</form>";
+    echo "<br/><br/>";
+}
+
+if(isset($_POST['id']) && isset($_POST['actif'])){
+    $id = $_POST['id'];
+    $actif = $_POST['actif'];
+
+    $statut_activation = array("actif" => $actif);
+    $json_statut_activation = json_encode($statut_activation);
+
+    callAPI_PATCH("/api/actifMembre/".$id, $json_statut_activation);
+}
 ?>
 
 </body>
