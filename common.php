@@ -268,27 +268,23 @@ echo "</TABLE>";
         echo "<TD>";
         echo $proposition_et_votes->score;
         echo "</TD>";
+
+
         //Colonne Note
         echo "<TD>";
-  
-
-  
         $id_proposition = $proposition_et_votes->id;
   
-
-
         if($film_victorieux->id == $id_proposition){
-  
           // Parcourir le tableau des notes et calcul de la moyenne
           $nb_notes = 0;
           $current_user_a_note = false;
-          for ($i = 0; $i < count($array_propositions_et_votes[0]->note); $i ++)
+          for ($i = 0; $i < count($proposition_et_votes->note); $i ++)
           {
-            if(is_int($array_propositions_et_votes[0]->note[$i]->note)){
-              if($array_propositions_et_votes[0]->note[$i]->membre == $_SESSION['user']){
+            if(is_int($proposition_et_votes->note[$i]->note)){
+              if($proposition_et_votes->note[$i]->membre == $_SESSION['user']){
                 $current_user_a_note = true;
               }
-              $sumOfNotes= $sumOfNotes + $array_propositions_et_votes[0]->note[$i]->note;
+              $sumOfNotes= $sumOfNotes + $proposition_et_votes->note[$i]->note;
               $nb_notes = $nb_notes + 1;
             }
           }
