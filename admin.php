@@ -93,7 +93,7 @@ echo "  <br/>";
 // Type de semaine
 echo "  <label>Type de PS</label>";
 echo '  <select class="text-dark" name="typeSemaine">';
-echo "       <option class='text-dark' value='AvecFilm'>PS avec film</option>";
+echo "       <option class='text-dark' value='PSAvecFilm'>PS avec film</option>";
 echo "       <option class='text-dark' value='PSSansFilm'>PS sans film</option>";
 echo "       <option class='text-dark' value='PasDePS'>Pas de PS</option>";
 echo "  </select>";

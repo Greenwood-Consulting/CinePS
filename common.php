@@ -67,7 +67,7 @@ function printNextproposeurs($id_semaine){
     // création d'une DateTime afin de pouvoir formater
     $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
     echo "<mark>".$dateSemaine->format('Y-m-d');
-    if ($semaine->type == 'AvecFilm'){
+    if ($semaine->type == 'PSAvecFilm'){
       echo " - ".$semaine->proposeur->Nom."</mark>";
     }
     if ($semaine->type == 'PSSansFilm'){
