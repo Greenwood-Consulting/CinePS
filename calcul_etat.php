@@ -31,14 +31,12 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 $theme = $array_current_semaine[0]->theme;
 $etat_theme_non_propose = $theme == "";
 
-
+$is_actif = true;
 // Récupérer les membres depuis l'API
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   $get_membre = callAPI("/api/membres/" . $_SESSION['user']);
   $array_membres = json_decode($get_membre);
-
   //indique si le membre est actif ou non
-  $actif = $array_membres->actif;
-  $is_actif = $actif == 1;
+  $is_actif = $array_membres->actif;
 }
 ?>

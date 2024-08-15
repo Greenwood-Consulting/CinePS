@@ -159,7 +159,7 @@ if ($array_current_semaine[0]->type == "PSSansFilm") {
 if ($array_current_semaine[0]->type == "PasDePS") {
   echo "<mark>Il n'y a pas de PS cette semaine</mark>";
 }
-if ($array_current_semaine[0]->type == "AvecFilm") {
+if ($array_current_semaine[0]->type == "PSAvecFilm") {
   // Affichage de la liste des utilisateurs ayant déjà voté
   printUserAyantVote($id_current_semaine);
 
