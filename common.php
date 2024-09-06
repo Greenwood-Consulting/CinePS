@@ -326,7 +326,7 @@ echo "</TABLE>";
             }else{
               if($nb_notes !== 0){
                 $moyenne = round($sumOfNotes/ $nb_notes, 1); // Calculer la moyenne
-                echo $moyenne;
+                echo $moyenne." (".$nb_notes." notes)";
               }
             }
           }
