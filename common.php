@@ -248,9 +248,11 @@ echo "</TABLE>";
       echo "<TD>";
       echo "Score";
       echo "</TD>";
-      echo "<TD>";
-      echo "Note";
-      echo "</TD>";
+      if(isset($_SESSION['user'])){ // On affiche la colonne Note seulement si l'utilisateur est connecté
+        echo "<TD>";
+        echo "Note";
+        echo "</TD>";
+      }
       echo "</TR>";
       // Fin affichage header
       
@@ -280,32 +282,26 @@ echo "</TABLE>";
         echo "</TD>";
 
 
-        //Colonne Note
-        echo "<TD>";
-        $id_proposition = $proposition_et_votes->id;
-  
-        if($film_victorieux->id == $id_proposition){
-          // Parcourir le tableau des notes et calcul de la moyenne
-          $nb_notes = 0;
-          $current_user_a_note = false;
-          for ($i = 0; $i < count($proposition_et_votes->note); $i ++)
-          {
-            if(is_int($proposition_et_votes->note[$i]->note)){
-              if($proposition_et_votes->note[$i]->membre == $_SESSION['user']){
-                $current_user_a_note = true;
+        if(isset($_SESSION['user'])){ // On affiche la colonne Note seulement si l'utilisateur est connecté
+          //Colonne Note
+          echo "<TD>";
+          $id_proposition = $proposition_et_votes->id;
+    
+          if($film_victorieux->id == $id_proposition){
+            // Parcourir le tableau des notes et calcul de la moyenne
+            $nb_notes = 0;
+            $current_user_a_note = false;
+            for ($i = 0; $i < count($proposition_et_votes->note); $i ++)
+            {
+              if(is_int($proposition_et_votes->note[$i]->note)){
+                if($proposition_et_votes->note[$i]->membre == $_SESSION['user']){
+                  $current_user_a_note = true;
+                }
+                $sumOfNotes= $sumOfNotes + $proposition_et_votes->note[$i]->note;
+                $nb_notes = $nb_notes + 1;
               }
-              $sumOfNotes= $sumOfNotes + $proposition_et_votes->note[$i]->note;
-              $nb_notes = $nb_notes + 1;
             }
-          }
-  
-  
-            // Calculer la moyenne
-            if($nb_notes !== 0){
-              $moyenne = $sumOfNotes/ $nb_notes;
-            }
-  
-  
+    
             if(!$current_user_a_note){
             echo "<form method='POST' action='save_note.php'>";
   
@@ -328,8 +324,14 @@ echo "</TABLE>";
             echo "</form>";
   
             }else{
-              echo $moyenne;
+              if($nb_notes !== 0){
+                $moyenne = round($sumOfNotes/ $nb_notes, 1); // Calculer la moyenne
+                echo $moyenne;
+              }
             }
+          }
+          echo "</TD>";
+          // Fin de la colonne sur les notes
         }
     
     echo "</TR>";
