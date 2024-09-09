@@ -145,6 +145,27 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 }
+
+//Propostion comportement 2 : on vient du bouton seconde_chance
+if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
+
+  $id_proposeur = addslashes($_SESSION['user']);
+
+  // préparation du body de la requête POST
+  $titre_film = addslashes($_POST['titre_film']);
+  $sortie_film = addslashes($_POST['date']);
+  $imdb_film = addslashes($_POST['lien_imdb']);
+  $array_proposition = array(
+    'titre_film' => $titre_film,
+    'sortie_film' => $sortie_film,
+    'imdb_film' => $imdb_film
+  );
+  $json_proposition = json_encode($array_proposition);
+
+  // call API
+  $json_proposition = callAPI("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
+  $array_proposition = json_decode($json_proposition);
+}
 ?>
 <div class="container-fluid mt-9">
 <?php
@@ -203,70 +224,70 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                 $array_current_semaine = json_decode($current_semaine);
                 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
 
-                echo "<table>";
-                foreach($array_current_semaine[0]->propositions as $proposition){
-                  echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
-                }
-                echo "</table>";
-                ?>
-                <button type="submit" class="btn btn-warning">Voter</button>
-                <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
-                <?php
-              }
+            echo "<table>";
+            foreach($array_current_semaine[0]->propositions as $proposition){
+              echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
             }
+            echo "</table>";
+            ?>
+            <button type="submit" class="btn btn-warning">Voter</button>
+            <button type="submit" name="abstention" class="btn btn-warning">S'abstenir</button> </br>
+            <?php
           }
         }
-      }else{//la proposition n'est pas encore faite
-        if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
-          
-            echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
-            printFilmsProposes($id_current_semaine);
-            echo '<br/><br />';
-            ?>
-            <form method="POST" action="index.php">
-            <label> Proposition de films:</label>
-            <?php
-            if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
-              echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
-                    <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-            }
-            ?>
-            
-            <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
-            <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
-            <input type="number" name="date"  placeholder="Année" class="text-dark" >
-            
-            <?php
-            echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button>';
-            ?>
-            </form>
-            <?php
-        }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
-          if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
-          }else{//Sinon on indique que aucun proposeur n'est défini
-            echo "<mark>Aucun proposeur n'a encore été défini</mark>";
-          }
-        }
+       
       }
-    }else{//nous ne sommes pas en période de vote
-      printResultatVote($id_current_semaine);
-    }
-  }else{//aucun utilisateur est connecté
-    if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
-      if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
-        if($vote_termine_cette_semaine){//le vote est terminé et pas connecté
-          printResultatVote($id_current_semaine);
-        }else{//le vote n'est pas terminé mais pas connecté
+    }else{//la proposition n'est pas encore faite
+      if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
+        
+          echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
           printFilmsProposes($id_current_semaine);
+          echo '<br/><br />';
+          ?>
+          <form method="POST" action="index.php">
+          <label> Proposition de films:</label>
+          <?php
+          if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
+            echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
+                  <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
+          }
+          ?>
+          
+          <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+          <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+          <input type="number" name="date"  placeholder="Année" class="text-dark" >
+          
+          <?php
+          echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+          echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
+          echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
+          ?>
+          </form>
+          <?php
+      }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
+        if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
+          echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
+        }else{//Sinon on indique que aucun proposeur n'est défini
+          echo "<mark>Aucun proposeur n'a encore été défini</mark>";
         }
-      }else{//la proposition n'est pas encore faite et pas connecté
-        echo '<mark>la proposition n\'a pas encore été faite</mark>';
       }
-    }else{//nous ne sommes pas en période de vote et pas connecté
-      printResultatVote($id_current_semaine);
     }
+  }else{//nous ne sommes pas en période de vote
+    printResultatVote($id_current_semaine);
+  }
+}else{//aucun utilisateur est connecté
+  if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
+    if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
+      if($vote_termine_cette_semaine){//le vote est terminé et pas connecté
+        printResultatVote($id_current_semaine);
+      }else{//le vote n'est pas terminé mais pas connecté
+        printFilmsProposes($id_current_semaine);
+      }
+    }else{//la proposition n'est pas encore faite et pas connecté
+      echo '<mark>la proposition n\'a pas encore été faite</mark>';
+    }
+  }else{//nous ne sommes pas en période de vote et pas connecté
+    printResultatVote($id_current_semaine);
   }
 }
 echo "<br/>";
