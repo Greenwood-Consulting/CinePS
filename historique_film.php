@@ -116,26 +116,36 @@ else{
     $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
     if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
       // TODO gérer le if dans service CinePS-API, pas ici
-      echo "<h2 > Les propositions de ".$semaine->proposeur->Nom;
+      echo "<h2> Les propositions de ".$semaine->proposeur->Nom;
       echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
-      echo "<p><b>Thème : ".$semaine->theme."</b></p>";
+      
+      if ( $semaine->type == 'PSAvecFilm'){
+        echo "<p class=\"texte-historique\"><b>Thème : ".$semaine->theme."</b></p>";
 
-      if (isset($_POST['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur beber
-        echo '<form method="post" action="historique_film.php">
-                <label>Spécifier le film gagant</label>
-                <select class="text-dark" name="filmGagnant">';
-                foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
-                  echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
-                }
-        echo "  </select>";
-        echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
-        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
-        echo "</form>";
+        // Formulaire pour désigner le film gagnant
+        if (isset($_POST['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur beber
+          echo '<form method="post" action="historique_film.php">
+                  <label>Spécifier le film gagant</label>
+                  <select class="text-dark" name="filmGagnant">';
+                  foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
+                    echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
+                  }
+          echo "  </select>";
+          echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
+          echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
+          echo "</form>";
+        }
+    
+        printChoixvoteFromArray($semaine, $array_historique_membres);
       }
-  
-      printChoixvoteFromArray($semaine, $array_historique_membres);
 
+      if ($semaine->type == 'PasDePS'){
+        echo "<p class=\"texte-historique\"><b>Pas de PS</b></p>";
+      }
 
+      if ($semaine->type == 'PSSansFilm'){
+        echo "<p class=\"texte-historique\"><b>Pas de film</b></p>";
+      }
 
     }
   }
