@@ -67,3 +67,9 @@ p{
 form{
   margin-left: 30%;
 }
+
+.texte-historique {
+  background-color: #000000c7;
+  display: inline-block;
+  margin-left: 30%;
+}
