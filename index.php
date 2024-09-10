@@ -221,11 +221,11 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                 $current_semaine = callAPI("/api/currentSemaine");
                 $array_current_semaine = json_decode($current_semaine);
                 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
+                $nombre_proposition = count($array_current_semaine[0]->propositions);
 
                 echo "<table>";
                 foreach($array_current_semaine[0]->propositions as $proposition){
-                  echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="0" min="0" max="6">'.'</mark> </td></tr>';
-                }
+                  echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="1" min="1" max="'.$nombre_proposition.'">'.'</mark> </td></tr>';                }
                 echo "</table>";
                 ?>
                 <button type="submit" class="btn btn-warning">Voter</button>
