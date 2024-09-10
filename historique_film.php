@@ -120,7 +120,7 @@ else{
       echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
       echo "<p><b>Thème : ".$semaine->theme."</b></p>";
 
-      if ($_SESSION['user'] == 1){ // Si utilisateur beber
+      if (isset($_POST['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur beber
         echo '<form method="post" action="historique_film.php">
                 <label>Spécifier le film gagant</label>
                 <select class="text-dark" name="filmGagnant">';
