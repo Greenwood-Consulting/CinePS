@@ -83,6 +83,18 @@ echo"</select>";
 echo '<button type="submit" name="member_filter">Filtrer</button>';
 echo "</form>";
 
+// Traiter le cas où on vient d'appuyer sur le bouton pour désigner le film gagant
+if (isset($_POST['designer_film_gagant'])) {
+  // préparation du body de la requête PATCH
+  $array_semaine = array(
+    'proposition_gagnante' => $_POST['filmGagnant']
+  );
+  $json_semaine = json_encode($array_semaine);
+
+  // call API
+  $json_semaine = callAPI_PATCH("/api/semaine/".$_POST['semaineId'], $json_semaine);
+  $array_semaine = json_decode($json_semaine);
+}
 
 if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
   // Afficher les propositions du membre sélectionné
@@ -107,6 +119,19 @@ else{
       echo "<h2 > Les propositions de ".$semaine->proposeur->Nom;
       echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
       echo "<p><b>Thème : ".$semaine->theme."</b></p>";
+
+      if ($_SESSION['user'] == 1){ // Si utilisateur beber
+        echo '<form method="post" action="historique_film.php">
+                <label>Spécifier le film gagant</label>
+                <select class="text-dark" name="filmGagnant">';
+                foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
+                  echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
+                }
+        echo "  </select>";
+        echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
+        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
+        echo "</form>";
+      }
   
       printChoixvoteFromArray($semaine, $array_historique_membres);
 
