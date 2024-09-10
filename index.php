@@ -109,6 +109,11 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
+
+  echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
 }
 
 
@@ -151,20 +156,13 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
 
   $id_proposeur = addslashes($_SESSION['user']);
 
-  // préparation du body de la requête POST
-  $titre_film = addslashes($_POST['titre_film']);
-  $sortie_film = addslashes($_POST['date']);
-  $imdb_film = addslashes($_POST['lien_imdb']);
-  $array_proposition = array(
-    'titre_film' => $titre_film,
-    'sortie_film' => $sortie_film,
-    'imdb_film' => $imdb_film
-  );
-  $json_proposition = json_encode($array_proposition);
-
   // call API
   $json_proposition = callAPI("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
   $array_proposition = json_decode($json_proposition);
+
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
 }
 ?>
 <div class="container-fluid mt-9">
