@@ -109,6 +109,11 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
+
+  echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
 }
 
 
@@ -144,6 +149,20 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   // call API
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
+}
+
+//Propostion comportement 2 : on vient du bouton seconde_chance
+if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
+
+  $id_proposeur = addslashes($_SESSION['user']);
+
+  // call API
+  $json_proposition = callAPI("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
+  $array_proposition = json_decode($json_proposition);
+
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
 }
 ?>
 <div class="container-fluid mt-9">
@@ -238,7 +257,8 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             
             <?php
             echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button>';
+            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
+            echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
             ?>
             </form>
             <?php
