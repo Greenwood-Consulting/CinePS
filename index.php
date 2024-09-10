@@ -264,7 +264,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$proposeur_cette_semaine."</mark>";
+            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$array_current_semaine[0]->proposeur->Nom."</mark>";
           }else{//Sinon on indique que aucun proposeur n'est défini
             echo "<mark>Aucun proposeur n'a encore été défini</mark>";
           }
