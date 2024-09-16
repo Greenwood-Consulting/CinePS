@@ -19,7 +19,7 @@ jobs:
 
     - name: Upload files via SFTP
       run: |
-        lftp -c "set sftp:auto-confirm yes;" -f "
+        lftp -c "set sftp:connect-program 'ssh -a -x -o StrictHostKeyChecking=no'" -f "
         open -u ${{ secrets.PREPROD_FTP_USER }},${{ secrets.PREPROD_FTP_PASSWORD }} sftp://${{ secrets.PREPROD_FTP_HOST }}
         mirror -R ./ /lamp0/web/vhosts/preprod-ps.gc2.fr/htdocs --exclude .git/
         bye
