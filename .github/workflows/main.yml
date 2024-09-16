@@ -22,7 +22,7 @@ jobs:
         lftp -f "
         set sftp:connect-program 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
         open -u ${{ secrets.PREPROD_FTP_USER }},${{ secrets.PREPROD_FTP_PASSWORD }} sftp://${{ secrets.PREPROD_FTP_HOST }}
-        mirror -R ./ /path/to/remote/directory/ --exclude .git/
+        mirror -R ./ /lamp0/web/vhosts/preprod-ps.gc2.fr/htdocs --exclude .git/
         bye
         "
 
