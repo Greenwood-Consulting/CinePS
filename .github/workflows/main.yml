@@ -1,3 +1,28 @@
-- name: SFTP Upload
-  uses: Dylan700/sftp-upload-action@v1.2.3
+name: Upload via SFTP
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le workflow à chaque push sur la branche main
+  workflow_dispatch:  # Permet d'exécuter le workflow manuellement
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Récupère ton dépôt
+
+    - name: Install lftp
+      run: sudo apt-get install -y lftp  # Installation de lftp, un outil SFTP/FTP
+
+    - name: Upload files via SFTP
+      run: |
+        lftp -f "
+        open -u ${{ secrets.PREPROD_FTP_USER }},${{ secrets.PREPROD_FTP_PASSWORD }} sftp://PREPROD_FTP_HOST
+        mirror -R ./ /lamp0/web/vhosts/preprod-ps.gc2.fr/htdocs --exclude .git/
+        bye
+        "
+
             
