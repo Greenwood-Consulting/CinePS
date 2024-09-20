@@ -26,7 +26,8 @@ $deadline_vote = $deadline_vote*1000;
   <meta name="msapplication-tap-highlight" content="no">
   
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
-  <link href="./assets/favicon.ico" rel="icon">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+
 
   <!--Gestion du compte à rebours de la période de vote -->
 <script>
