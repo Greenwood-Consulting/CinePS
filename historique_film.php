@@ -89,7 +89,6 @@ if (isset($_POST['designer_film_gagant'])) {
   $array_semaine = array(
     'proposition_gagnante' => $_POST['filmGagnant']
   );
-  echo "Film gagant : " . $_POST['filmGagnant'];
   $json_semaine = json_encode($array_semaine);
 
   // call API
