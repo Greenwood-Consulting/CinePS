@@ -73,7 +73,7 @@ $tous = new stdClass();
 $tous->Nom = "Tous les utilisateurs";
 $tous->id = 0;
 $array_proposeurs['tous'] = $tous;
-echo'<form method="post" action="historique_film.php">
+echo'<form method="post" action="historique_film.php" class = "main-zone">
     <label>Membres</label>
         <select class="text-dark" name="user">';
 foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
@@ -89,6 +89,7 @@ if (isset($_POST['designer_film_gagant'])) {
   $array_semaine = array(
     'proposition_gagnante' => $_POST['filmGagnant']
   );
+  echo "Film gagant : " . $_POST['filmGagnant'];
   $json_semaine = json_encode($array_semaine);
 
   // call API
@@ -123,8 +124,8 @@ else{
         echo "<p class=\"texte-historique\"><b>Thème : ".$semaine->theme."</b></p>";
 
         // Formulaire pour désigner le film gagnant
-        if (isset($_POST['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur beber
-          echo '<form method="post" action="historique_film.php">
+        if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
+          echo '<form method="post" action="historique_film.php" class="main-zone">
                   <label>Spécifier le film gagant</label>
                   <select class="text-dark" name="filmGagnant">';
                   foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition

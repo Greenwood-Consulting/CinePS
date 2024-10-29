@@ -64,7 +64,7 @@ p{
   margin-left: 30%;
 }
 
-form{
+.main-zone{
   margin-left: 30%;
 }
 
@@ -74,7 +74,10 @@ form{
   margin-left: 30%;
 }
 
+.texte-film-victorieux {
+  background-color: #000000c7;
+}
+
 .film-victorieux {
   background-color: #906a039c;
-  ;
 }
