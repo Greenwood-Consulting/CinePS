@@ -1,4 +1,6 @@
 <?php
+include 'env.php';
+
 // Récupérer un tolen d'accàs l'API
 function recupererToken(){
     $body = [
@@ -7,7 +9,7 @@ function recupererToken(){
     ];
     $json_body = json_encode($body);
 
-    $curl = curl_init("http://localhost:8000/api/login_check");
+    $curl = curl_init(API_URL."/api/login_check");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Content-Type: application/json'
@@ -27,7 +29,7 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
 
 function callAPI($entry_point){
     // Paramétrage de la requête
-    $curl = curl_init("http://localhost:8000".$entry_point);
+    $curl = curl_init(API_URL.$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Authorization: bearer '. $_SESSION['token'],
@@ -51,7 +53,7 @@ function callAPI($entry_point){
 }
 
 function callAPI_POST($entry_point, $body){
-    $curl = curl_init("http://localhost:8000".$entry_point);
+    $curl = curl_init(API_URL.$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Authorization: bearer '. $_SESSION['token'],
@@ -76,7 +78,7 @@ function callAPI_POST($entry_point, $body){
 }
 
 function callAPI_PATCH($entry_point, $body){
-    $curl = curl_init("http://localhost:8000".$entry_point);
+    $curl = curl_init(API_URL.$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
