@@ -3,7 +3,7 @@
 //Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
 // si l'utilisateur se présente
 
-if(isset($_POST['user'])){//si l'utilisateur est connecté
+if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
@@ -25,7 +25,9 @@ if(isset($_POST['user'])){//si l'utilisateur est connecté
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
-    echo "Utilisateur connecté : ".$_SESSION['user'];
+    $user = callAPI("/api/membres/".$_SESSION['user']);
+    $array_user = json_decode($user);
+    echo "Utilisateur connecté : ".$array_user->Nom;
     echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>";
 }
 else{ //Sinon on propose la connexion
