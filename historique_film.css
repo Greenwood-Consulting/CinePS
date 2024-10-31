@@ -56,11 +56,16 @@ a:visited{
     text-align: center;
 }
 
-h2{
+h2, p{
   margin-left: 30%;
+  position: relative; /* Pour pouvoir positionner l'arrière-plan */
+  display: inline-block; /* Pour que le fond ne s'étende que sur le texte */
+  background-color: #000000c7; /* Couleur de fond semi-opaque */
+  padding: 5px 10px; /* Espacement interne pour rendre le texte lisible */
+  border-radius: 5px; /* Optionnel : arrondir les coins du fond */
 }
 
-p{
+.form-film-gagnant{
   margin-left: 30%;
 }
 
