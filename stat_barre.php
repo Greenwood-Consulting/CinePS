@@ -24,10 +24,10 @@ $count_data_proposeurs = count($data_proposeurs);
 
 //Construction du tableau data_année
 $data_annee = [];
-$films = callAPI("/api/Allfilms");
-$array_films = json_decode($films);
+$filmsGagnants = callAPI("/api/filmsGagnants");
+$array_filmsGagnants = json_decode($filmsGagnants);
 $films_par_decennie = [];
-foreach($array_films as $film){
+foreach($array_filmsGagnants as $film){
   $decennie = intdiv($film->sortie_film, 10)*10;
   if(isset($films_par_decennie[$decennie])){
     $nb_films = $films_par_decennie[$decennie];
@@ -36,8 +36,9 @@ foreach($array_films as $film){
     $films_par_decennie[$decennie] = 1;
   }
 }
+krsort($films_par_decennie);
 foreach($films_par_decennie as $decennie => $nb_films){
-  array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
+  array_push($data_annee, array("Décennie" => $decennie, "nombre" => $nb_films));
 }
 
 $count_data_annee = count($data_annee);
@@ -109,13 +110,13 @@ $count_data_annee = count($data_annee);
 
       //draw data_annee
       var data_annee = new google.visualization.DataTable();
-      data_annee.addColumn('string', 'Année Film');
+      data_annee.addColumn('string', 'Décennie');
       data_annee.addColumn('number', '');
 
       data_annee.addRows([
         <?php
           for($i=0;$i<$count_data_annee;$i++){
-            echo "['" . $data_annee[$i]['Année Film'] . "'," . $data_annee[$i]['nombre'] . "],";
+            echo "['" . $data_annee[$i]['Décennie'] . "'," . $data_annee[$i]['nombre'] . "],";
           } 
         ?>
       ]);
@@ -160,12 +161,13 @@ $count_data_annee = count($data_annee);
     };
 </script>
 </head>
+
 <body>
   <a href=index.php><button type='button'>Accueil</button></a>
   <h2>Classement Des films de la semaine
   <div id="chart_div"  style="width: 1800px; height: 200px"></div>
   </h2>
-  <h2> Films par années
+  <h2> Films vus par décennie
   <div id="chart_film_année" style="width: 1800px; height: 200px"></div>
   </h2>
   <h2> Nombre de fois que les membres ont été proposeurs
