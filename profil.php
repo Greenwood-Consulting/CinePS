@@ -37,5 +37,65 @@ if (empty($array_user)) {
     <p><strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?></p>
     <!-- Ajoutez d'autres informations de l'utilisateur ici -->
     <a href="deconnexion.php"><button type="button" class="btn btn-warning">Se déconnecter</button></a>
+
+    <?php
+    // Récupérer les films gagnants
+    $films_gagnants = callAPI("/api/filmsGagnants");
+    $array_films = json_decode($films_gagnants);
+
+    // Vérifier si les informations des films ont été récupérées avec succès
+    if (empty($array_films)) {
+        echo "Erreur: Impossible de récupérer les informations des films gagnants.";
+        exit();
+    }
+    ?>
+
+    <?php
+    // Filtrer les films gagnants pour ne garder que ceux proposés par l'utilisateur connecté
+    $mes_films_gagnants = array_filter($array_films, function($film) use ($array_user) {
+        return $film->propositions[0]->semaine->proposeur->Nom === $array_user->Nom;
+    });
+    ?>
+
+    <h2>Les films que j'ai fait découvrir à la PS</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Semaine</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($mes_films_gagnants as $film): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($film->titre); ?></td>
+                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <h2>Noter les films vus en PS</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Semaine</th>
+                <th>Proposeur</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($array_films as $film): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($film->titre); ?></td>
+                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
+                    <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+
+
 </body>
 </html>
