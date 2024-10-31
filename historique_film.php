@@ -22,6 +22,7 @@ session_start();
 
   <title>CinePS</title>  
 
+
 <!--link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
@@ -38,27 +39,49 @@ session_start();
 <?php
 include('common.php');
 
+// Barre de navigation
+?>
+
+<div class="fixed-header">
+  <div class="centered-buttons">
+    <?php
+    include('nav.php'); 
+    ?>
+  </div>
+  <div class="right-form">
+    <?php
+    include('auth_form.php');
+    ?>
+  </div>
+</div>
+
+<div class="main-content">
+
+<?php
 
 
+
+// Affichage du titre de la page en fonction du filtre utilisateur
 if(isset($_POST['member_filter'])){
   $id_membre = $_POST['user'];
-  $json_array_id_membre = callAPI("/api/membres/". $id_membre);
-  $array_id_membre = json_decode($json_array_id_membre);
-  echo "<h1 id = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
+  if ($_POST['user'] == 0) {
+    echo "<h1 id = 'titre'>Historique des propositions</h1>";
+  } else {
+    $json_array_id_membre = callAPI("/api/membres/". $id_membre);
+    $array_id_membre = json_decode($json_array_id_membre);
+    echo "<h1 id = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
+  }
 }else{
   echo "<h1 id = 'titre'>Historique des propositions</h1>";
 }
 
 
 
-echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
-
 
 
 // On récupère les anciennes semaines
 $get_historique = callAPI("/api/historique");
 $array_historique = json_decode($get_historique);
-
 
 $array_historique_semaines = $array_historique->semaines;
 $array_historique_membres = $array_historique->membres;
@@ -96,60 +119,58 @@ if (isset($_POST['designer_film_gagant'])) {
   $array_semaine = json_decode($json_semaine);
 }
 
+// Filtrer les propositions du membre sélectionné
 if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
-  // Afficher les propositions du membre sélectionné
-  $selectedUserId = $_POST['user'];
-  foreach ($array_historique_semaines['semaines'] as $semaine) {
-    if (($semaine->proposeur->id == $selectedUserId) && !(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)) {
-        $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
-        echo "<h2> Les propositions de " . $semaine->proposeur->Nom;
-        echo " Pour la semaine du " . $dateSemaine->format('Y-m-d') . "</h2><br/>";
-        echo "<p><b>Thème : " . $semaine->theme . "</b></p>";
-        printChoixvote($semaine->id);
-    }
-  }
+  $array_historique_semaines = array_filter($array_historique_semaines, function($semaine) use ($id_membre) {
+    return ($semaine->proposeur->id == $id_membre) && ($semaine->type == 'PSAvecFilm');
+  });
 }
-else{
-  // Afficher les propositions de tous les membres
-  foreach($array_historique_semaines as $semaine){
-    // création d'une DateTime afin de pouvoir formater
-    $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
-    if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
-      // TODO gérer le if dans service CinePS-API, pas ici
+
+// Afficher l'historique de chaque semaine
+foreach($array_historique_semaines as $semaine){
+  // création d'une DateTime afin de pouvoir formater
+  $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
+  if(!(($semaine->id == $id_current_semaine) && !$vote_termine_cette_semaine)){//Toutes les semaines précédentes ou pour la semaine courrante avec vote terminée
+    // TODO gérer le if dans service CinePS-API, pas ici
+    
+    if ( $semaine->type == 'PSAvecFilm'){ // semaine normale avec film
+      // Titre de la semaine
       echo "<h2> Les propositions de ".$semaine->proposeur->Nom;
       echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
       
-      if ( $semaine->type == 'PSAvecFilm'){
-        echo "<p class=\"texte-historique\"><b>Thème : ".$semaine->theme."</b></p>";
+      // Affichage du thème
+      echo "<p><b>Thème : ".$semaine->theme."</b></p><br />";
 
-        // Formulaire pour désigner le film gagnant
-        if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
-          echo '<form method="post" action="historique_film.php" class="main-zone">
-                  <label>Spécifier le film gagant</label>
-                  <select class="text-dark" name="filmGagnant">';
-                  foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
-                    echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
-                  }
-          echo "  </select>";
-          echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
-          echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
-          echo "</form>";
-        }
-    
-        printChoixvoteFromArray($semaine, $array_historique_membres);
+      // Formulaire pour désigner le film gagnant
+      if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
+        echo '<form method="post" action="historique_film.php" class="form-film-gagnant">
+                <label>Spécifier le film gagant</label>
+                <select class="text-dark" name="filmGagnant">';
+                foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
+                  echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
+                }
+        echo "  </select>";
+        echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
+        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
+        echo "</form><br />";
       }
-
-      if ($semaine->type == 'PasDePS'){
-        echo "<p class=\"texte-historique\"><b>Pas de PS</b></p>";
-      }
-
-      if ($semaine->type == 'PSSansFilm'){
-        echo "<p class=\"texte-historique\"><b>Pas de film</b></p>";
-      }
-
+  
+      printChoixvoteFromArray($semaine, $array_historique_membres);
     }
+
+    if ($semaine->type == 'PasDePS'){ // semaine sans PS
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+      echo "<p><b>Pas de PS</b></p><br />";
+    }
+
+    if ($semaine->type == 'PSSansFilm'){ // Semaine PS sans film
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+      echo "<p><b>Pas de film</b></p><br />";
+    }
+
   }
 }
+
 
 ?>
   </div>
@@ -161,3 +182,14 @@ else{
     </div>
     
   </div>
+
+  <!-- Script JavaScript intégré -->
+  <script>
+    // S'exécute après le chargement de la page
+    window.addEventListener('load', function() {
+      const header = document.querySelector('.fixed-header');
+      const mainContent = document.querySelector('.main-content');
+      mainContent.style.marginTop = header.offsetHeight + 'px';
+    });
+  </script>
+</body>

@@ -32,6 +32,7 @@ a:visited{
   color: rgb(240, 173, 78);
 }
 .btn{
+  display: inline-block;
   background-color: #d0880d00; 
   border-color: rgb(240, 173, 78);
   color: rgb(240, 173, 78);
@@ -43,7 +44,6 @@ a:visited{
   padding-right: 20px;
   /* margin-left: 30%;
   margin-top: 8%; */
-  position: fixed;
   top: 0;
 }
 
@@ -56,11 +56,16 @@ a:visited{
     text-align: center;
 }
 
-h2{
+h2, p{
   margin-left: 30%;
+  position: relative; /* Pour pouvoir positionner l'arrière-plan */
+  display: inline-block; /* Pour que le fond ne s'étende que sur le texte */
+  background-color: #000000c7; /* Couleur de fond semi-opaque */
+  padding: 5px 10px; /* Espacement interne pour rendre le texte lisible */
+  border-radius: 5px; /* Optionnel : arrondir les coins du fond */
 }
 
-p{
+.form-film-gagnant{
   margin-left: 30%;
 }
 
@@ -80,4 +85,83 @@ p{
 
 .film-victorieux {
   background-color: #906a039c;
+}
+
+button {
+  display: inline-block;
+  margin-right: 10px; /* Ajoute de l'espace entre les boutons si nécessaire */
+}
+
+/****************************************************************************************
+ * Styles pour la barre de navigation et le formulaire de connexion
+ ****************************************************************************************/
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Pour s'étendre sur toute la largeur de la page */
+  background-color: #000; /* Couleur de fond pour rendre la zone visible */
+  padding: 10px; /* Espacement interne pour un peu d'air autour des boutons */
+  z-index: 1000; /* Pour que la zone reste au-dessus des autres éléments */
+  display: flex; /* Pour aligner les boutons horizontalement */
+  justify-content: center; /* Centre les boutons de navigation */
+  align-items: center; /* Aligne verticalement les éléments */
+}
+
+.centered-buttons {
+  margin: 0 auto; /* Centre les boutons horizontalement */
+  display: flex;
+  gap: 10px; /* Espace entre les boutons */
+}
+
+/* Formulaire de connexion */
+
+.login-form {
+  position: absolute;
+  right: 10px; /* Positionne le formulaire sur la droite */
+  top: 10px; /* Centre verticalement le formulaire */
+}
+
+.form-group {
+  display: flex;
+  align-items: center; /* Aligne les éléments verticalement au centre */
+  gap: 20px; /* Espace entre les champs et le bouton */
+}
+
+.fields {
+  display: flex;
+  flex-direction: column; /* Empile les champs de formulaire verticalement */
+  gap: 5px; /* Espace entre chaque champ */
+}
+
+.field-group {
+  display: flex;
+  align-items: center; /* Aligne le label et le champ horizontalement */
+  gap: 10px; /* Espace entre le label et le champ */
+}
+
+.login-btn {
+  align-self: flex-start; /* Place le bouton sur la droite de la colonne */
+}
+
+.main-content {
+  margin-top: 80px; /* Ajuste cette valeur selon la hauteur du bandeau */
+}
+
+@media (max-width: 1280px) { /* Ajuste la largeur selon le besoin */
+  .fixed-header {
+      flex-direction: column; /* Change la direction pour empiler les éléments verticalement */
+      align-items: flex-start; /* Aligne les éléments à gauche */
+  }
+
+  .centered-buttons {
+      justify-content: flex-start; /* Aligne les boutons à gauche */
+      margin-bottom: 10px; /* Ajoute un espace en dessous des boutons */
+  }
+
+  .login-form {
+      position: static; /* Annule le positionnement absolu */
+      margin-left: 0; /* Supprime la marge de droite */
+  }
 }
