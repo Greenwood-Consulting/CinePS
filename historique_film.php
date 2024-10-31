@@ -22,6 +22,7 @@ session_start();
 
   <title>CinePS</title>  
 
+
 <!--link href="./main.3f6952e4.css" rel="stylesheet">
 </head>             
 <body class="minimal">
@@ -37,6 +38,27 @@ session_start();
             <div class="text-content"-->
 <?php
 include('common.php');
+
+// Barre de navigation
+?>
+
+<div class="fixed-header">
+  <div class="centered-buttons">
+    <?php
+    include('nav.php'); 
+    ?>
+  </div>
+  <div class="right-form">
+    <?php
+    include('auth_form.php');
+    ?>
+  </div>
+</div>
+
+<div class="main-content">
+
+<?php
+
 
 
 // Affichage du titre de la page en fonction du filtre utilisateur
@@ -54,8 +76,7 @@ if(isset($_POST['member_filter'])){
 }
 
 
-// Barre de navigation
-echo "<a href='index.php'><button type='button' class='btn btn-warning'>Page d'accueil</button></a>";
+
 
 
 // On récupère les anciennes semaines
@@ -161,3 +182,14 @@ foreach($array_historique_semaines as $semaine){
     </div>
     
   </div>
+
+  <!-- Script JavaScript intégré -->
+  <script>
+    // S'exécute après le chargement de la page
+    window.addEventListener('load', function() {
+      const header = document.querySelector('.fixed-header');
+      const mainContent = document.querySelector('.main-content');
+      mainContent.style.marginTop = header.offsetHeight + 'px';
+    });
+  </script>
+</body>

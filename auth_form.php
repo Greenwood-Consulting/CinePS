@@ -28,27 +28,39 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     $user = callAPI("/api/membres/".$_SESSION['user']);
     $array_user = json_decode($user);
     // @todo: remplacer le style par une classe CSS (à faire quand le fichier CSS sera refactorisé)
-    echo "Utilisateur connecté : <a href='profil.php' style='color: gold;'>".$array_user->Nom."</a>";
-    echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>";
+    echo "<div class=\"login-form\">
+            Utilisateur connecté : <a href='profil.php' style='color: gold;'>".$array_user->Nom."</a>";
+    echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>
+        </div>";
 }
 else{ //Sinon on propose la connexion
     $users = callAPI("/api/membres");
     $array_users = json_decode($users);
 
-    echo'<form method="post" action="index.php">
-    <label>Membres</label>
-        <select class="text-dark" name="user">';
-    foreach($array_users as $user){ //Afficher un utlisateur
-        echo"<option class='text-dark' value=".$user->id.">". $user->Nom." ".$user->Prenom."</option>";
-    }
-    echo"</select>";
+    echo "";
+    echo'<form method="post" action="index.php" class="login-form">';
+    echo '<div class="form-group">
+            <div class="fields">';
+    echo '      <div class="field-group">
+                    <label for="user">Membres</label>
+                    <select class="text-dark" name="user" id="user">';
+                    foreach($array_users as $user){ //Afficher un utlisateur
+                        echo"<option class='text-dark' value=".$user->id.">". $user->Nom." ".$user->Prenom."</option>";
+                    }
+    echo "           </select>
+                </div>
+                ";
 
     /*Password input */
-    echo    '<div class="form-outline mb-4">
-                <input type="password" name="password" class="form-control" />
-                <label class="form-label" for="form2Example2">Password</label>
+    echo    '   <div class="field-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" />
+                </div>
             </div>';
-    echo "<button class='btn btn-warning' name='connect'>Se connecter</button>
+    
+    // Bouton de connexion
+    echo "  <button class='btn btn-warning login-btn' name='connect'>Se connecter</button>
+        </div>
     </form>";
 }
 echo "</br>";
