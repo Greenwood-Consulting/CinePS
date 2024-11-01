@@ -21,7 +21,8 @@ table{
 #tableau {
   vertical-align: center;
 }
-#titre{
+
+.titre{
   color: #ffc107;
   text-align: center;
   font-size: 70px;

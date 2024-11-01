@@ -65,14 +65,14 @@ include('common.php');
 if(isset($_POST['member_filter'])){
   $id_membre = $_POST['user'];
   if ($_POST['user'] == 0) {
-    echo "<h1 id = 'titre'>Historique des propositions</h1>";
+    echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
     $json_array_id_membre = callAPI("/api/membres/". $id_membre);
     $array_id_membre = json_decode($json_array_id_membre);
-    echo "<h1 id = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
+    echo "<h1 class = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
   }
 }else{
-  echo "<h1 id = 'titre'>Historique des propositions</h1>";
+  echo "<h1 class = 'titre'>Historique des propositions</h1>";
 }
 
 
