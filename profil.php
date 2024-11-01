@@ -95,6 +95,9 @@ if (empty($array_user)) {
         </tbody>
     </table>
 
+    <h2>Le votant le plus satisfait</h2>
+
+    <h2>Le spectateur le plus satisfait</h2>
 
 
 </body>
