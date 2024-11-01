@@ -68,6 +68,8 @@ $count_data_annee = count($data_annee);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="historique_film.css" rel="stylesheet">
+
     <title>Statistique</title>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -153,25 +155,41 @@ $count_data_annee = count($data_annee);
       ]);
 
       var options = {
-          title: ''
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data_proposeurs, options);
+        title: '',
+      };
+      
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data_proposeurs, options);
     };
 </script>
 </head>
 
 <body>
-  <a href=index.php><button type='button'>Accueil</button></a>
-  <h2>Classement Des films de la semaine
-  <div id="chart_div"  style="width: 1800px; height: 200px"></div>
-  </h2>
-  <h2> Films vus par décennie
-  <div id="chart_film_année" style="width: 1800px; height: 200px"></div>
-  </h2>
-  <h2> Nombre de fois que les membres ont été proposeurs
-  <div id="piechart" style="width: 900px; height: 500px"></div>
-  </h2>
+
+  <div class="fixed-header">
+    <div class="centered-buttons">
+      <?php
+      include('nav.php'); 
+      ?>
+    </div>
+    <div class="right-form">
+      <?php
+      include('auth_form.php');
+      ?>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1 class="titre">Statistiques</h1>
+    <h2>Classement Des films de la semaine</h2>
+    <div id="chart_div"  style="width: 40%; height: 200px" class="main-zone stat-chart"></div>
+
+    <h2> Films vus par décennie</h2>
+    <div id="chart_film_année" style="width: 40%; height: 200px" class="main-zone"></div>
+    
+    <h2> Nombre de fois que les membres ont été proposeurs</h2>
+    <div id="piechart" style="width: 40%; height: 500px;" class="main-zone" ></div>
+    
+  </div>
 </body>
 </html>
