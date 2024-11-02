@@ -1,16 +1,14 @@
 <?php
-session_start();
 include('common.php');
 include('header.php');
 
-
-if(isset($_POST['id_proposition'])){
+if(isset($_POST['id_film'])){
       $membre_id = ($_SESSION['user']);
       $note = addslashes(($_POST['note']));
-      $id_proposition = $_POST['id_proposition'];
+      $id_film = $_POST['id_film'];
   
       $array_note = array(
-          "proposition_id" => $id_proposition,//$id_proposition,
+          "film_id" => $id_film,
           "membre_id" => $membre_id,
           "note" => $note,
       );
