@@ -190,6 +190,73 @@ $count_data_annee = count($data_annee);
     <h2> Nombre de fois que les membres ont été proposeurs</h2>
     <div id="piechart" style="width: 40%; height: 500px;" class="main-zone" ></div>
     
+    <h2>Le votant le plus satisfait</h2>
+
+    <p class = "explication">
+      <u>Explications sur le calcul du niveau de satisfaction :</u><br>
+      on prend tous les films qui ont été vus en PS (donc pas les films proposés mais qui ont perdu le vote)
+      et on calcule la moyenne du score donné par chaque utilisateur sur tous les films vu.
+      Plus le score est bas, plus le film était haut dans les préférences de l'utilisateur.
+      Plus le core est élevé, plus le film était bas dans les préférences de l'utilisateur.
+      Donc une moyenne de scores bas indique qu'en général le vote de l'utilisateur est satisfait.
+      Une moyenne de scores élevée indique que les films vus correspondaient moins aux choix de l'utilisateur.
+    </p>
+
+    <?php
+    $satisfaction_data = callAPI("/api/usersSatisfaction");
+    $array_satisfaction = json_decode($satisfaction_data, true);
+
+    // Sort the array by satisfactionVote in ascending order
+    usort($array_satisfaction, function($a, $b) {
+      return $a['satisfactionVote'] <=> $b['satisfactionVote'];
+    });
+    ?>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Satisfaction Vote</th>
+      </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($array_satisfaction as $user): ?>
+        <tr>
+        <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+        <td><?php echo htmlspecialchars($user['satisfactionVote']); ?></td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <h2>Le spectateur le plus satisfait</h2>
+    <?php
+    $notes_moyennes_data = callAPI("/api/usersNotesMoyennes");
+    $array_notes_moyennes = json_decode($notes_moyennes_data, true);
+
+    // Sort the array by averageNote in descending order
+    usort($array_notes_moyennes, function($a, $b) {
+      return $b['noteMoyenne'] <=> $a['noteMoyenne'];
+    });
+    ?>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Note moyenne sur tous les films notés</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($array_notes_moyennes as $user): ?>
+          <tr>
+            <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+            <td><?php echo htmlspecialchars($user['noteMoyenne']); ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+
   </div>
 </body>
 </html>
