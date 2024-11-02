@@ -95,7 +95,5 @@ if (empty($array_user)) {
         </tbody>
     </table>
 
-
-
 </body>
 </html>

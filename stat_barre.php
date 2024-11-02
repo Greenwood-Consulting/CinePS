@@ -24,10 +24,10 @@ $count_data_proposeurs = count($data_proposeurs);
 
 //Construction du tableau data_année
 $data_annee = [];
-$films = callAPI("/api/Allfilms");
-$array_films = json_decode($films);
+$filmsGagnants = callAPI("/api/filmsGagnants");
+$array_filmsGagnants = json_decode($filmsGagnants);
 $films_par_decennie = [];
-foreach($array_films as $film){
+foreach($array_filmsGagnants as $film){
   $decennie = intdiv($film->sortie_film, 10)*10;
   if(isset($films_par_decennie[$decennie])){
     $nb_films = $films_par_decennie[$decennie];
@@ -36,8 +36,9 @@ foreach($array_films as $film){
     $films_par_decennie[$decennie] = 1;
   }
 }
+krsort($films_par_decennie);
 foreach($films_par_decennie as $decennie => $nb_films){
-  array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
+  array_push($data_annee, array("Décennie" => $decennie, "nombre" => $nb_films));
 }
 
 $count_data_annee = count($data_annee);
@@ -67,6 +68,8 @@ $count_data_annee = count($data_annee);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="historique_film.css" rel="stylesheet">
+
     <title>Statistique</title>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -109,13 +112,13 @@ $count_data_annee = count($data_annee);
 
       //draw data_annee
       var data_annee = new google.visualization.DataTable();
-      data_annee.addColumn('string', 'Année Film');
+      data_annee.addColumn('string', 'Décennie');
       data_annee.addColumn('number', '');
 
       data_annee.addRows([
         <?php
           for($i=0;$i<$count_data_annee;$i++){
-            echo "['" . $data_annee[$i]['Année Film'] . "'," . $data_annee[$i]['nombre'] . "],";
+            echo "['" . $data_annee[$i]['Décennie'] . "'," . $data_annee[$i]['nombre'] . "],";
           } 
         ?>
       ]);
@@ -152,24 +155,108 @@ $count_data_annee = count($data_annee);
       ]);
 
       var options = {
-          title: ''
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data_proposeurs, options);
+        title: '',
+      };
+      
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data_proposeurs, options);
     };
 </script>
 </head>
+
 <body>
-  <a href=index.php><button type='button'>Accueil</button></a>
-  <h2>Classement Des films de la semaine
-  <div id="chart_div"  style="width: 1800px; height: 200px"></div>
-  </h2>
-  <h2> Films par années
-  <div id="chart_film_année" style="width: 1800px; height: 200px"></div>
-  </h2>
-  <h2> Nombre de fois que les membres ont été proposeurs
-  <div id="piechart" style="width: 900px; height: 500px"></div>
-  </h2>
+
+  <div class="fixed-header">
+    <div class="centered-buttons">
+      <?php
+      include('nav.php'); 
+      ?>
+    </div>
+    <div class="right-form">
+      <?php
+      include('auth_form.php');
+      ?>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1 class="titre">Statistiques</h1>
+    <h2>Classement Des films de la semaine</h2>
+    <div id="chart_div"  style="width: 40%; height: 200px" class="main-zone stat-chart"></div>
+
+    <h2> Films vus par décennie</h2>
+    <div id="chart_film_année" style="width: 40%; height: 200px" class="main-zone"></div>
+    
+    <h2> Nombre de fois que les membres ont été proposeurs</h2>
+    <div id="piechart" style="width: 40%; height: 500px;" class="main-zone" ></div>
+    
+    <h2>Le votant le plus satisfait</h2>
+
+    <p class = "explication">
+      <u>Explications sur le calcul du niveau de satisfaction :</u><br>
+      on prend tous les films qui ont été vus en PS (donc pas les films proposés mais qui ont perdu le vote)
+      et on calcule la moyenne du score donné par chaque utilisateur sur tous les films vu.
+      Plus le score est bas, plus le film était haut dans les préférences de l'utilisateur.
+      Plus le core est élevé, plus le film était bas dans les préférences de l'utilisateur.
+      Donc une moyenne de scores bas indique qu'en général le vote de l'utilisateur est satisfait.
+      Une moyenne de scores élevée indique que les films vus correspondaient moins aux choix de l'utilisateur.
+    </p>
+
+    <?php
+    $satisfaction_data = callAPI("/api/usersSatisfaction");
+    $array_satisfaction = json_decode($satisfaction_data, true);
+
+    // Sort the array by satisfactionVote in ascending order
+    usort($array_satisfaction, function($a, $b) {
+      return $a['satisfactionVote'] <=> $b['satisfactionVote'];
+    });
+    ?>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Satisfaction Vote</th>
+      </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($array_satisfaction as $user): ?>
+        <tr>
+        <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+        <td><?php echo htmlspecialchars($user['satisfactionVote']); ?></td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <h2>Le spectateur le plus satisfait</h2>
+    <?php
+    $notes_moyennes_data = callAPI("/api/usersNotesMoyennes");
+    $array_notes_moyennes = json_decode($notes_moyennes_data, true);
+
+    // Sort the array by averageNote in descending order
+    usort($array_notes_moyennes, function($a, $b) {
+      return $b['noteMoyenne'] <=> $a['noteMoyenne'];
+    });
+    ?>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Note moyenne sur tous les films notés</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($array_notes_moyennes as $user): ?>
+          <tr>
+            <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+            <td><?php echo htmlspecialchars($user['noteMoyenne']); ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+
+  </div>
 </body>
 </html>
