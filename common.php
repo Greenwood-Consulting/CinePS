@@ -158,6 +158,7 @@ function printChoixvote($id_semaine){
       $film_gagnant_array = json_decode($get_film_gagnant);
 
       $id_proposition = $proposition_et_votes->id;
+      $id_film = $proposition_et_votes->film->id;
 
       if($film_gagnant_array[0]->id == $id_proposition){
 
@@ -185,7 +186,7 @@ function printChoixvote($id_semaine){
           if(!$current_user_a_note){
           echo "<form method='POST' action='save_note.php'>";
 
-          echo '<select name="note" id="'.$id_proposition.'">';
+          echo '<select name="note" id="'.$id_film.'">';
           echo '<option value="1">1</option>';
           echo '<option value="2">2</option>';
           echo '<option value="3">3</option>';
@@ -197,7 +198,7 @@ function printChoixvote($id_semaine){
           echo '<option value="9">9</option>';
           echo '<option value="10">10</option>';
           echo '</select>';
-          echo "<button type='submit' name='id_proposition' value='".$id_proposition."'>Noter</button>";
+          echo "<button type='submit' name='id_film' value='".$id_film."'>Noter</button>";
           echo "</TD>";
           echo "</form>";
 
@@ -269,6 +270,7 @@ echo "</TABLE>";
       // Affichage du corps du tableau :
       foreach($array_propositions_et_votes as $proposition_et_votes){//on crée une ligne pour chaque film de la semaine
         $id_proposition = $proposition_et_votes->id;
+        $id_film = $proposition_et_votes->film->id;
 
         if($film_victorieux_id == $id_proposition){
           echo "<TR class=\"film-victorieux\">";
@@ -298,9 +300,8 @@ echo "</TABLE>";
         echo $proposition_et_votes->score;
         echo "</TD>";
 
-
+        //Colonne Note
         if(isset($_SESSION['user'])){ // On affiche la colonne Note seulement si l'utilisateur est connecté
-          //Colonne Note
           echo "<TD>";
     
           if($film_victorieux_id == $id_proposition){
@@ -321,22 +322,21 @@ echo "</TABLE>";
             if(!$current_user_a_note){
               echo "<form method='POST' action='save_note.php'>";
     
-              echo '<select name="note" id="'.$id_proposition.'">';
-              echo '<option value="0">0 - Christophe Barbier</option>';
-              echo '<option value="1">1 - Purge</option>';
-              echo '<option value="2">2 - A chier liquide par terre</option>';
-              echo '<option value="3">3 - Nul</option>';
-              echo '<option value="4">4 - Bof</option>';
-              echo '<option value="5">5 - Ca passe</option>';
-              echo '<option value="6">6 - Moyen</option>';
-              echo '<option value="7">7 - Bon</option>';
-              echo '<option value="8">8 - Très bon</option>';
-              echo '<option value="9">9 - Borderline Chef d\'oeuvre</option>';
-              echo '<option value="10">10 - Chef d\'oeuvre</option>';
-              echo '<option value="11">11 - Up to eleven</option>';
-              echo '</select>';
-              echo "<button type='submit' name='id_proposition' value='".$id_proposition."'>Noter</button>";
-              echo "</TD>";
+              echo '  <select name="note" id="'.$id_film.'">';
+              echo '    <option value="0">0 - Christophe Barbier</option>';
+              echo '    <option value="1">1 - Purge</option>';
+              echo '    <option value="2">2 - A chier liquide par terre</option>';
+              echo '    <option value="3">3 - Nul</option>';
+              echo '    <option value="4">4 - Bof</option>';
+              echo '    <option value="5">5 - Ca passe</option>';
+              echo '    <option value="6">6 - Moyen</option>';
+              echo '    <option value="7">7 - Bon</option>';
+              echo '    <option value="8">8 - Très bon</option>';
+              echo '    <option value="9">9 - Borderline Chef d\'oeuvre</option>';
+              echo '    <option value="10">10 - Chef d\'oeuvre</option>';
+              echo '    <option value="11">11 - Up to eleven</option>';
+              echo '  </select>';
+              echo "  <button type='submit' name='id_film' value='".$id_film."'>Noter</button>";
               echo "</form>";
   
             }else{
