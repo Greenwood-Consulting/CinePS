@@ -29,14 +29,32 @@ if (empty($array_user)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil de l'utilisateur</title>
-    <link rel="stylesheet" href="path/to/your/css/styles.css">
+    <link rel="stylesheet" href="historique_film.css">
 </head>
 <body>
-    <h1>Profil de l'utilisateur</h1>
-    <p><strong>Nom:</strong> <?php echo htmlspecialchars($array_user->Nom); ?></p>
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?></p>
-    <!-- Ajoutez d'autres informations de l'utilisateur ici -->
-    <a href="deconnexion.php"><button type="button" class="btn btn-warning">Se déconnecter</button></a>
+
+<!-- Barre de navigation -->
+<div class="fixed-header">
+  <div class="centered-buttons">
+    <?php
+    include('nav.php'); 
+    ?>
+  </div>
+  <div class="right-form">
+    <?php
+    include('auth_form.php');
+    ?>
+  </div>
+</div>
+
+<div class="main-content">
+
+    <h1 class = 'titre'>Profil de l'utilisateur</h1>
+    <p>
+        <strong>Nom:</strong> <?php echo htmlspecialchars($array_user->Nom); ?><br/>
+        <strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?>
+    </p>
+    <br />
 
     <?php
     // Récupérer les films gagnants
@@ -76,7 +94,7 @@ if (empty($array_user)) {
     </table>
 
     <h2>Noter les films vus en PS</h2>
-    <form method="post" action="save_note.php">
+    <form method="post" class="form-noter-tous-films" action="save_note.php">
         <table>
             <thead>
                 <tr>
@@ -131,5 +149,6 @@ if (empty($array_user)) {
         <button type="submit">Noter tous les films</button>
     </form>
 
+</div>
 </body>
 </html>

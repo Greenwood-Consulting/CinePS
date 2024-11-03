@@ -78,6 +78,8 @@ h2, p{
   margin-left: 30%;
 }
 
+
+
 .texte-historique {
   background-color: #000000c7;
   display: inline-block;
@@ -95,6 +97,10 @@ h2, p{
 button {
   display: inline-block;
   margin-right: 10px; /* Ajoute de l'espace entre les boutons si nécessaire */
+}
+
+.form-noter-tous-films {
+  text-align: center;
 }
 
 /****************************************************************************************
