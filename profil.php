@@ -94,6 +94,16 @@ if (empty($array_user)) {
     </table>
 
     <h2>Noter les films vus en PS</h2>
+    
+    <p class = "explication">
+      <u>Explications sur la notation :</u><br>
+        <ul class = "explication">
+            <li>On ne voit la note moyenne d'un film que si on a soi même noté le film</li>
+            <li>Si on reste sur <em>-- Choisir une note --</em> alors cela correspond à ne pas noter le film</li>
+            <li>Si on clique sur <em>S'abstenir</em> c'est équivalent à noter le film mais sans donner de note, pas exemple si vous n'avez pas vu le film. Dans ce cas vous verrez la note moyenne du film</li>
+        </ul>
+    </p>
+
     <form method="post" class="form-noter-tous-films" action="save_note.php">
         <table>
             <thead>
