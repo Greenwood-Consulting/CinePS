@@ -109,9 +109,18 @@ echo "</form>";
 // Traiter le cas où on vient d'appuyer sur le bouton pour désigner le film gagant
 if (isset($_POST['designer_film_gagant'])) {
   // préparation du body de la requête PATCH
-  $array_semaine = array(
-    'proposition_gagnante' => $_POST['filmGagnant']
-  );
+
+  $array_semaine = array();
+  if ($_POST['proposeurSemaine'] != 'no') {
+    $array_semaine['proposeur_id'] = $_POST['proposeurSemaine'];
+  }
+  if ($_POST['filmGagnant'] != 'no') {
+    $array_semaine['proposition_gagnante'] = $_POST['filmGagnant'];
+  }
+  if (isset($_POST['raison_changement_film']) && $_POST['raison_changement_film'] != '') {
+    echo "Raison changement film : ".$_POST['raison_changement_film'];
+    $array_semaine['raison_changement_film'] = $_POST['raison_changement_film'];
+  }
   $json_semaine = json_encode($array_semaine);
 
   // call API
@@ -141,17 +150,34 @@ foreach($array_historique_semaines as $semaine){
       // Affichage du thème
       echo "<p><b>Thème : ".$semaine->theme."</b></p><br />";
 
-      // Formulaire pour désigner le film gagnant
+      // Formulaire pour désigner le film gagnant et le proposeur de la semaine
       if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
-        echo '<form method="post" action="historique_film.php" class="form-film-gagnant">
-                <label>Spécifier le film gagant</label>
+        echo '<form method="post" action="historique_film.php" class="form-film-gagnant">';
+
+        // Dropdown pour choisir le film gagnant
+        echo '  <label>Spécifier le film gagnant</label>
                 <select class="text-dark" name="filmGagnant">';
+                echo"<option class='text-dark' value='no'>-- Spécifier de film gagant --</option>";
                 foreach($semaine->propositions as $proposition){ //Afficher le titre du film de la proposition
                   echo"<option class='text-dark' value=".$proposition->id.">". $proposition->film->titre."</option>";
                 }
-        echo "  </select>";
+        echo "  </select><br />";
+
+        // Dropdown pour choisir le proposeur de la semaine
+        echo '<label>Spécifier le proposeur de la semaine</label>
+        <select class="text-dark" name="proposeurSemaine">';
+        echo"<option class='text-dark' value='no'>-- Changer le proposeur --</option>";
+        foreach($array_proposeurs as $proposeur){ //Afficher le titre du film de la proposition
+          echo"<option class='text-dark' value=".$proposeur->id.">". $proposeur->Nom."</option>";
+        }
+        echo "  </select><br />";
+
+        // Champ pour spécifier la raison du choix du changement de film
+        echo '<label>Spécifier la raison du choix du changement de film</label>';
+        echo '<input type="text" name="raison_changement_film" /><br />';
+
         echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
-        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant</button>';
+        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant et/ou le proposeur</button>';
         echo "</form><br />";
       }
   
