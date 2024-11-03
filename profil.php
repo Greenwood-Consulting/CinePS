@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "call_api.php";
+include('call_api.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -29,14 +29,32 @@ if (empty($array_user)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil de l'utilisateur</title>
-    <link rel="stylesheet" href="path/to/your/css/styles.css">
+    <link rel="stylesheet" href="historique_film.css">
 </head>
 <body>
-    <h1>Profil de l'utilisateur</h1>
-    <p><strong>Nom:</strong> <?php echo htmlspecialchars($array_user->Nom); ?></p>
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?></p>
-    <!-- Ajoutez d'autres informations de l'utilisateur ici -->
-    <a href="deconnexion.php"><button type="button" class="btn btn-warning">Se déconnecter</button></a>
+
+<!-- Barre de navigation -->
+<div class="fixed-header">
+  <div class="centered-buttons">
+    <?php
+    include('nav.php'); 
+    ?>
+  </div>
+  <div class="right-form">
+    <?php
+    include('auth_form.php');
+    ?>
+  </div>
+</div>
+
+<div class="main-content">
+
+    <h1 class = 'titre'>Profil de l'utilisateur</h1>
+    <p>
+        <strong>Nom:</strong> <?php echo htmlspecialchars($array_user->Nom); ?><br/>
+        <strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?>
+    </p>
+    <br />
 
     <?php
     // Récupérer les films gagnants
@@ -76,24 +94,61 @@ if (empty($array_user)) {
     </table>
 
     <h2>Noter les films vus en PS</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Semaine</th>
-                <th>Proposeur</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($array_films as $film): ?>
+    <form method="post" class="form-noter-tous-films" action="save_note.php">
+        <table>
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($film->titre); ?></td>
-                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
-                    <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+                    <th>Titre</th>
+                    <th>Semaine</th>
+                    <th>Proposeur</th>
+                    <th>Noter</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($array_films as $film): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($film->titre); ?></td>
+                        <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
+                        <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+                        <td>
+                            <?php 
+                            $current_user_a_note = false;
+                            foreach ($film->notes as $note) {
+                                if ($note->membre->id == $_SESSION['user']) {
+                                    $current_user_a_note = true;
+                                    break;
+                                }
+                            }
+                            if (!$current_user_a_note): ?>
+                                <select name="notes[<?php echo $film->id; ?>]" id="<?php echo $film->id; ?>">
+                                    <option value="no">-- Choisir une note --</option>
+                                    <option value="0">0 - Christophe Barbier</option>';
+                                    <option value="1">1 - Purge</option>';
+                                    <option value="2">2 - A chier liquide par terre</option>';
+                                    <option value="3">3 - Nul</option>';
+                                    <option value="4">4 - Bof</option>';
+                                    <option value="5">5 - Ca passe</option>';
+                                    <option value="6">6 - Moyen</option>';
+                                    <option value="7">7 - Bon</option>';
+                                    <option value="8">8 - Très bon</option>';
+                                    <option value="9">9 - Borderline Chef d\'oeuvre</option>';
+                                    <option value="10">10 - Chef d\'oeuvre</option>';
+                                    <option value="11">11 - Up to eleven</option>';
+                                    <option value="abs">S'abstenir</option>
+                                </select>
+                            <?php 
+                                else: 
+                                    echo htmlspecialchars($film->moyenne);
+                            endif; 
+                                ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <button type="submit">Noter tous les films</button>
+    </form>
 
+</div>
 </body>
 </html>
