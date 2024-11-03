@@ -1,4 +1,4 @@
-name: Upload via SFTP
+name: Upload to PROD via SFTP
 
 on:
   workflow_dispatch:  # Permet d'exécuter le workflow manuellement
