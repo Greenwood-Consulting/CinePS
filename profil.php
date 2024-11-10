@@ -117,7 +117,7 @@ if (empty($array_user)) {
             <tbody>
                 <?php foreach ($array_films as $film): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($film->titre); ?></td>
+                        <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
                         <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
                         <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
                         <td>
@@ -148,7 +148,7 @@ if (empty($array_user)) {
                                 </select>
                             <?php 
                                 else: 
-                                    echo htmlspecialchars($film->moyenne);
+                                    echo htmlspecialchars(rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'));
                             endif; 
                                 ?>
                         </td>
