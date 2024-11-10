@@ -105,6 +105,7 @@ if (empty($array_user)) {
     </p>
 
     <form method="post" class="form-noter-tous-films" action="save_note.php">
+        <button type="submit">Noter tous les films</button>
         <table>
             <thead>
                 <tr>
