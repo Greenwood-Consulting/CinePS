@@ -152,7 +152,8 @@ foreach($array_historique_semaines as $semaine){
 
       // Formulaire pour désigner le film gagnant et le proposeur de la semaine
       if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
-        echo '<form method="post" action="historique_film.php" class="form-film-gagnant">';
+        echo "<details class = \"main-zone\"><summary>Editer la semaine</summary>";
+        echo '<form method="post" action="historique_film.php">';
 
         // Dropdown pour choisir le film gagnant
         echo '  <label>Spécifier le film gagnant</label>
@@ -178,7 +179,8 @@ foreach($array_historique_semaines as $semaine){
 
         echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
         echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant et/ou le proposeur</button>';
-        echo "</form><br />";
+        echo "</form>";
+        echo "</details><br />";
       }
   
       printChoixvoteFromArray($semaine, $array_historique_membres);
