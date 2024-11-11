@@ -118,7 +118,6 @@ if (isset($_POST['designer_film_gagant'])) {
     $array_semaine['proposition_gagnante'] = $_POST['filmGagnant'];
   }
   if (isset($_POST['raison_changement_film']) && $_POST['raison_changement_film'] != '') {
-    echo "Raison changement film : ".$_POST['raison_changement_film'];
     $array_semaine['raison_changement_film'] = $_POST['raison_changement_film'];
   }
   $json_semaine = json_encode($array_semaine);
@@ -144,15 +143,16 @@ foreach($array_historique_semaines as $semaine){
     
     if ( $semaine->type == 'PSAvecFilm'){ // semaine normale avec film
       // Titre de la semaine
-      echo "<h2> Les propositions de ".$semaine->proposeur->Nom;
-      echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions de ".$semaine->proposeur->Nom;
+      echo "</h2><br/>";
       
       // Affichage du thème
       echo "<p><b>Thème : ".$semaine->theme."</b></p><br />";
 
       // Formulaire pour désigner le film gagnant et le proposeur de la semaine
       if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
-        echo '<form method="post" action="historique_film.php" class="form-film-gagnant">';
+        echo "<details class = \"texte-historique\"><summary>Editer la semaine</summary>";
+        echo '<form method="post" action="historique_film.php">';
 
         // Dropdown pour choisir le film gagnant
         echo '  <label>Spécifier le film gagnant</label>
@@ -178,20 +178,28 @@ foreach($array_historique_semaines as $semaine){
 
         echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
         echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant et/ou le proposeur</button>';
-        echo "</form><br />";
+        echo "</form>";
+        echo "</details><br />";
+      }
+
+      // Raison propoition choisie
+      if ($semaine->raison_proposition_choisie != null){
+        echo "<p><b>Cette semaine le film retenu l'a été pour la raison suivante : <br />".$semaine->raison_proposition_choisie."</b></p><br />";
       }
   
       printChoixvoteFromArray($semaine, $array_historique_membres);
     }
 
     if ($semaine->type == 'PasDePS'){ // semaine sans PS
-      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
-      echo "<p><b>Pas de PS</b></p><br />";
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Pas de PS 😴</h2><br/>";
     }
 
-    if ($semaine->type == 'PSSansFilm'){ // Semaine PS sans film
-      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
-      echo "<p><b>Pas de film</b></p><br />";
+    if ($semaine->type == 'PSSansFilm'){ // PS de droit divin
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Pas de film 🥂</h2><br/>";
+    }
+
+    if ($semaine->type == 'PSDroitDivin'){ // Semaine PS sans film
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - PS de droit Divin 👑</h2><br/>";
     }
 
   }
