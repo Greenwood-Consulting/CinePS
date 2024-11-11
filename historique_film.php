@@ -144,8 +144,8 @@ foreach($array_historique_semaines as $semaine){
     
     if ( $semaine->type == 'PSAvecFilm'){ // semaine normale avec film
       // Titre de la semaine
-      echo "<h2> Les propositions de ".$semaine->proposeur->Nom;
-      echo " Pour la semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions de ".$semaine->proposeur->Nom;
+      echo "</h2><br/>";
       
       // Affichage du thème
       echo "<p><b>Thème : ".$semaine->theme."</b></p><br />";
@@ -187,13 +187,15 @@ foreach($array_historique_semaines as $semaine){
     }
 
     if ($semaine->type == 'PasDePS'){ // semaine sans PS
-      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
-      echo "<p><b>Pas de PS</b></p><br />";
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Pas de PS 😴</h2><br/>";
     }
 
-    if ($semaine->type == 'PSSansFilm'){ // Semaine PS sans film
-      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d'). "</h2><br/>";
-      echo "<p><b>Pas de film</b></p><br />";
+    if ($semaine->type == 'PSSansFilm'){ // PS de droit divin
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Pas de film 🥂</h2><br/>";
+    }
+
+    if ($semaine->type == 'PSDroitDivin'){ // Semaine PS sans film
+      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - PS de droit Divin 👑</h2><br/>";
     }
 
   }
