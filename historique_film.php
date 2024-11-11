@@ -118,7 +118,6 @@ if (isset($_POST['designer_film_gagant'])) {
     $array_semaine['proposition_gagnante'] = $_POST['filmGagnant'];
   }
   if (isset($_POST['raison_changement_film']) && $_POST['raison_changement_film'] != '') {
-    echo "Raison changement film : ".$_POST['raison_changement_film'];
     $array_semaine['raison_changement_film'] = $_POST['raison_changement_film'];
   }
   $json_semaine = json_encode($array_semaine);
@@ -181,6 +180,11 @@ foreach($array_historique_semaines as $semaine){
         echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant et/ou le proposeur</button>';
         echo "</form>";
         echo "</details><br />";
+      }
+
+      // Raison propoition choisie
+      if ($semaine->raison_proposition_choisie != null){
+        echo "<p><b>Cette semaine le film retenu l'a été pour la raison suivante : <br />".$semaine->raison_proposition_choisie."</b></p><br />";
       }
   
       printChoixvoteFromArray($semaine, $array_historique_membres);
