@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include('common.php');
 
 //Construction du tableau data_score
