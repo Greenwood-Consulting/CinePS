@@ -189,7 +189,7 @@ $count_data_annee = count($data_annee);
     
     <h2> Nombre de fois que les membres ont été proposeurs</h2>
     <div id="piechart" style="width: 40%; height: 500px;" class="main-zone" ></div>
-    
+
     <h2>Le votant le plus satisfait</h2>
 
     <p class = "explication">
@@ -223,7 +223,7 @@ $count_data_annee = count($data_annee);
       <?php foreach ($array_satisfaction as $user): ?>
         <tr>
         <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
-        <td><?php echo htmlspecialchars($user['satisfactionVote']); ?></td>
+        <td><?php echo rtrim(rtrim(number_format($user['satisfactionVote'], 2), '0'), '.'); ?></td>
         </tr>
       <?php endforeach; ?>
       </tbody>
@@ -251,7 +251,7 @@ $count_data_annee = count($data_annee);
         <?php foreach ($array_notes_moyennes as $user): ?>
           <tr>
             <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
-            <td><?php echo htmlspecialchars($user['noteMoyenne']); ?></td>
+            <td><?php echo rtrim(rtrim(number_format($user['noteMoyenne'], 2), '0'), '.'); ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -372,7 +372,7 @@ $count_data_annee = count($data_annee);
             <td><?php echo htmlspecialchars($film->titre); ?></td>
             <td><?php echo htmlspecialchars($film->propositions[0]->semaine->jour); ?></td>
             <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
-            <td><?php echo htmlspecialchars($film->moyenne); ?></td>
+            <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -433,7 +433,7 @@ $count_data_annee = count($data_annee);
     <?php foreach ($proposeur_moyenne_generale as $proposeur): ?>
       <tr>
       <td><?php echo htmlspecialchars($proposeur['nom_proposeur']); ?></td>
-      <td><?php echo htmlspecialchars($proposeur['moyenne_generale']); ?></td>
+      <td><?php echo rtrim(rtrim(number_format($proposeur['moyenne_generale'], 2), '0'), '.'); ?></td>
       </tr>
     <?php endforeach; ?>
     </tbody>
