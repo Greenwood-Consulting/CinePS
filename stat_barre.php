@@ -362,15 +362,15 @@ $count_data_annee = count($data_annee);
         <tr>
           <th>Titre du film</th>
           <th>Semaine</th>
-          <th>Nom du proposeur</th>
+          <th>Proposeur</th>
           <th>Moyenne</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($array_films as $film): ?>
           <tr>
-            <td><?php echo htmlspecialchars($film->titre); ?></td>
-            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->jour); ?></td>
+            <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
+            <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
             <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
             <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
           </tr>
