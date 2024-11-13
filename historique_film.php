@@ -176,8 +176,19 @@ foreach($array_historique_semaines as $semaine){
         echo '<label>Spécifier la raison du choix du changement de film</label>';
         echo '<input type="text" name="raison_changement_film" /><br />';
 
+        // Dropdown pour modifier le type de la semaine
+        echo '<label>Modifier le type de la semaine</label>
+        <select class="text-dark" name="typeSemaine">
+          <option class="text-dark" value="PSAvecFilm">PS avec film</option>
+          <option class="text-dark" value="PasDePS">Pas de PS</option>
+          <option class="text-dark" value="PSSansFilm">PS sans film</option>
+          <option class="text-dark" value="PSDroitDivin">PS de droit divin</option>
+        </select><br />';
+
+        // Champ caché pour envoyer l'id de la semaine
         echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
-        echo '  <button type="submit" name="designer_film_gagant">Désigner le film gagant et/ou le proposeur</button>';
+        // Bouton pour envoyer le formulaire
+        echo '  <button type="submit" name="designer_film_gagant">Editer la semaine</button>';
         echo "</form>";
         echo "</details><br />";
       }
