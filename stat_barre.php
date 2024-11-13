@@ -195,13 +195,17 @@ $count_data_annee = count($data_annee);
     <h2>Le votant le plus satisfait</h2>
 
     <p class = "explication">
-      <u>Explications sur le calcul du niveau de satisfaction :</u><br>
-      on prend tous les films qui ont été vus en PS (donc pas les films proposés mais qui ont perdu le vote)
-      et on calcule la moyenne du score donné par chaque utilisateur sur tous les films vu.
-      Plus le score est bas, plus le film était haut dans les préférences de l'utilisateur.
-      Plus le core est élevé, plus le film était bas dans les préférences de l'utilisateur.
-      Donc une moyenne de scores bas indique qu'en général le vote de l'utilisateur est satisfait.
-      Une moyenne de scores élevée indique que les films vus correspondaient moins aux choix de l'utilisateur.
+      <u>Explications  :</u><br>
+      Ce classement se base sur l'ordre des films proposés par chaque utilisateur lors de la phase de vote.
+      Il mesure à quel point le film sélectionné à chaque PS est cohérent avec le vote de chaque utilisateur.
+      <ul>
+        <li>Un <strong>score bas</strong> indique que les films choisis sont globalement en adéquation avec les votes de l'utilisateur</li>
+        <li>Un <strong>score élevé</strong> indique que les films choisis sont globalement en inadéquation avec les votes de l'utilisateur.</li>
+      </ul>
+    </p>
+
+    <p class = "explication">
+      Concrètement, pour chaque utilisateur, le score est la moyenne des votes sur tous les films <strong>vus en PS</strong>. Les films proposés mais qui n'ont pas été retenus ne sont pas pris en compte.
     </p>
 
     <?php
@@ -232,6 +236,13 @@ $count_data_annee = count($data_annee);
     </table>
 
     <h2>Le spectateur le plus satisfait</h2>
+
+        <p class = "explication">
+          <u>Explications  :</u><br>
+          Ce classement se base sur la note attribuée par chaque utilisateur aux films vus en PS.<br />
+          Il mesure à quel point le spectateur a apprécié, en moyenne, les films qu'il a pu visionner.
+          Concrètement : il s'agit de la moyenne des notes qu'il a attribuées aux différents films (via sa page de profil ou la page historique).
+        </p>
     <?php
     $notes_moyennes_data = callAPI("/api/usersNotesMoyennes");
     $array_notes_moyennes = json_decode($notes_moyennes_data, true);
@@ -381,7 +392,13 @@ $count_data_annee = count($data_annee);
     </table>
 
     <h2>Le meilleur proposeur</h2>
-
+    
+    <p class = "explication">
+      <u>Explications  :</u><br>
+      Ce classement se base sur les notes attribuées par les spectateurs vis à vis des films d'un proposeur donné.<br>
+      Il mesure a quel point les films proposés par le proposeur et visionnés en PS ont été appréciés.<br />
+      Concrètement, pour chaque proposeur on calcule la moyenne des notes attribuées par les spectateurs aux films vus en PS issues de ses propositions, en excluant la note du proposeur lui-même.
+    </p>
     <?php
     // classer les films par membre
     $moyennes_films_par_proposeur = [];
