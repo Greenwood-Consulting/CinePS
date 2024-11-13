@@ -337,10 +337,10 @@ $count_data_annee = count($data_annee);
       $last_proposeur = array_pop($top_proposeurs);
       echo "<p class = \"explication\">";
       echo implode(', ', $top_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
-      echo " sont les meilleurs pourvoyeurs de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus.";
+      echo " sont les meilleurs pourvoyeurs de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus. 🏆";
       echo "</p>";
     } else {
-      echo "<p class = \"explication\">" . htmlspecialchars($top_proposeurs[0]) . " est le meilleur pourvoyeur de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus.</p>";
+      echo "<p class = \"explication\">" . htmlspecialchars($top_proposeurs[0]) . " est le meilleur pourvoyeur de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus. 🏆</p>";
     }
 
     // Purges
@@ -348,10 +348,10 @@ $count_data_annee = count($data_annee);
       $last_proposeur = array_pop($bottom_proposeurs);
       echo "<p class = \"explication\">";
       echo implode(', ', $bottom_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
-      echo " sont les meilleurs pourvoyeurs de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5.";
+      echo " sont les meilleurs pourvoyeurs de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5. 🤮";
       echo "</p>";
     } else {
-      echo "<p class = \"explication\">" . htmlspecialchars($bottom_proposeurs[0]) . " est le meilleur pourvoyeur de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5.</p>";
+      echo "<p class = \"explication\">" . htmlspecialchars($bottom_proposeurs[0]) . " est le meilleur pourvoyeur de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5. 🤮</p>";
     }
     ?>
 
