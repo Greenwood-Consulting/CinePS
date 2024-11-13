@@ -257,6 +257,116 @@ $count_data_annee = count($data_annee);
       </tbody>
     </table>
 
+    <?php
+    // Récupérer les films gagnants
+    $films_gagnants = callAPI("/api/filmsGagnants");
+    $array_films = json_decode($films_gagnants);
+    ?>
+
+
+    <h2>Classement des meilleurs films</h2>
+
+    <?php
+    // Sort the films by average score in descending order
+    usort($array_films, function($a, $b) {
+      return $b->moyenne <=> $a->moyenne;
+    });
+    // Sort the films by average score in descending order, and by number of notes in descending order if averages are equal
+    usort($array_films, function($a, $b) {
+      if ($b->moyenne == $a->moyenne) {
+      return count($b->notes) <=> count($a->notes);
+      }
+      return $b->moyenne <=> $a->moyenne;
+    });
+
+    // Filter out films that do not have an average score
+    $array_films = array_filter($array_films, function($film) {
+      return isset($film->moyenne);
+    });
+    ?>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Titre du film</th>
+          <th>Semaine</th>
+          <th>Nom du proposeur</th>
+          <th>Moyenne</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($array_films as $film): ?>
+          <tr>
+            <td><?php echo htmlspecialchars($film->titre); ?></td>
+            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->jour); ?></td>
+            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+            <td><?php echo htmlspecialchars($film->moyenne); ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <h2>Le meilleur proposeur</h2>
+
+    <?php
+    // classer les films par membre
+    $moyennes_films_par_proposeur = [];
+    foreach ($array_films as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur;
+
+      // Retirer la note du proposeur si elle existe
+      $notes = array_filter($film->notes, function($note) use ($proposeur) {
+        return $note->membre->id !== $proposeur->id;
+      });
+
+      // calcul de la note moyenne du film, en excluant la note du proposeur
+      if (count($notes) === 0) {
+        continue;
+      } else {
+        $note_moyenne_film_hors_proposeur = array_sum(array_column($notes, 'note')) / count($notes);
+      }
+
+      // Ajout de la moyenne du film au total des moyennes du proposeur
+      if (!isset($moyennes_films_par_proposeur[$proposeur->id])) {
+        $moyennes_films_par_proposeur[$proposeur->id] = ['total_moyennes' => 0, 'count' => 0];
+        $moyennes_films_par_proposeur[$proposeur->id]['Nom'] = $proposeur->Nom;
+      }
+
+      $moyennes_films_par_proposeur[$proposeur->id]['total_moyennes'] += $note_moyenne_film_hors_proposeur;
+      $moyennes_films_par_proposeur[$proposeur->id]['count'] += 1;
+    }
+
+    // calculer la moyenne des moyennes hors proposeur des films gagnants par prposeur
+    $proposeur_moyenne_generale = [];
+    foreach ($moyennes_films_par_proposeur as $proposeur_id => $moyennes_films) {
+      $proposeur_moyenne_generale[] = [
+        'nom_proposeur' => $moyennes_films['Nom'],
+        'moyenne_generale' => $moyennes_films['total_moyennes'] / $moyennes_films['count']
+      ];
+    }
+
+    // trier les proposeurs par moyenne décroissante
+    usort($proposeur_moyenne_generale, function($a, $b) {
+      return $b['moyenne_generale'] <=> $a['moyenne_generale'];
+    });
+  ?>
+  <table>
+    <thead>
+    <tr>
+      <th>Proposeur</th>
+      <th>Note moyenne des films gagants de ce proposeur</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($proposeur_moyenne_generale as $proposeur): ?>
+      <tr>
+      <td><?php echo htmlspecialchars($proposeur['nom_proposeur']); ?></td>
+      <td><?php echo htmlspecialchars($proposeur['moyenne_generale']); ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+
   </div>
 </body>
 </html>
