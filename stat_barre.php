@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include('common.php');
 
 //Construction du tableau data_score
@@ -189,17 +191,21 @@ $count_data_annee = count($data_annee);
     
     <h2> Nombre de fois que les membres ont été proposeurs</h2>
     <div id="piechart" style="width: 40%; height: 500px;" class="main-zone" ></div>
-    
+
     <h2>Le votant le plus satisfait</h2>
 
     <p class = "explication">
-      <u>Explications sur le calcul du niveau de satisfaction :</u><br>
-      on prend tous les films qui ont été vus en PS (donc pas les films proposés mais qui ont perdu le vote)
-      et on calcule la moyenne du score donné par chaque utilisateur sur tous les films vu.
-      Plus le score est bas, plus le film était haut dans les préférences de l'utilisateur.
-      Plus le core est élevé, plus le film était bas dans les préférences de l'utilisateur.
-      Donc une moyenne de scores bas indique qu'en général le vote de l'utilisateur est satisfait.
-      Une moyenne de scores élevée indique que les films vus correspondaient moins aux choix de l'utilisateur.
+      <u>Explications  :</u><br>
+      Ce classement se base sur l'ordre des films proposés par chaque utilisateur lors de la phase de vote.
+      Il mesure à quel point le film sélectionné à chaque PS est cohérent avec le vote de chaque utilisateur.
+      <ul>
+        <li>Un <strong>score bas</strong> indique que les films choisis sont globalement en adéquation avec les votes de l'utilisateur</li>
+        <li>Un <strong>score élevé</strong> indique que les films choisis sont globalement en inadéquation avec les votes de l'utilisateur.</li>
+      </ul>
+    </p>
+
+    <p class = "explication">
+      Concrètement, pour chaque utilisateur, le score est la moyenne des votes sur tous les films <strong>vus en PS</strong>. Les films proposés mais qui n'ont pas été retenus ne sont pas pris en compte.
     </p>
 
     <?php
@@ -223,13 +229,20 @@ $count_data_annee = count($data_annee);
       <?php foreach ($array_satisfaction as $user): ?>
         <tr>
         <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
-        <td><?php echo htmlspecialchars($user['satisfactionVote']); ?></td>
+        <td><?php echo rtrim(rtrim(number_format($user['satisfactionVote'], 2), '0'), '.'); ?></td>
         </tr>
       <?php endforeach; ?>
       </tbody>
     </table>
 
     <h2>Le spectateur le plus satisfait</h2>
+
+        <p class = "explication">
+          <u>Explications  :</u><br>
+          Ce classement se base sur la note attribuée par chaque utilisateur aux films vus en PS.<br />
+          Il mesure à quel point le spectateur a apprécié, en moyenne, les films qu'il a pu visionner.
+          Concrètement : il s'agit de la moyenne des notes qu'il a attribuées aux différents films (via sa page de profil ou la page historique).
+        </p>
     <?php
     $notes_moyennes_data = callAPI("/api/usersNotesMoyennes");
     $array_notes_moyennes = json_decode($notes_moyennes_data, true);
@@ -251,11 +264,199 @@ $count_data_annee = count($data_annee);
         <?php foreach ($array_notes_moyennes as $user): ?>
           <tr>
             <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
-            <td><?php echo htmlspecialchars($user['noteMoyenne']); ?></td>
+            <td><?php echo rtrim(rtrim(number_format($user['noteMoyenne'], 2), '0'), '.'); ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
+
+    <?php
+    // Récupérer les films gagnants
+    $films_gagnants = callAPI("/api/filmsGagnants");
+    $array_films = json_decode($films_gagnants);
+    ?>
+
+
+    <h2>Classement des meilleurs films</h2>
+
+    <?php
+    // Sort the films by average score in descending order
+    usort($array_films, function($a, $b) {
+      return $b->moyenne <=> $a->moyenne;
+    });
+    // Sort the films by average score in descending order, and by number of notes in descending order if averages are equal
+    usort($array_films, function($a, $b) {
+      if ($b->moyenne == $a->moyenne) {
+      return count($b->notes) <=> count($a->notes);
+      }
+      return $b->moyenne <=> $a->moyenne;
+    });
+
+    // Filter out films that do not have an average score
+    $array_films = array_filter($array_films, function($film) {
+      return isset($film->moyenne);
+    });
+
+    /***************************************************************************************************
+     * Find the proposeur(s) with the most high score films
+     ***************************************************************************************************/
+    // Filter films with an average score of 9 or higher
+    $films_high_score = array_filter($array_films, function($film) {
+      return isset($film->moyenne) && $film->moyenne >= 9;
+    });
+
+    // Count the number of high score films per proposeur
+    $proposeur_high_score_count = [];
+    foreach ($films_high_score as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      if (!isset($proposeur_high_score_count[$proposeur])) {
+        $proposeur_high_score_count[$proposeur] = 0;
+      }
+      $proposeur_high_score_count[$proposeur]++;
+    }
+
+    // Find the proposeur(s) with the most high score films
+    $max_high_score_films = max($proposeur_high_score_count);
+    $top_proposeurs = array_keys($proposeur_high_score_count, $max_high_score_films);
+
+
+    /***************************************************************************************************
+     * Find the proposeur(s) with the most low score films
+     ***************************************************************************************************/
+    // Filter films with an average score strictly less than 5
+    $films_low_score = array_filter($array_films, function($film) {
+      return isset($film->moyenne) && $film->moyenne < 5;
+    });
+
+    // Count the number of low score films per proposeur
+    $proposeur_low_score_count = [];
+    foreach ($films_low_score as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      if (!isset($proposeur_low_score_count[$proposeur])) {
+      $proposeur_low_score_count[$proposeur] = 0;
+      }
+      $proposeur_low_score_count[$proposeur]++;
+    }
+
+    // Find the proposeur(s) with the most low score films
+    $max_low_score_films = max($proposeur_low_score_count);
+    $bottom_proposeurs = array_keys($proposeur_low_score_count, $max_low_score_films);
+
+    /***************************************************************************************
+     * Affichage des meilleurs pourvoyeurs de chefs d'oeuvre et de purges
+     ***************************************************************************************/
+    // Chefs d'oeuvre
+    if (count($top_proposeurs) > 1) {
+      $last_proposeur = array_pop($top_proposeurs);
+      echo "<p class = \"explication\">";
+      echo implode(', ', $top_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
+      echo " sont les meilleurs pourvoyeurs de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus. 🏆";
+      echo "</p>";
+    } else {
+      echo "<p class = \"explication\">" . htmlspecialchars($top_proposeurs[0]) . " est le meilleur pourvoyeur de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus. 🏆</p>";
+    }
+
+    // Purges
+    if (count($bottom_proposeurs) > 1) {
+      $last_proposeur = array_pop($bottom_proposeurs);
+      echo "<p class = \"explication\">";
+      echo implode(', ', $bottom_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
+      echo " sont les meilleurs pourvoyeurs de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5. 🤮";
+      echo "</p>";
+    } else {
+      echo "<p class = \"explication\">" . htmlspecialchars($bottom_proposeurs[0]) . " est le meilleur pourvoyeur de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5. 🤮</p>";
+    }
+    ?>
+
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Titre du film</th>
+          <th>Semaine</th>
+          <th>Proposeur</th>
+          <th>Moyenne</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($array_films as $film): ?>
+          <tr>
+            <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
+            <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
+            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+            <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <h2>Le meilleur proposeur</h2>
+    
+    <p class = "explication">
+      <u>Explications  :</u><br>
+      Ce classement se base sur les notes attribuées par les spectateurs vis à vis des films d'un proposeur donné.<br>
+      Il mesure a quel point les films proposés par le proposeur et visionnés en PS ont été appréciés.<br />
+      Concrètement, pour chaque proposeur on calcule la moyenne des notes attribuées par les spectateurs aux films vus en PS issues de ses propositions, en excluant la note du proposeur lui-même.
+    </p>
+    <?php
+    // classer les films par membre
+    $moyennes_films_par_proposeur = [];
+    foreach ($array_films as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur;
+
+      // Retirer la note du proposeur si elle existe
+      $notes = array_filter($film->notes, function($note) use ($proposeur) {
+        return $note->membre->id !== $proposeur->id;
+      });
+
+      // calcul de la note moyenne du film, en excluant la note du proposeur
+      if (count($notes) === 0) {
+        continue;
+      } else {
+        $note_moyenne_film_hors_proposeur = array_sum(array_column($notes, 'note')) / count($notes);
+      }
+
+      // Ajout de la moyenne du film au total des moyennes du proposeur
+      if (!isset($moyennes_films_par_proposeur[$proposeur->id])) {
+        $moyennes_films_par_proposeur[$proposeur->id] = ['total_moyennes' => 0, 'count' => 0];
+        $moyennes_films_par_proposeur[$proposeur->id]['Nom'] = $proposeur->Nom;
+      }
+
+      $moyennes_films_par_proposeur[$proposeur->id]['total_moyennes'] += $note_moyenne_film_hors_proposeur;
+      $moyennes_films_par_proposeur[$proposeur->id]['count'] += 1;
+    }
+
+    // calculer la moyenne des moyennes hors proposeur des films gagnants par prposeur
+    $proposeur_moyenne_generale = [];
+    foreach ($moyennes_films_par_proposeur as $proposeur_id => $moyennes_films) {
+      $proposeur_moyenne_generale[] = [
+        'nom_proposeur' => $moyennes_films['Nom'],
+        'moyenne_generale' => $moyennes_films['total_moyennes'] / $moyennes_films['count']
+      ];
+    }
+
+    // trier les proposeurs par moyenne décroissante
+    usort($proposeur_moyenne_generale, function($a, $b) {
+      return $b['moyenne_generale'] <=> $a['moyenne_generale'];
+    });
+  ?>
+  <table>
+    <thead>
+    <tr>
+      <th>Proposeur</th>
+      <th>Note moyenne des films gagants de ce proposeur</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($proposeur_moyenne_generale as $proposeur): ?>
+      <tr>
+      <td><?php echo htmlspecialchars($proposeur['nom_proposeur']); ?></td>
+      <td><?php echo rtrim(rtrim(number_format($proposeur['moyenne_generale'], 2), '0'), '.'); ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
 
   </div>
 </body>
