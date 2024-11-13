@@ -283,7 +283,79 @@ $count_data_annee = count($data_annee);
     $array_films = array_filter($array_films, function($film) {
       return isset($film->moyenne);
     });
+
+    /***************************************************************************************************
+     * Find the proposeur(s) with the most high score films
+     ***************************************************************************************************/
+    // Filter films with an average score of 9 or higher
+    $films_high_score = array_filter($array_films, function($film) {
+      return isset($film->moyenne) && $film->moyenne >= 9;
+    });
+
+    // Count the number of high score films per proposeur
+    $proposeur_high_score_count = [];
+    foreach ($films_high_score as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      if (!isset($proposeur_high_score_count[$proposeur])) {
+        $proposeur_high_score_count[$proposeur] = 0;
+      }
+      $proposeur_high_score_count[$proposeur]++;
+    }
+
+    // Find the proposeur(s) with the most high score films
+    $max_high_score_films = max($proposeur_high_score_count);
+    $top_proposeurs = array_keys($proposeur_high_score_count, $max_high_score_films);
+
+
+    /***************************************************************************************************
+     * Find the proposeur(s) with the most low score films
+     ***************************************************************************************************/
+    // Filter films with an average score strictly less than 5
+    $films_low_score = array_filter($array_films, function($film) {
+      return isset($film->moyenne) && $film->moyenne < 5;
+    });
+
+    // Count the number of low score films per proposeur
+    $proposeur_low_score_count = [];
+    foreach ($films_low_score as $film) {
+      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      if (!isset($proposeur_low_score_count[$proposeur])) {
+      $proposeur_low_score_count[$proposeur] = 0;
+      }
+      $proposeur_low_score_count[$proposeur]++;
+    }
+
+    // Find the proposeur(s) with the most low score films
+    $max_low_score_films = max($proposeur_low_score_count);
+    $bottom_proposeurs = array_keys($proposeur_low_score_count, $max_low_score_films);
+
+    /***************************************************************************************
+     * Affichage des meilleurs pourvoyeurs de chefs d'oeuvre et de purges
+     ***************************************************************************************/
+    // Chefs d'oeuvre
+    if (count($top_proposeurs) > 1) {
+      $last_proposeur = array_pop($top_proposeurs);
+      echo "<p class = \"explication\">";
+      echo implode(', ', $top_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
+      echo " sont les meilleurs pourvoyeurs de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus.";
+      echo "</p>";
+    } else {
+      echo "<p class = \"explication\">" . htmlspecialchars($top_proposeurs[0]) . " est le meilleur pourvoyeur de chefs d'oeuvre avec " . htmlspecialchars($max_high_score_films) . " films ayant une moyenne de 9 ou plus.</p>";
+    }
+
+    // Purges
+    if (count($bottom_proposeurs) > 1) {
+      $last_proposeur = array_pop($bottom_proposeurs);
+      echo "<p class = \"explication\">";
+      echo implode(', ', $bottom_proposeurs) . ' et ' . htmlspecialchars($last_proposeur);
+      echo " sont les meilleurs pourvoyeurs de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5.";
+      echo "</p>";
+    } else {
+      echo "<p class = \"explication\">" . htmlspecialchars($bottom_proposeurs[0]) . " est le meilleur pourvoyeur de purges avec " . htmlspecialchars($max_low_score_films) . " films ayant une moyenne strictement inférieure à 5.</p>";
+    }
     ?>
+
+
 
     <table>
       <thead>
