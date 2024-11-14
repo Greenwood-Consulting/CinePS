@@ -106,7 +106,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API
+  // call API pour terminer les propositions
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 
@@ -131,7 +131,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   );
   $json_proposition = json_encode($array_proposition);
 
-  // call API
+  // call API pour créer une nouvelle proposition
   $json_proposition = callAPI_POST("/api/proposition", $json_proposition);
   $array_proposition = json_decode($json_proposition);
 
@@ -147,14 +147,13 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API
+  // call API pour définir le thème des propositions de la semaine
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 }
 
 //Propostion comportement 2 : on vient du bouton seconde_chance
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
-
   $id_proposeur = addslashes($_SESSION['user']);
 
   // call API
@@ -164,6 +163,25 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
   exit();
+}
+
+//Propostion comportement 3 : on vient du bouton chatGPT
+if(isset($_POST['chatGPT'])){
+  $theme = $array_current_semaine[0]->theme;
+
+  // préparation du body de la requête POST
+  $array_body = array(
+    'theme' => $theme
+  );
+  $json_body = json_encode($array_body);
+
+  // call API pour créer des propositions avec ChatGPT
+  $json_body = callAPI_POST("/api/propositionOpenAI", $json_body);
+
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
+
 }
 ?>
 <div class="container-fluid mt-9">
@@ -260,6 +278,8 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
             echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
             echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
+            echo '&nbsp;&nbsp;';
+            echo '<button type="submit" name="chatGPT" class="btn btn-warning">ChatGPT</button>';
             ?>
             </form>
             <?php
