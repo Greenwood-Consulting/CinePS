@@ -49,11 +49,114 @@ var x = setInterval(function() {
     }
 }, 1000);
 
+
+
+const minimumAnimationDuration = 5000; // Durée minimale de l'animation en millisecondes
+let animationActive = true; // Indicateur pour garder l'animation active
+let animationStartTime = Date.now(); // Heure de début de l'animation
+
+function startAnimation() {
+  const container = document.getElementById("animationOverlay");
+  container.style.display = "block";  // Affiche l'overlay
+
+  // Démarre l'animation avant la redirection
+  playAnimation();
+
+  // Redirection pour recharger la page après un court délai
+  setTimeout(() => {
+    window.location.href = window.location.href;
+  }, 50);  // Petit délai pour que l'animation démarre avant la redirection
+}
+
+function playAnimation() {
+  const container = document.getElementById("animationOverlay");
+  const symbols = ["★", "✨", "⚙️", "🤖", "💫", "✦", "⚡", "💩"]; // Étoiles, symboles d'IA et icône caca
+
+  const interval = 20; // Intervalle pour générer de nouveaux symboles (en millisecondes)
+
+  // Fonction pour générer un symbole à une position aléatoire
+  function generateSymbol() {
+    if (!animationActive) return; // Stoppe l'animation si elle n'est plus active
+
+    const symbolElement = document.createElement("div");
+    symbolElement.className = "symbol";
+    symbolElement.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+    // Position aléatoire pour chaque symbole
+    symbolElement.style.left = Math.random() * 100 + "vw";
+    symbolElement.style.top = Math.random() * 100 + "vh";
+
+    container.appendChild(symbolElement);
+
+    // Supprimer le symbole après la fin de son animation (1 seconde)
+    setTimeout(() => {
+      symbolElement.remove();
+    }, 1000); // Durée d'apparition du symbole
+
+    // Planifier l'apparition du prochain symbole
+    setTimeout(generateSymbol, interval);
+  }
+
+  // Démarrer la génération de symboles
+  generateSymbol();
+}
+
+// Arrêter l'animation lorsque le chargement de la page est terminé
+window.onload = () => {
+  document.getElementById("animationOverlay").style.display = "none";
+  animationActive = true;
+};
+
+// Continuer l'animation tant que la page n'est pas complètement chargée
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    document.getElementById("animationOverlay").style.display = "none";
+    animationActive = false;
+  }
+};
+
 </script>
 
   <title>CinePS</title>  
   
 <link href="./main.3f6952e4.css" rel="stylesheet">
+<style>
+        /* Overlay pour l'animation */
+        #animationOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(100, 0, 0, 0.7);
+            z-index: 1000;
+            pointer-events: none;
+            display: none; /* Caché au départ */
+        }
+
+/* Styles pour les symboles */
+.symbol {
+    position: absolute;
+    font-size: 24px;
+    color: white;
+    opacity: 0;
+    animation: fadeInOut 1s ease-in-out forwards;
+}
+
+/* Animation pour faire apparaître et disparaître les symboles */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+</style>
+
 
 </head>             
 <body class="minimal">
@@ -80,7 +183,15 @@ var x = setInterval(function() {
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
             <div class="text-content">
-              <h1 class="text-warning">CinePS</h1>
+              <h1 class="text-warning">
+                CinePS
+                <sup>
+                  <span style="font-size: 50%; vertical-align: top;">
+                    <img src="./assets/icones/intelligence-artificielle8.png" alt="AI Icon" style="width: 50px; height: 50px; vertical-align: middle; filter: drop-shadow(0 0 10px white);">
+                    AI Enhanced
+                  </span>
+                </sup>
+              </h1>
               <?php
 
 
@@ -279,7 +390,8 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
             echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
             echo '&nbsp;&nbsp;';
-            echo '<button type="submit" name="chatGPT" class="btn btn-warning">ChatGPT</button>';
+            echo '<button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">ChatGPT</button>';
+            echo '<div id="animationOverlay"></div>';
             ?>
             </form>
             <?php
