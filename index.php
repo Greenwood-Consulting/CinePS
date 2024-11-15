@@ -29,7 +29,7 @@ $deadline_vote = $deadline_vote*1000;
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 
 
-  <!--Gestion du compte à rebours de la période de vote -->
+<!--Gestion du compte à rebours de la période de vote -->
 <script>
 // Injection de la date de fin PHP dans une variable Javascript
 var deadline_vote = <?php echo $deadline_vote; ?>;
@@ -54,6 +54,95 @@ var x = setInterval(function() {
   <title>CinePS</title>  
   
 <link href="./main.3f6952e4.css" rel="stylesheet">
+<style>
+  /******************************************************** 
+   *  Styles pour l'animation IA 
+   ********************************************************/
+  /* @Todo : déplacer ces styles dans un fichier CSS dédié quand le refactoring du style de la page index.php sera fait */
+  /* Overlay pour l'animation */
+  #animationOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 100, 0.7);
+      z-index: 1200;
+      pointer-events: none;
+      display: none; /* Caché au départ */
+  }
+
+  /* Styles pour les symboles */
+  .symbol {
+      position: absolute;
+      font-size: 24px;
+      color: white;
+      opacity: 0;
+      z-index: 2000;
+      animation: fadeInOut 1s ease-in-out forwards;
+  }
+
+  /* Animation pour faire apparaître et disparaître les symboles */
+  @keyframes fadeInOut {
+      0% {
+          opacity: 0;
+      }
+      50% {
+          opacity: 1;
+      }
+      100% {
+          opacity: 0;
+      }
+  }
+
+
+  /***********************************************************
+    *  Styles pour la popup ChatGPT
+    ***********************************************************/
+  /* Style pour l'overlay de fond */
+  .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      visibility: hidden; /* Masqué par défaut */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1100; /* Assurez-vous que l'overlay a un z-index élevé */
+  }
+
+  /* Style pour la boîte modale */
+  .popup {
+      position: relative;
+      width: 300px;
+      padding: 20px;
+      background: #010101;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+  }
+
+  /* Style du bouton de fermeture */
+  .close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+  }
+
+  /* Afficher l'overlay et la pop-up */
+  .overlay.active {
+      visibility: visible;
+      opacity: 1;
+  }
+
+</style>
+
 
 </head>             
 <body class="minimal">
@@ -80,22 +169,26 @@ var x = setInterval(function() {
         <div class="col-xs-12">
           <div class="hero-full-wrapper">
             <div class="text-content">
-              <h1 class="text-warning">CinePS</h1>
-              <?php
+              <!-- Titre de la page -->
+              <h1 class="text-warning">
+                CinePS
+                <sup>
+                  <span style="font-size: 50%; vertical-align: top;">
+                    <img src="./assets/icones/intelligence-artificielle8.png" alt="AI Icon" style="width: 50px; height: 50px; vertical-align: middle; filter: drop-shadow(0 0 10px white);">
+                    AI Enhanced™
+                  </span>
+                </sup>
+              </h1>
 
+<?php
 
- $jour_aujourdhui = date("D");
-
-
+$jour_aujourdhui = date("D");
  
 $deb= new DateTime ("Mon 12:00");
 $deb = $deb->modify('-1 week');
 $fin = new DateTime("Fri 16:00");
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
-
-
-
 
 
 //Proposition comportement 1 : on vient du bouton end_proposition
@@ -106,7 +199,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API
+  // call API pour terminer les propositions
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 
@@ -131,7 +224,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   );
   $json_proposition = json_encode($array_proposition);
 
-  // call API
+  // call API pour créer une nouvelle proposition
   $json_proposition = callAPI_POST("/api/proposition", $json_proposition);
   $array_proposition = json_decode($json_proposition);
 
@@ -147,14 +240,13 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API
+  // call API pour définir le thème des propositions de la semaine
   $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
   $array_semaine = json_decode($json_semaine);
 }
 
 //Propostion comportement 2 : on vient du bouton seconde_chance
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
-
   $id_proposeur = addslashes($_SESSION['user']);
 
   // call API
@@ -164,6 +256,27 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
   exit();
+}
+
+//Propostion comportement 3 : on vient du bouton chatGPT
+if(isset($_POST['chatGPT'])){
+  if (isset($_POST['theme'])) {
+    $theme = addslashes($_POST['theme']);
+  }
+
+  // préparation du body de la requête POST
+  $array_body = array(
+    'theme' => $theme
+  );
+  $json_body = json_encode($array_body);
+
+  // call API pour créer des propositions avec ChatGPT
+  $json_body = callAPI_POST("/api/propositionOpenAI", $json_body);
+
+  // Redirection après mise à jour
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
+
 }
 ?>
 <div class="container-fluid mt-9">
@@ -245,23 +358,53 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             ?>
             <form method="POST" action="index.php">
             <label> Proposition de films:</label>
-            <?php
-            if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
-              echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
-                    <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-            }
-            ?>
-            
-            <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
-            <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
-            <input type="number" name="date"  placeholder="Année" class="text-dark" >
-            
-            <?php
-            echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
-            echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
-            ?>
+              <?php
+              if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
+                echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
+                      <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
+              }
+              ?>
+              
+              <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+              <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+              <input type="number" name="date"  placeholder="Année" class="text-dark" >
+              
+              <?php
+              echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+              echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
+              echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
+              echo '&nbsp;&nbsp;';
+              //echo '<button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>';
+              echo '<div id="animationOverlay"></div>';
+              ?>
             </form>
+            <br />
+            <button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
+
+            <!-- Overlay et contenu du pop-up -->
+            <div class="overlay" id="popup-overlay">
+              <div class="popup" onclick="event.stopPropagation();">
+                <!-- Bouton de fermeture en tant que span -->
+                <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
+                <h2 class="text-warning">Proposition ChatGPT</h2>
+
+                <form method="POST" action="index.php">
+                  <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
+                  <input type="text" id="theme" name="theme" value="<?php  echo $array_current_semaine[0]->theme; ?>" class="text-dark">
+
+                  <?php 
+                    if (empty($array_current_semaine[0]->theme)) {
+                      echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
+                    } else {
+                      echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
+                    }
+                  ?>
+
+                  <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
+                </form>
+              </div>
+            </div>
+
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
@@ -320,5 +463,8 @@ printNextproposeurs($id_current_semaine);
 
 
 
+</body>
+<script src="assets/js/animation-ia.js"></script>
+<script src="assets/js/popup.js"></script>
 
 </html>
