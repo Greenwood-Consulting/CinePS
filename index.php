@@ -66,8 +66,8 @@ var x = setInterval(function() {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(100, 0, 0, 0.7);
-      z-index: 1000;
+      background: rgba(0, 0, 100, 0.7);
+      z-index: 1200;
       pointer-events: none;
       display: none; /* Caché au départ */
   }
@@ -78,6 +78,7 @@ var x = setInterval(function() {
       font-size: 24px;
       color: white;
       opacity: 0;
+      z-index: 2000;
       animation: fadeInOut 1s ease-in-out forwards;
   }
 
@@ -93,6 +94,53 @@ var x = setInterval(function() {
           opacity: 0;
       }
   }
+
+
+  /***********************************************************
+    *  Styles pour la popup ChatGPT
+    ***********************************************************/
+  /* Style pour l'overlay de fond */
+  .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      visibility: hidden; /* Masqué par défaut */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1100; /* Assurez-vous que l'overlay a un z-index élevé */
+  }
+
+  /* Style pour la boîte modale */
+  .popup {
+      position: relative;
+      width: 300px;
+      padding: 20px;
+      background: #010101;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+  }
+
+  /* Style du bouton de fermeture */
+  .close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+  }
+
+  /* Afficher l'overlay et la pop-up */
+  .overlay.active {
+      visibility: visible;
+      opacity: 1;
+  }
+
 </style>
 
 
@@ -127,7 +175,7 @@ var x = setInterval(function() {
                 <sup>
                   <span style="font-size: 50%; vertical-align: top;">
                     <img src="./assets/icones/intelligence-artificielle8.png" alt="AI Icon" style="width: 50px; height: 50px; vertical-align: middle; filter: drop-shadow(0 0 10px white);">
-                    AI Enhanced
+                    AI Enhanced™
                   </span>
                 </sup>
               </h1>
@@ -212,7 +260,9 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
 
 //Propostion comportement 3 : on vient du bouton chatGPT
 if(isset($_POST['chatGPT'])){
-  $theme = $array_current_semaine[0]->theme;
+  if (isset($_POST['theme'])) {
+    $theme = addslashes($_POST['theme']);
+  }
 
   // préparation du body de la requête POST
   $array_body = array(
@@ -308,26 +358,53 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             ?>
             <form method="POST" action="index.php">
             <label> Proposition de films:</label>
-            <?php
-            if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
-              echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
-                    <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-            }
-            ?>
-            
-            <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
-            <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
-            <input type="number" name="date"  placeholder="Année" class="text-dark" >
-            
-            <?php
-            echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
-            echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
-            echo '&nbsp;&nbsp;';
-            echo '<button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">ChatGPT</button>';
-            echo '<div id="animationOverlay"></div>';
-            ?>
+              <?php
+              if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
+                echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
+                      <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
+              }
+              ?>
+              
+              <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+              <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+              <input type="number" name="date"  placeholder="Année" class="text-dark" >
+              
+              <?php
+              echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+              echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
+              echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
+              echo '&nbsp;&nbsp;';
+              //echo '<button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>';
+              echo '<div id="animationOverlay"></div>';
+              ?>
             </form>
+            <br />
+            <button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
+
+            <!-- Overlay et contenu du pop-up -->
+            <div class="overlay" id="popup-overlay">
+              <div class="popup" onclick="event.stopPropagation();">
+                <!-- Bouton de fermeture en tant que span -->
+                <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
+                <h2 class="text-warning">Proposition ChatGPT</h2>
+
+                <form method="POST" action="index.php">
+                  <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
+                  <input type="text" id="theme" name="theme" value="<?php  echo $array_current_semaine[0]->theme; ?>" class="text-dark">
+
+                  <?php 
+                    if (empty($array_current_semaine[0]->theme)) {
+                      echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
+                    } else {
+                      echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
+                    }
+                  ?>
+
+                  <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
+                </form>
+              </div>
+            </div>
+
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
@@ -388,5 +465,6 @@ printNextproposeurs($id_current_semaine);
 
 </body>
 <script src="assets/js/animation-ia.js"></script>
+<script src="assets/js/popup.js"></script>
 
 </html>
