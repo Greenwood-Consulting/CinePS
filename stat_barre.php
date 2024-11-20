@@ -5,8 +5,7 @@ include('common.php');
 
 //Construction du tableau data_score
 $data_score = [];
-$score_film= callAPI("/api/filmsProposes/".$id_current_semaine);
-$array_score_film = json_decode($score_film);
+$array_score_film = $array_current_semaine[0]->propositions;
 foreach($array_score_film as $film){
   array_push($data_score, array("Film" => $film->film->titre, "Score" => $film->score));
 
