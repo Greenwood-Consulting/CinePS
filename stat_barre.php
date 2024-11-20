@@ -248,7 +248,12 @@ $count_data_annee = count($data_annee);
         <?php foreach ($array_notes_moyennes as $user): ?>
           <tr>
             <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
-            <td><?php echo rtrim(rtrim(number_format($user['noteMoyenne'], 2), '0'), '.'); ?></td>
+            <td>
+              <?php 
+              $noteText = $user['nbNotes'] == 1 ? 'note' : 'notes';
+              echo rtrim(rtrim(number_format($user['noteMoyenne'], 2), '0'), '.') . "&nbsp; (" . $user['nbNotes'] . " " . $noteText . ")";
+              ?>
+            </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
