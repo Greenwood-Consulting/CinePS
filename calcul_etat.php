@@ -32,8 +32,7 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 }
 
 //indique si le thème a été proposé ou non
-$theme = $array_current_semaine[0]->theme;
-$etat_theme_non_propose = $theme == "";
+$etat_theme_non_propose = $array_current_semaine[0]->theme == "";
 
 $is_actif = true;
 // Récupérer les membres depuis l'API
