@@ -398,7 +398,16 @@ $count_data_annee = count($data_annee);
     <?php
       $moyenne_generale_films_gagants = $total_moyennes_tous_films_gagants / $count_films_with_moyenne; 
     ?>
-    <p class = "explication">La moyenne générale des films gagnants est de <?php echo rtrim(rtrim(number_format($moyenne_generale_films_gagants, 2), '0'), '.'); ?></p>
+    <p class = "explication">
+      La moyenne générale des films gagnants est de <?php echo rtrim(rtrim(number_format($moyenne_generale_films_gagants, 2), '0'), '.'); ?>
+      <span class="info-icon" title="Moyenne non pondérée de toutes les moyennes des films vus en PS qui ont une moyenne. Cad qu'on fait la moyenne de toutes les moyennes lorsqu'elles existent.">&#9432;</span>
+    </p>
+    <style>
+      .info-icon {
+      cursor: pointer;
+      border-bottom: 1px dotted #000;
+      }
+    </style>
 
     <h2>Le meilleur proposeur</h2>
     
