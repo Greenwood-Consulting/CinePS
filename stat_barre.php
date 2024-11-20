@@ -47,23 +47,6 @@ foreach($films_par_decennie as $decennie => $nb_films){
 $count_data_annee = count($data_annee);
 
 
-// while($film = $get_film_annee->fetch()){
-//   $date_sortie = $film['sortie_film'];
-//   $decennie = intdiv($date_sortie, 10)*10;
-//   if(isset($films_par_decennie[$decennie])){
-//     $nb_films = $films_par_decennie[$decennie];
-//     $films_par_decennie[$decennie] = $nb_films + 1;
-//   }else{
-//     $films_par_decennie[$decennie] = 1;
-//   }
-// }
-// foreach($films_par_decennie as $decennie => $nb_films){
-//   array_push($data_annee, array("Année Film" => $decennie, "nombre" => $nb_films));
-// }
-
-// $count_data_annee = count($data_annee);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
