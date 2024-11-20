@@ -271,9 +271,10 @@ $count_data_annee = count($data_annee);
       </tbody>
     </table>
 
-    <h2>Classement des meilleurs films</h2>
+    <h2>Classement des meilleurs films (<?php echo count($array_filmsGagnants); ?> films au total)</h2>
 
     <?php
+
     // Sort the films by average score in descending order
     usort($array_filmsGagnants, function($a, $b) {
       return $b->moyenne <=> $a->moyenne;
