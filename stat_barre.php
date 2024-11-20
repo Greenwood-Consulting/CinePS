@@ -271,7 +271,8 @@ $count_data_annee = count($data_annee);
       </tbody>
     </table>
 
-    <h2>Classement des meilleurs films (<?php echo count($array_filmsGagnants); ?> films au total)</h2>
+    <?php $nb_films_gagants = count($array_filmsGagnants); ?>
+    <h2>Classement des meilleurs films (<?php echo $nb_films_gagants ?> films au total)</h2>
 
     <?php
 
@@ -375,7 +376,15 @@ $count_data_annee = count($data_annee);
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($array_filmsGagnants as $film): ?>
+        <?php 
+        $total_moyennes_tous_films_gagants = 0;
+        $count_films_with_moyenne = 0;
+        foreach ($array_filmsGagnants as $film): 
+          if ($film->moyenne !== null) {
+            $total_moyennes_tous_films_gagants += $film->moyenne;
+            $count_films_with_moyenne++;
+          }
+        ?>
           <tr>
             <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
             <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
@@ -385,6 +394,11 @@ $count_data_annee = count($data_annee);
         <?php endforeach; ?>
       </tbody>
     </table>
+
+    <?php
+      $moyenne_generale_films_gagants = $total_moyennes_tous_films_gagants / $count_films_with_moyenne; 
+    ?>
+    <p class = "explication">La moyenne générale des films gagnants est de <?php echo rtrim(rtrim(number_format($moyenne_generale_films_gagants, 2), '0'), '.'); ?></p>
 
     <h2>Le meilleur proposeur</h2>
     
