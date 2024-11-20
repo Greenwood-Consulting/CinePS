@@ -23,11 +23,12 @@ foreach($array_proposeurs as $proposeurs){
 
 $count_data_proposeurs = count($data_proposeurs);
 
+// récupérer les films gaganants
+$filmsGagnants = callAPI("/api/filmsGagnants");
+$array_filmsGagnants = json_decode($filmsGagnants);
 
 //Construction du tableau data_année
 $data_annee = [];
-$filmsGagnants = callAPI("/api/filmsGagnants");
-$array_filmsGagnants = json_decode($filmsGagnants);
 $films_par_decennie = [];
 foreach($array_filmsGagnants as $film){
   $decennie = intdiv($film->sortie_film, 10)*10;
@@ -270,22 +271,15 @@ $count_data_annee = count($data_annee);
       </tbody>
     </table>
 
-    <?php
-    // Récupérer les films gagnants
-    $films_gagnants = callAPI("/api/filmsGagnants");
-    $array_films = json_decode($films_gagnants);
-    ?>
-
-
     <h2>Classement des meilleurs films</h2>
 
     <?php
     // Sort the films by average score in descending order
-    usort($array_films, function($a, $b) {
+    usort($array_filmsGagnants, function($a, $b) {
       return $b->moyenne <=> $a->moyenne;
     });
     // Sort the films by average score in descending order, and by number of notes in descending order if averages are equal
-    usort($array_films, function($a, $b) {
+    usort($array_filmsGagnants, function($a, $b) {
       if ($b->moyenne == $a->moyenne) {
       return count($b->notes) <=> count($a->notes);
       }
@@ -293,7 +287,7 @@ $count_data_annee = count($data_annee);
     });
 
     // Filter out films that do not have an average score
-    $array_films = array_filter($array_films, function($film) {
+    $array_filmsGagnants = array_filter($array_filmsGagnants, function($film) {
       return isset($film->moyenne);
     });
 
@@ -301,7 +295,7 @@ $count_data_annee = count($data_annee);
      * Find the proposeur(s) with the most high score films
      ***************************************************************************************************/
     // Filter films with an average score of 9 or higher
-    $films_high_score = array_filter($array_films, function($film) {
+    $films_high_score = array_filter($array_filmsGagnants, function($film) {
       return isset($film->moyenne) && $film->moyenne >= 9;
     });
 
@@ -324,7 +318,7 @@ $count_data_annee = count($data_annee);
      * Find the proposeur(s) with the most low score films
      ***************************************************************************************************/
     // Filter films with an average score strictly less than 5
-    $films_low_score = array_filter($array_films, function($film) {
+    $films_low_score = array_filter($array_filmsGagnants, function($film) {
       return isset($film->moyenne) && $film->moyenne < 5;
     });
 
@@ -380,7 +374,7 @@ $count_data_annee = count($data_annee);
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($array_films as $film): ?>
+        <?php foreach ($array_filmsGagnants as $film): ?>
           <tr>
             <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
             <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
@@ -402,7 +396,7 @@ $count_data_annee = count($data_annee);
     <?php
     // classer les films par membre
     $moyennes_films_par_proposeur = [];
-    foreach ($array_films as $film) {
+    foreach ($array_filmsGagnants as $film) {
       $proposeur = $film->propositions[0]->semaine->proposeur;
 
       // Retirer la note du proposeur si elle existe
