@@ -361,23 +361,27 @@ $count_data_annee = count($data_annee);
           <th>Semaine</th>
           <th>Proposeur</th>
           <th>Moyenne</th>
+          <th>Nombre de notes</th>
         </tr>
       </thead>
       <tbody>
         <?php 
         $total_moyennes_tous_films_gagants = 0;
         $count_films_with_moyenne = 0;
-        foreach ($array_filmsGagnants as $film): 
+        foreach ($array_filmsGagnants as $film):
+          // Moyenne générale de tous les films 
           if ($film->moyenne !== null) {
             $total_moyennes_tous_films_gagants += $film->moyenne;
             $count_films_with_moyenne++;
           }
+          $nb_notes = count($film->notes);
         ?>
           <tr>
             <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
             <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
             <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
             <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
+            <td><?php echo $nb_notes . ($nb_notes == 1 ? " note" : " notes"); ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
