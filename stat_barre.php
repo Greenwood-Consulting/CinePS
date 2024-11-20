@@ -416,25 +416,27 @@ $count_data_annee = count($data_annee);
       $proposeur = $film->propositions[0]->semaine->proposeur;
 
       // Retirer la note du proposeur si elle existe
-      $notes = array_filter($film->notes, function($note) use ($proposeur) {
+      $notes_film_du_proposeur = array_filter($film->notes, function($note) use ($proposeur) {
         return $note->membre->id !== $proposeur->id;
       });
 
+      $nb_notes_film_du_proposeur = count($notes_film_du_proposeur);
       // calcul de la note moyenne du film, en excluant la note du proposeur
-      if (count($notes) === 0) {
+      if ($nb_notes_film_du_proposeur === 0) {
         continue;
       } else {
-        $note_moyenne_film_hors_proposeur = array_sum(array_column($notes, 'note')) / count($notes);
+        $note_moyenne_film_hors_proposeur = array_sum(array_column($notes_film_du_proposeur, 'note')) / $nb_notes_film_du_proposeur;
       }
 
       // Ajout de la moyenne du film au total des moyennes du proposeur
       if (!isset($moyennes_films_par_proposeur[$proposeur->id])) {
-        $moyennes_films_par_proposeur[$proposeur->id] = ['total_moyennes' => 0, 'count' => 0];
+        $moyennes_films_par_proposeur[$proposeur->id] = ['total_moyennes' => 0, 'count' => 0, 'nb_notes' => 0];
         $moyennes_films_par_proposeur[$proposeur->id]['Nom'] = $proposeur->Nom;
       }
 
       $moyennes_films_par_proposeur[$proposeur->id]['total_moyennes'] += $note_moyenne_film_hors_proposeur;
       $moyennes_films_par_proposeur[$proposeur->id]['count'] += 1;
+      $moyennes_films_par_proposeur[$proposeur->id]['nb_notes'] += $nb_notes_film_du_proposeur; ;
     }
 
     // calculer la moyenne des moyennes hors proposeur des films gagnants par prposeur
@@ -442,7 +444,8 @@ $count_data_annee = count($data_annee);
     foreach ($moyennes_films_par_proposeur as $proposeur_id => $moyennes_films) {
       $proposeur_moyenne_generale[] = [
         'nom_proposeur' => $moyennes_films['Nom'],
-        'moyenne_generale' => $moyennes_films['total_moyennes'] / $moyennes_films['count']
+        'moyenne_generale' => $moyennes_films['total_moyennes'] / $moyennes_films['count'],
+        'nb_notes' => $moyennes_films['nb_notes']
       ];
     }
 
@@ -455,7 +458,8 @@ $count_data_annee = count($data_annee);
     <thead>
     <tr>
       <th>Proposeur</th>
-      <th>Note moyenne des films gagants de ce proposeur</th>
+      <th>Note moyenne des films gagants<br />de ce proposeur</th>
+      <th>Nombre de notes reçues<br />par les films du proposeur</th>
     </tr>
     </thead>
     <tbody>
@@ -463,6 +467,12 @@ $count_data_annee = count($data_annee);
       <tr>
       <td><?php echo htmlspecialchars($proposeur['nom_proposeur']); ?></td>
       <td><?php echo rtrim(rtrim(number_format($proposeur['moyenne_generale'], 2), '0'), '.'); ?></td>
+      <td>
+        <?php 
+          echo $proposeur['nb_notes']; 
+          echo $proposeur['nb_notes'] == 1 ? " note" : " notes"; 
+        ?>
+      </td>
       </tr>
     <?php endforeach; ?>
     </tbody>
