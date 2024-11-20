@@ -9,7 +9,7 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 }
 
 // état proposition_semaine 
-// TODO : renommer proposition_seme;aine en is_proposition_terminée
+// TODO : renommer proposition_semaine en is_proposition_terminée
 $proposition_semaine = $array_current_semaine[0]->proposition_termine;
 
 // get état vote_termine_cette_semaine
@@ -22,9 +22,13 @@ $connecte = isset($_SESSION['user']);
 // get état current_user_a_vote
 $current_user_a_vote = false;
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-  //TODO: Que se passe-t-il si une injection se glisse à la place de la session user
-  $user = callAPI("/api/aVoteCurrentSemaine/".$_SESSION['user']);
-  $current_user_a_vote = json_decode($user);
+  $votants = $array_current_semaine[0]->votants;
+  foreach ($votants as $votant) {
+    if ($votant->votant->id == $_SESSION['user']) {
+      $current_user_a_vote = true;
+      break;
+    }
+  }
 }
 
 //indique si le thème a été proposé ou non
