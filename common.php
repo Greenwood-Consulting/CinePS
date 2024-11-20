@@ -11,16 +11,13 @@ $id_current_semaine = $array_current_semaine[0]->id;
 function printFilmsProposes($id_semaine){  
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
 
-  $films_semaine = callAPI("/api/filmsProposes/".$id_semaine);
-  $films_semaine_array = json_decode($films_semaine);
-  $un_film_propose = false;
-  foreach($films_semaine_array as $film){
-    $un_film_propose = true;
-    echo '<mark><a class="text-dark" href = '.$film->film->imdb.'>' .$film->film->titre.' </a>';
-    echo $film->film->sortie_film.'</mark></br>';
-  }
-  if(!$un_film_propose){//si aucun film n'est proposé
+  if (empty($array_current_semaine[0]->propositions) || !$array_current_semaine[0]->proposition_termine) { // Aucun film n'a été proposé ou proposition non terminée
     echo '<mark> Aucun film n\'a été proposé </mark>';
+  } else {
+    foreach($array_current_semaine[0]->propositions as $proposition){
+      echo '<mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a>';
+      echo $proposition->film->sortie_film.'</mark></br>'; 
+    }
   }
 }
 
@@ -83,9 +80,7 @@ function printNextproposeurs($id_semaine){
 function printChoixvote($id_semaine){
   $proposeur_prenom -> $current_semaine_array[0]->proposeur->Prenom;
 
-  // récupération des propositions pour tester s'il a des propositions
-  $get_propositions = callAPI("/api/filmsProposes/".$id_semaine);
-  $propositions_array = json_decode($get_propositions);
+  $propositions_array = $current_semaine_array[0]->propositions;
  
 
   if(count($propositions_array)==0){
