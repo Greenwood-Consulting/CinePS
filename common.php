@@ -218,8 +218,8 @@ echo "</TABLE>";
     // récupération des propositions
     $get_propositions = $array_semaine->propositions;
 
-    if ($array_semaine->propositionGagnante != null){
-      $film_victorieux_id = $array_semaine->propositionGagnante->id;
+    if ($array_semaine->filmVu != null){
+      $film_victorieux_id = $array_semaine->filmVu->id;
     } else {
       if ($array_semaine->film_victorieux != null){
         $film_victorieux_id = $array_semaine->film_victorieux[0]->id;
