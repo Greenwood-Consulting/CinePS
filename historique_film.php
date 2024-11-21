@@ -88,14 +88,14 @@ $array_historique_membres = $array_historique->membres;
 
 // Affichage du dropdown de sélection du membre pour filtrer
 $array_proposeurs = array();
-foreach($array_historique_semaines as $semaine){
-
-  $array_proposeurs[$semaine->proposeur->Nom] = $semaine->proposeur;
-}
 $tous = new stdClass();
 $tous->Nom = "Tous les utilisateurs";
 $tous->id = 0;
 $array_proposeurs['tous'] = $tous;
+foreach($array_historique_semaines as $semaine){
+
+  $array_proposeurs[$semaine->proposeur->Nom] = $semaine->proposeur;
+}
 echo'<form method="post" action="historique_film.php" class = "main-zone">
     <label>Membres</label>
         <select class="text-dark" name="user">';
@@ -106,11 +106,23 @@ echo"</select>";
 echo '<button type="submit" name="member_filter">Filtrer</button>';
 echo "</form>";
 
-// Traiter le cas où on vient d'appuyer sur le bouton pour désigner le film gagant
+// Traiter le cas où on vient d'appuyer sur le bouton pour éditer la semaine
 if (isset($_POST['designer_film_gagant'])) {
   // préparation du body de la requête PATCH
-
   $array_semaine = array();
+
+  if (isset($_POST['typeSemaine']) && $_POST['typeSemaine'] == 'PSDroitDivin') {
+    echo "DROIT DIVIN";
+    // préparation du body de la requête POST d'ajout de film
+    $titre_film = addslashes($_POST['droit_divin_titre_film']);
+    $sortie_film = addslashes($_POST['droit_divin_date_film']); 
+    $imdb_film = addslashes($_POST['droit_divin_lien_imdb']);  
+    $array_semaine['type_semaine'] = 'PSDroitDivin';
+    $array_semaine['droit_divin_titre_film'] = $titre_film;
+    $array_semaine['droit_divin_date_film'] = $sortie_film;
+    $array_semaine['droit_divin_lien_imdb'] = $imdb_film;
+  }
+
   if ($_POST['proposeurSemaine'] != 'no') {
     $array_semaine['proposeur_id'] = $_POST['proposeurSemaine'];
   }
@@ -149,6 +161,9 @@ foreach($array_historique_semaines as $semaine){
       // Affichage du thème
       echo "<p><b>Thème : ".$semaine->theme."</b></p><br />";
 
+      /*********************************************
+       * Formulaire admin pour éditer la semaine
+       *********************************************/
       // Formulaire pour désigner le film gagnant et le proposeur de la semaine
       if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
         echo "<details class = \"texte-historique\"><summary>Editer la semaine</summary>";
@@ -179,11 +194,19 @@ foreach($array_historique_semaines as $semaine){
         // Dropdown pour modifier le type de la semaine
         echo '<label>Modifier le type de la semaine</label>
         <select class="text-dark" name="typeSemaine">
+          <option class="text-dark" value="no_type">-- Changer le type de la semaine --</option>
           <option class="text-dark" value="PSAvecFilm">PS avec film</option>
           <option class="text-dark" value="PasDePS">Pas de PS</option>
           <option class="text-dark" value="PSSansFilm">PS sans film</option>
           <option class="text-dark" value="PSDroitDivin">PS de droit divin</option>
         </select><br />';
+
+        // Formulaire pour ajouter un film dans la base de données et le mettre automatiquement comme film gagnant
+        echo '<label>Ajouter un film (seulement pour les PS de droit divin)</label>
+        <input type="text" name="droit_divin_titre_film" placeholder="Titre du film" class="text-dark" />
+        <input type="text" name="droit_divin_lien_imdb" placeholder="Lien imdb" class="text-dark" />
+        <input type="number" name="droit_divin_date_film"  placeholder="Année" class="text-dark" />
+        <br />';
 
         // Champ caché pour envoyer l'id de la semaine
         echo '<input type="hidden" id="semaineId" name="semaineId" value="'.$semaine->id.'" />';
@@ -192,6 +215,9 @@ foreach($array_historique_semaines as $semaine){
         echo "</form>";
         echo "</details><br />";
       }
+      /*********************************************
+       * Fin du formulaire admin
+       *********************************************/
 
       // Raison propoition choisie
       if ($semaine->raison_proposition_choisie != null){
@@ -211,6 +237,8 @@ foreach($array_historique_semaines as $semaine){
 
     if ($semaine->type == 'PSDroitDivin'){ // Semaine PS sans film
       echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - PS de droit Divin 👑</h2><br/>";
+
+      echo "<p><b>Film de Droit Divin :</b> <a href='".$semaine->filmVu->imdb."' target='_blank'>".$semaine->filmVu->titre."</a> (".$semaine->filmVu->sortie_film.")</p><br />";
     }
 
   }
