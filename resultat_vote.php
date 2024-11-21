@@ -1,4 +1,5 @@
 <?php
+include('env.php');
 include('header.php');
 ?>
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ include('calcul_etat.php');
 echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
   $deb= new DateTime ("Fri 16:00");
-  $fin = new DateTime("Mon 8:00");
+  $fin = new DateTime(FIN_PERIODE_VOTE);
   $curdate=new DateTime();
   $watch_period=($curdate>=$deb && $curdate <= $fin);
 

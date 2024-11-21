@@ -4,8 +4,8 @@ include 'env.php';
 // Récupérer un tolen d'accàs l'API
 function recupererToken(){
     $body = [
-      'email'=>'a@a.fr',
-      'password'=>'password'
+      'email'=>API_MAIL,
+      'password'=>API_PASSWORD
     ];
     $json_body = json_encode($body);
 
@@ -19,7 +19,7 @@ function recupererToken(){
     curl_close($curl);
     $response_array = json_decode($response);
     $token = $response_array->token;
-  
+
     return $token;
 }
 
@@ -36,6 +36,12 @@ function callAPI($entry_point){
       'Content-Type: application/json'
     ]);
     $api_response = curl_exec($curl);
+    if ($api_response === false) {
+      // L'API n'est pas disponible
+      http_response_code(503);
+      echo "Erreur 503: Service Unavailable. L'API n'est pas accessible.";
+      exit();
+    }
     $decoded_response = json_decode($api_response);
     // Si le token est expiré, on génère un nouveau token
     if (is_object($decoded_response) && isset($decoded_response->code) && $decoded_response->code == "401") {

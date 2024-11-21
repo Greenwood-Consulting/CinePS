@@ -1,2 +1,3 @@
-env.php
+env.dev.php
 env.preprod.php
+env.prod.php
