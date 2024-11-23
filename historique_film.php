@@ -60,7 +60,7 @@ include('common.php');
 
 <?php
 
-
+$voyelles = ['A', 'E', 'I', 'O', 'U', 'Y'];
 
 // Affichage du titre de la page en fonction du filtre utilisateur
 if(isset($_POST['member_filter'])){
@@ -71,7 +71,6 @@ if(isset($_POST['member_filter'])){
     $json_array_id_membre = call_API_GET("/api/membres/". $id_membre);
     $array_id_membre = json_decode($json_array_id_membre);
     $nom_membre = $array_id_membre->Nom;
-    $voyelles = ['A', 'E', 'I', 'O', 'U', 'Y'];
     if (in_array(strtoupper($nom_membre[0]), $voyelles)) {
       echo "<h1 class = 'titre'>Historique des propositions d'".$nom_membre."</h1>";
     } else {
@@ -162,7 +161,12 @@ foreach($array_historique_semaines as $semaine){
     
     if ( $semaine->type == 'PSAvecFilm'){ // semaine normale avec film
       // Titre de la semaine
-      echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions de ".$semaine->proposeur->Nom;
+      $nom_proposeur = $semaine->proposeur->Nom;
+      if (in_array(strtoupper($nom_proposeur[0]), $voyelles)) {
+        echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions d'".$nom_proposeur;
+      } else {
+        echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions de ".$nom_proposeur;
+      }
       echo "</h2><br/>";
       
       // Affichage du thème
