@@ -68,7 +68,7 @@ if(isset($_POST['member_filter'])){
   if ($_POST['user'] == 0) {
     echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
-    $json_array_id_membre = callAPI("/api/membres/". $id_membre);
+    $json_array_id_membre = call_API_GET("/api/membres/". $id_membre);
     $array_id_membre = json_decode($json_array_id_membre);
     echo "<h1 class = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
   }
@@ -81,7 +81,7 @@ if(isset($_POST['member_filter'])){
 
 
 // On récupère les anciennes semaines
-$get_historique = callAPI("/api/historique");
+$get_historique = call_API_GET("/api/historique");
 $array_historique = json_decode($get_historique);
 
 $array_historique_semaines = $array_historique->semaines;

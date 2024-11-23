@@ -251,7 +251,7 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $id_proposeur = addslashes($_SESSION['user']);
 
   // call API
-  $json_proposition = callAPI("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
+  $json_proposition = call_API_GET("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
   $array_proposition = json_decode($json_proposition);
 
   // Redirection après mise à jour
@@ -298,7 +298,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
   printUserAyantVote($id_current_semaine);
 
   if ($array_current_semaine[0]->proposition_termine){
-    echo '<span class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</span>';
+    echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
   } else {
     echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   }
@@ -333,7 +333,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                 <form method="POST" action="save_vote.php">
                 <?php
                 // récupération de la semaine courrante (contenant les propositions)
-                $current_semaine = callAPI("/api/currentSemaine");
+                $current_semaine = call_API_GET("/api/currentSemaine");
                 $array_current_semaine = json_decode($current_semaine);
                 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
                 $nombre_proposition = count($array_current_semaine[0]->propositions);

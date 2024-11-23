@@ -13,7 +13,7 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 $proposition_semaine = $array_current_semaine[0]->proposition_termine;
 
 // get état vote_termine_cette_semaine
-$is_vote_termine = callAPI("/api/isVoteTermine/".$id_current_semaine);
+$is_vote_termine = call_API_GET("/api/isVoteTermine/".$id_current_semaine);
 $vote_termine_cette_semaine = json_decode($is_vote_termine);
 
 // get état connecte
@@ -37,7 +37,7 @@ $etat_theme_non_propose = $array_current_semaine[0]->theme == "";
 $is_actif = true;
 // Récupérer les membres depuis l'API
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-  $get_membre = callAPI("/api/membres/" . $_SESSION['user']);
+  $get_membre = call_API_GET("/api/membres/" . $_SESSION['user']);
   $array_membres = json_decode($get_membre);
   //indique si le membre est actif ou non
   $is_actif = $array_membres->actif;

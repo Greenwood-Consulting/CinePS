@@ -25,7 +25,7 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
   $_SESSION['token'] = recupererToken();
 }
 
-function callAPI($entry_point){
+function call_API_GET($entry_point){
     // Paramétrage de la requête
     $curl = curl_init(API_URL.$entry_point);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
