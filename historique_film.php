@@ -64,13 +64,19 @@ include('common.php');
 
 // Affichage du titre de la page en fonction du filtre utilisateur
 if(isset($_POST['member_filter'])){
-  $id_membre = $_POST['user'];
-  if ($_POST['user'] == 0) {
+  $id_membre = $_POST['user_filter'];
+  if ($_POST['user_filter'] == 0) {
     echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
     $json_array_id_membre = call_API_GET("/api/membres/". $id_membre);
     $array_id_membre = json_decode($json_array_id_membre);
-    echo "<h1 class = 'titre'>Historique des propositions de ".$array_id_membre->Nom."</h1>";
+    $nom_membre = $array_id_membre->Nom;
+    $voyelles = ['A', 'E', 'I', 'O', 'U', 'Y'];
+    if (in_array(strtoupper($nom_membre[0]), $voyelles)) {
+      echo "<h1 class = 'titre'>Historique des propositions d'".$nom_membre."</h1>";
+    } else {
+      echo "<h1 class = 'titre'>Historique des propositions de ".$nom_membre."</h1>";
+    }
   }
 }else{
   echo "<h1 class = 'titre'>Historique des propositions</h1>";
@@ -99,9 +105,9 @@ foreach($array_historique_semaines as $semaine){
 }
 echo'<form method="post" action="historique_film.php" class = "main-zone">
     <label>Membres</label>
-        <select class="text-dark" name="user">';
+        <select class="text-dark" name="user_filter">';
 foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
-     echo"<option class='text-dark' value=".$proposeur->id.">". $proposeur->Nom."</option>";
+    echo"<option class='text-dark' value=".$proposeur->id.($proposeur->id == $_POST['user_filter'] ? " selected" : "").">". $proposeur->Nom."</option>";
 }
 echo"</select>";
 echo '<button type="submit" name="member_filter">Filtrer</button>';
@@ -141,7 +147,7 @@ if (isset($_POST['designer_film_gagant'])) {
 }
 
 // Filtrer les propositions du membre sélectionné
-if (isset($_POST['member_filter']) && $_POST['user'] != 0) {
+if (isset($_POST['member_filter']) && $_POST['user_filter'] != 0) {
   $array_historique_semaines = array_filter($array_historique_semaines, function($semaine) use ($id_membre) {
     return ($semaine->proposeur->id == $id_membre) && ($semaine->type == 'PSAvecFilm');
   });
