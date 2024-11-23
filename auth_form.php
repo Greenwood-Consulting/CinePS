@@ -8,7 +8,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
-    $user = callAPI("/api/membres/".$id_membre);
+    $user = call_API_GET("/api/membres/".$id_membre);
     $array_user = json_decode($user);
 
     if(! empty($array_user)){//On vérifie qui'il y est un mdp pour l'utilisateur connecté
@@ -25,7 +25,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
-    $user = callAPI("/api/membres/".$_SESSION['user']);
+    $user = call_API_GET("/api/membres/".$_SESSION['user']);
     $array_user = json_decode($user);
     // @todo: remplacer le style par une classe CSS (à faire quand le fichier CSS sera refactorisé)
     echo "<div class=\"login-form\">
@@ -34,7 +34,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
         </div>";
 }
 else{ //Sinon on propose la connexion
-    $users = callAPI("/api/membres");
+    $users = call_API_GET("/api/membres");
     $array_users = json_decode($users);
 
     echo "";

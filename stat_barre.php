@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include('env.php');
 include('common.php');
 
 //Construction du tableau data_score
@@ -14,7 +14,7 @@ $count_data_score = count($data_score);
 
 //construction du tableau data_proposeur
 $data_proposeurs = [];
-$get_proposeurs = callAPI("/api/getNbPropositionsParProposeur");
+$get_proposeurs = call_API_GET("/api/getNbPropositionsParProposeur");
 $array_proposeurs = json_decode($get_proposeurs);
 foreach($array_proposeurs as $proposeurs){
   array_push($data_proposeurs, array("Proposeur" => $proposeurs->proposeur, "nombre" => $proposeurs->nb_semaines));
@@ -23,7 +23,7 @@ foreach($array_proposeurs as $proposeurs){
 $count_data_proposeurs = count($data_proposeurs);
 
 // récupérer les films gaganants
-$filmsGagnants = callAPI("/api/filmsGagnants");
+$filmsGagnants = call_API_GET("/api/filmsGagnants");
 $array_filmsGagnants = json_decode($filmsGagnants);
 
 //Construction du tableau data_année
@@ -192,7 +192,7 @@ $count_data_annee = count($data_annee);
     </p>
 
     <?php
-    $satisfaction_data = callAPI("/api/usersSatisfaction");
+    $satisfaction_data = call_API_GET("/api/usersSatisfaction");
     $array_satisfaction = json_decode($satisfaction_data, true);
 
     // Sort the array by satisfactionVote in ascending order
@@ -227,7 +227,7 @@ $count_data_annee = count($data_annee);
           Concrètement : il s'agit de la moyenne des notes qu'il a attribuées aux différents films (via sa page de profil ou la page historique).
         </p>
     <?php
-    $notes_moyennes_data = callAPI("/api/usersNotesMoyennes");
+    $notes_moyennes_data = call_API_GET("/api/usersNotesMoyennes");
     $array_notes_moyennes = json_decode($notes_moyennes_data, true);
 
     // Sort the array by averageNote in descending order

@@ -72,7 +72,7 @@ if(isset($_POST['new_proposeur'])){
 }
 
 //Formulaire de création de semaine
-$membres_API = callAPI("/api/membres");
+$membres_API = call_API_GET("/api/membres");
 $decode_membre = json_decode($membres_API);
 echo '<form method="post" action="">';
 
@@ -108,7 +108,7 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
-$get_membres = callAPI("/api/membres");
+$get_membres = call_API_GET("/api/membres");
 $membres = json_decode($get_membres);
 
 

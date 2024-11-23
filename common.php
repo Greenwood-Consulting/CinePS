@@ -2,13 +2,14 @@
 
 include "call_api.php";
 
-$json_current_semaine = callAPI("/api/currentSemaine");
+$json_current_semaine = call_API_GET("/api/currentSemaine");
 $array_current_semaine = json_decode($json_current_semaine);
 $id_current_semaine = $array_current_semaine[0]->id;
 
 
 //Fonction d'affichage
-function printFilmsProposes($id_semaine){  
+function printFilmsProposes($id_semaine){
+  global $array_current_semaine;
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
 
   if (empty($array_current_semaine[0]->propositions) || !$array_current_semaine[0]->proposition_termine) { // Aucun film n'a été proposé ou proposition non terminée
@@ -23,7 +24,7 @@ function printFilmsProposes($id_semaine){
 
 // Affiche le film victorieux
 function printResultatVote($id_semaine){
-    $film_victorieux = callAPI("/api/filmVictorieux/".$id_semaine);
+    $film_victorieux = call_API_GET("/api/filmVictorieux/".$id_semaine);
     $film_victorieux_array = json_decode($film_victorieux);
     if(empty($film_victorieux_array)){//il n'y a pas de propositions 
       echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
@@ -42,7 +43,7 @@ function printResultatVote($id_semaine){
 
 // Affichage de la liste des membres qui ont déjà voté
 function printUserAyantVote(){
-  $current_semaine_json = callAPI("/api/currentSemaine");
+  $current_semaine_json = call_API_GET("/api/currentSemaine");
   $current_semaine_array = json_decode($current_semaine_json);
   $votants_array = $current_semaine_array[0]->votants;
   
@@ -57,7 +58,7 @@ function printUserAyantVote(){
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-  $next_proposeurs = callAPI("/api/nextProposeurs/".$id_semaine);
+  $next_proposeurs = call_API_GET("/api/nextProposeurs/".$id_semaine);
   $next_proposeurs_array = json_decode($next_proposeurs);
 
   foreach($next_proposeurs_array as $semaine){
@@ -87,11 +88,11 @@ function printChoixvote($id_semaine){
     echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
   }else{
     // Récupération de la liste des membres (pour le header)
-    $get_membres = callAPI("/api/membres");
+    $get_membres = call_API_GET("/api/membres");
     $membres_array = json_decode($get_membres);
 
     // Récupération des propositions avec votes
-    $get_propositions_et_votes = callAPI("/api/votes/".$id_semaine);
+    $get_propositions_et_votes = call_API_GET("/api/votes/".$id_semaine);
     $array_propositions_et_votes = json_decode($get_propositions_et_votes);
 
 
@@ -146,7 +147,7 @@ function printChoixvote($id_semaine){
       //Colonne Note
       echo "<TD>";
 
-      $get_film_gagnant = callAPI("/api/filmVictorieux/".$id_semaine);
+      $get_film_gagnant = call_API_GET("/api/filmVictorieux/".$id_semaine);
       $film_gagnant_array = json_decode($get_film_gagnant);
 
       $id_proposition = $proposition_et_votes->id;

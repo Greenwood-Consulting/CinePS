@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include('env.php');
 include('call_api.php');
 
 // Vérifier si l'utilisateur est connecté
@@ -12,7 +12,7 @@ if (!isset($_SESSION['user'])) {
 
 // Récupérer les informations de l'utilisateur connecté
 $user_id = $_SESSION['user'];
-$user = callAPI("/api/membres/" . $user_id);
+$user = call_API_GET("/api/membres/" . $user_id);
 $array_user = json_decode($user);
 
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
@@ -58,7 +58,7 @@ if (empty($array_user)) {
 
     <?php
     // Récupérer les films gagnants
-    $films_gagnants = callAPI("/api/filmsGagnants");
+    $films_gagnants = call_API_GET("/api/filmsGagnants");
     $array_films = json_decode($films_gagnants);
 
     // Vérifier si les informations des films ont été récupérées avec succès
