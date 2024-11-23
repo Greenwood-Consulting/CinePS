@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include('env.php');
 include('call_api.php');
 
 // Vérifier si l'utilisateur est connecté

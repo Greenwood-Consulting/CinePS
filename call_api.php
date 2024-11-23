@@ -1,6 +1,4 @@
 <?php
-include 'env.php';
-
 // Récupérer un tolen d'accàs l'API
 function recupererToken(){
     $body = [

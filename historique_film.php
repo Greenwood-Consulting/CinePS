@@ -37,6 +37,7 @@ session_start();
           <div class="hero-full-wrapper">
             <div class="text-content"-->
 <?php
+include 'env.php';
 include('common.php');
 
 // Barre de navigation
