@@ -149,7 +149,11 @@ if (empty($array_user)) {
                                 </select>
                             <?php 
                                 else: 
-                                    echo htmlspecialchars(rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'));
+                                    if ($film->moyenne === null) {
+                                        echo "non noté";
+                                    } else {
+                                        echo htmlspecialchars(rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'));
+                                    }
                             endif; 
                                 ?>
                         </td>
