@@ -373,7 +373,9 @@ $count_data_annee = count($data_annee);
             $total_moyennes_tous_films_gagants += $film->moyenne;
             $count_films_with_moyenne++;
           }
-          $nb_notes = count($film->notes);
+          $nb_notes = count(array_filter($film->notes, function($note) {
+            return $note->note !== null;
+          }));
         ?>
           <tr>
             <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
@@ -416,7 +418,8 @@ $count_data_annee = count($data_annee);
 
       // Retirer la note du proposeur si elle existe
       $notes_film_du_proposeur = array_filter($film->notes, function($note) use ($proposeur) {
-        return $note->membre->id !== $proposeur->id;
+        // on enlève la note du proposeur et les notes qui sont à null (qui correspondent à des abstentions)
+        return $note->membre->id !== $proposeur->id && $note->note !== null;
       });
 
       $nb_notes_film_du_proposeur = count($notes_film_du_proposeur);
