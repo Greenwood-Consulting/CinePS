@@ -212,7 +212,6 @@ echo "</TABLE>";
 
   function printChoixvoteFromArray($array_semaine, $array_historique_membres){
 
-
     // prenom proposeur
     $proposeur_prenom = $array_semaine->proposeur->Prenom;
   
@@ -235,7 +234,6 @@ echo "</TABLE>";
   
       // Récupération des propositions avec votes
       $array_propositions_et_votes = $array_semaine->propositions;
-  
   
       echo "<TABLE border = '1px'>";
      
@@ -297,22 +295,25 @@ echo "</TABLE>";
         if(isset($_SESSION['user'])){ // On affiche la colonne Note seulement si l'utilisateur est connecté
           echo "<TD>";
     
-          if($film_victorieux_id == $id_proposition){
-            // Parcourir le tableau des notes et calcul de la moyenne
+          if($film_victorieux_id == $id_proposition){ // il n'y a une note que pour le film victorieux
+            
             $nb_notes = 0;
-            $current_user_a_note = false;
+            $current_user_a_note_et_non_absention = false;
             for ($i = 0; $i < count($proposition_et_votes->note); $i ++)
-            {
-              if(is_int($proposition_et_votes->note[$i]->note)){
+            { // Parcourir le tableau des notes et calcul de la moyenne
+              if(is_int($proposition_et_votes->note[$i]->note)){ // il y a une note
                 if($proposition_et_votes->note[$i]->membre == $_SESSION['user']){
-                  $current_user_a_note = true;
+                  $current_user_a_note_et_non_absention = true;
                 }
                 $sumOfNotes= $sumOfNotes + $proposition_et_votes->note[$i]->note;
                 $nb_notes = $nb_notes + 1;
               }
+              if (is_null($proposition_et_votes->note[$i]->note) && $proposition_et_votes->note[$i]->membre == $_SESSION['user']){ // abtenstion
+                $current_user_a_note_et_non_absention = true;
+              }
             }
     
-            if(!$current_user_a_note){
+            if(!$current_user_a_note_et_non_absention){
               echo "<form method='POST' action='save_note.php'>";
     
               echo '  <select name="note" id="'.$id_film.'">';
