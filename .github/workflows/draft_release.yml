@@ -1,0 +1,27 @@
+name: Create Draft Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Déclenchement sur les tags commençant par "v"
+  workflow_dispatch:  # Permet d'exécuter le workflow manuellement
+
+jobs:
+  create-draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Ajuste la version si nécessaire
+
+      - name: Set environment variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Run PHP script
+        run: php scripts/Release_Note_ChatGPT.php
