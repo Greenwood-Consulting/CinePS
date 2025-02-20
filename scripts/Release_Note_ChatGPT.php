@@ -17,11 +17,18 @@ function call_API_POST_ChatGPT($json_body, $apiKey){
     return $api_response;
 }
 
+// Récupérer les deux derniers tags
+$tags = shell_exec("git tag --sort=-creatordate | head -2");
+// Convertir la sortie en tableau et récupérer les tags
+$tags = explode("\n", trim($tags));
+$latest_tag = $tags[0];   // Dernier tag
+$previous_tag = $tags[1]; // Tag précédent
+
 // Authentification à Github CLI
 shell_exec("echo ".$ghKey." | gh auth login --with-token");
 
 // Récupération du git log de la version qui correspond au dernier tag
-$command = 'git log v2.2..v2.3'; // Commande Git à exécuter
+$command = 'git log '.$previous_tag.'..'.$latest_tag; // Commande Git à exécuter
 $git_log = shell_exec($command);
 
 
