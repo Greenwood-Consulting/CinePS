@@ -25,15 +25,22 @@ $latest_tag = $tags[0];   // Dernier tag
 $previous_tag = $tags[1]; // Tag précédent
 
 echo "Dernier tag : ".$latest_tag."\n";
+echo "Tag précédent : ".$previous_tag."\n";
+
+if (empty($previous_tag) || empty($latest_tag)) {
+    die("Erreur : l'un des tags est vide.");
+}
 
 // Authentification à Github CLI - Nécessaire uniquement pour exécuter en local
 // shell_exec("echo ".$ghKey." | gh auth login --with-token");
 echo shell_exec("gh auth status");
 
+echo shell_exec("git tag --sort=-creatordate");
+
 // Récupération du git log de la version qui correspond au dernier tag
 $command = 'git log '.$previous_tag.'..'.$latest_tag; // Commande Git à exécuter
 $git_log = shell_exec($command);
-
+echo "Git log result : ".$git_log;
 
 if ($git_log === null) {
     echo "Erreur lors de l'exécution de la commande.";
