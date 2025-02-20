@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Permet de récupérer tous les commits et tags
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
