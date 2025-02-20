@@ -24,8 +24,8 @@ $tags = explode("\n", trim($tags));
 $latest_tag = $tags[0];   // Dernier tag
 $previous_tag = $tags[1]; // Tag précédent
 
-// Authentification à Github CLI
-shell_exec("echo ".$ghKey." | gh auth login --with-token");
+// Authentification à Github CLI - Nécessaire uniquement pour exécuter en local
+// shell_exec("echo ".$ghKey." | gh auth login --with-token");
 
 // Récupération du git log de la version qui correspond au dernier tag
 $command = 'git log '.$previous_tag.'..'.$latest_tag; // Commande Git à exécuter
@@ -75,15 +75,4 @@ Voici maintenant le texte du git log sur lequel tu dois travailler : ".$git_log;
     // Créer une release sur Github avec la CLI Github
     $response_create_release = shell_exec("gh release create v2.7 --title \"Release v2.7\" --notes-file $filePath --draft");
 }
-
-
-
-
-
-
-
-
-
-
-
 
