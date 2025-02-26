@@ -85,6 +85,6 @@ Voici maintenant le texte du git log sur lequel tu dois travailler : ".$git_log;
     file_put_contents($filePath, $release_note);
 
     // Créer une release sur Github avec la CLI Github
-    $response_create_release = shell_exec("gh release create v2.7 --title \"Release v2.7\" --notes-file $filePath --draft");
+    $response_create_release = shell_exec("gh release create ".$latest_tag." --title \"Release v2.7\" --notes-file $filePath --draft");
 }
 
