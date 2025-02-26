@@ -1,4 +1,4 @@
-name: Upload to GANDI PREPROD via SFTP
+name: Upload to PREPROD GANDI via SFTP
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
         lftp -f "
         set sftp:connect-program 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
         open -u ${{ secrets.PREPROD_FTP_USER }},${{ secrets.PREPROD_FTP_PASSWORD }} sftp://${{ secrets.PREPROD_FTP_HOST }}
-        mirror -R ./ /lamp0/web/vhosts/preprod-ps.gc2.fr/htdocs --exclude .git/ env.php
+        mirror -R ./ /lamp0/web/vhosts/preprod-ps.gc2.fr/htdocs --exclude .git/ --exclude env.php
         bye
         "
 
