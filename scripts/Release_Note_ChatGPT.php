@@ -50,6 +50,7 @@ if ($git_log === null) {
 - La sortie doit être en français.
 - Le format de la sortie doit être du Markdown (.md) afin que je copie/colle la release note générée dans Github. Donne moi une sortie comme une citation de code au format Markdown.
 - Ne mets pas de balises Markdown autour de la sortie.
+- Ne mets pas ``` avant et après la sortie.
 - Ne mets pas de liens vers les commits. Seulement les changements en français.
 - il faut que tu mentionnes les nouvelles features, les évolutions
 de features visibles par les utilisateurs, les bugs corrigés, 
