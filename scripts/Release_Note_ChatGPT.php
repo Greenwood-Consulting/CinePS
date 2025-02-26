@@ -73,6 +73,7 @@ Voici maintenant le texte du git log sur lequel tu dois travailler : ".$git_log;
     ];
     $json_body = json_encode($body);
     $api_response = call_API_POST_ChatGPT($json_body, $apiKey);
+    echo "API response : ".$api_response;
 
     $json_response = json_decode($api_response);
 
