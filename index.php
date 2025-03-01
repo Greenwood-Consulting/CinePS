@@ -1,6 +1,5 @@
 <?php
 include('header.php');
-include 'env.php';
 include('common.php');
 
 // calcul de la date de fin de la période de vote

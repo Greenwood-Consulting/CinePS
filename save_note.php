@@ -1,6 +1,5 @@
 <?php
 include('header.php');
-include('env.php');
 include('common.php');
 
 // Sauvegare de plusieurs notes en même temps

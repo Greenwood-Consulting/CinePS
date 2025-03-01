@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'env.php'; // constantes de l'application
 ?>
 
 <!DOCTYPE html>

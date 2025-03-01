@@ -1,6 +1,5 @@
 <?php
 include('header.php');
-include('env.php');
 include('common.php');
 
 //Construction du tableau data_score
