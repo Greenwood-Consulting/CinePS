@@ -5,7 +5,7 @@ include('common.php');
 ?>
 
     <link rel="stylesheet" href="admin.css">
-    <title>Admin</title>
+    <title>Administration</title>
 </head>
 
 <body>

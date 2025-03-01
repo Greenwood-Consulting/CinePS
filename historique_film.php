@@ -6,7 +6,7 @@ include('common.php');
 
   <link href="historique_film.css" rel="stylesheet">
 
-  <title>CinePS</title>  
+  <title>Historique</title>  
 
 
 

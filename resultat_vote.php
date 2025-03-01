@@ -1,11 +1,11 @@
 <?php
 include('header.php');
 include('env.php');
-include('header.php');
+include('common.php');
 ?>
 
     <link href="resultat_vote.css" rel="stylesheet">
-    <title>Résultat du vode de la semaine</title>
+    <title>Résultat du vote de la semaine</title>
 </head>
 <body>
 <?php

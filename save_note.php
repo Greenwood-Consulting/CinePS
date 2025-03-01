@@ -1,7 +1,7 @@
 <?php
+include('header.php');
 include('env.php');
 include('common.php');
-include('header.php');
 
 // Sauvegare de plusieurs notes en même temps
 if(isset($_POST['notes'])){

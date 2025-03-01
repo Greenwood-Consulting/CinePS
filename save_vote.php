@@ -1,8 +1,7 @@
 <?php
-session_start();
+include('header.php');
 include('env.php');
 include('common.php');
-include('header.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté
 $array_body_avote = array();
