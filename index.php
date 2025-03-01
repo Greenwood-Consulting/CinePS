@@ -1,7 +1,8 @@
 <?php
-include 'env.php';
 include('header.php');
+include 'env.php';
 include('common.php');
+
 // calcul de la date de fin de la période de vote
 $fin_periode_vote = new DateTime(FIN_PERIODE_VOTE, new DateTimeZone('Europe/Paris'));
 $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
@@ -12,25 +13,10 @@ $deadline_vote = $deadline_vote*1000;
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width,initial-scale=1" name="viewport">
-  <meta content="description" name="description">
-  <meta name="google" content="notranslate" />
-  <meta content="Mashup templates have been developped by Orson.io team" name="author">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-  <!-- Disable tap highlight on IE-->
-  <meta name="msapplication-tap-highlight" content="no">
-  
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
-  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 
-
-<!--Gestion du compte à rebours de la période de vote -->
+  <!--Gestion du compte à rebours de la période de vote -->
 <script>
 // Injection de la date de fin PHP dans une variable Javascript
 var deadline_vote = <?php echo $deadline_vote; ?>;

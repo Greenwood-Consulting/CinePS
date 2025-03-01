@@ -1,5 +1,5 @@
 <?php
-session_start();
+include('header.php');
 include('env.php');
 include('common.php');
 

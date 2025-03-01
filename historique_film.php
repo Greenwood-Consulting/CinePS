@@ -1,30 +1,18 @@
 <?php
-session_start();
+include 'header.php';
+include 'env.php';
+include('common.php');
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width,initial-scale=1" name="viewport">
-  <meta content="description" name="description">
-  <meta name="google" content="notranslate" />
-  <meta content="Mashup templates have been developped by Orson.io team" name="author">
-  <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"-->
   <link href="historique_film.css" rel="stylesheet">
-
-  <!--Disable tap highlight on IE-->
-  <meta name="msapplication-tap-highlight" content="no">
-  
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
-  <link href="./assets/favicon.ico" rel="icon">
 
   <title>CinePS</title>  
 
 
-<!--link href="./main.3f6952e4.css" rel="stylesheet">
-</head>             
+
+</head>
+
+<!--
 <body class="minimal">
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
@@ -37,8 +25,6 @@ session_start();
           <div class="hero-full-wrapper">
             <div class="text-content"-->
 <?php
-include 'env.php';
-include('common.php');
 
 // Barre de navigation
 ?>
