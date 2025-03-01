@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+include 'header.php';
+include 'env.php';
+include('common.php');
+?>
+
     <link rel="stylesheet" href="admin.css">
-    <title>Admin</title>
+    <title>Administration</title>
 </head>
+
 <body>
     <h2>Inscription</h2>
     <?php
-    include('common.php');
     if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
@@ -49,8 +49,6 @@
 </br>
 <h2> Choix du proposeur pour la semaine souhaitée </h2>
 <?php
-
-include 'env.php';
 
 //si il clique sur le bouton new_proposeur, création d'une nouvelle semaine
 if(isset($_POST['new_proposeur'])){

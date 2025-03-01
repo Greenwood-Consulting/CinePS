@@ -1,6 +1,5 @@
 <?php
-session_start();
-include('env.php');
+include('header.php');
 include('call_api.php');
 
 // Vérifier si l'utilisateur est connecté
@@ -23,11 +22,7 @@ if (empty($array_user)) {
 
 // Afficher les informations de l'utilisateur
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Profil de l'utilisateur</title>
     <link rel="stylesheet" href="historique_film.css">
 </head>

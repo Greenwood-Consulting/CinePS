@@ -1,6 +1,5 @@
 <?php
-session_start();
-include('env.php');
+include('header.php');
 include('common.php');
 
 //Construction du tableau data_score
@@ -47,15 +46,11 @@ $count_data_annee = count($data_annee);
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <link href="historique_film.css" rel="stylesheet">
 
-    <title>Statistique</title>
+    <title>Statistiques</title>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
