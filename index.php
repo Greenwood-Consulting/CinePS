@@ -186,9 +186,8 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API pour terminer les propositions
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+  // Terminer les propositions
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -211,9 +210,8 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   );
   $json_proposition = json_encode($array_proposition);
 
-  // call API pour créer une nouvelle proposition
-  $json_proposition = callAPI_POST("/api/proposition", $json_proposition);
-  $array_proposition = json_decode($json_proposition);
+  // Créer une nouvelle proposition
+  call_API("/api/proposition", "POST", $json_proposition);
 
   echo '<br/>';
   echo '<br/>';
@@ -227,18 +225,16 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API pour définir le thème des propositions de la semaine
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+  // Définir le thème des propositions de la semaine
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 }
 
 //Propostion comportement 2 : on vient du bouton seconde_chance
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $id_proposeur = addslashes($_SESSION['user']);
 
-  // call API
-  $json_proposition = call_API_GET("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
-  $array_proposition = json_decode($json_proposition);
+  // @TODO : à revoir, je comprends pas à quoi ça sert
+  $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -258,7 +254,7 @@ if(isset($_POST['chatGPT'])){
   $json_body = json_encode($array_body);
 
   // call API pour créer des propositions avec ChatGPT
-  $json_body = callAPI_POST("/api/propositionOpenAI", $json_body);
+  call_API("/api/propositionOpenAI", "POST", $json_body);
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -319,8 +315,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                 <form method="POST" action="save_vote.php">
                 <?php
                 // récupération de la semaine courrante (contenant les propositions)
-                $current_semaine = call_API_GET("/api/currentSemaine");
-                $array_current_semaine = json_decode($current_semaine);
+                $array_current_semaine = call_API("/api/currentSemaine", "GET"); // @TODO : renommer $array_current_semaine en $json_currentSemaine
                 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
                 $nombre_proposition = count($array_current_semaine[0]->propositions);
 

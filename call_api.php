@@ -25,7 +25,7 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
   $_SESSION['token'] = recupererToken();
 }
 
-function call_API($entry_point, $verbe, $body = null){
+function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
   $curl = curl_init(API_URL.$entry_point);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
@@ -73,21 +73,15 @@ function call_API($entry_point, $verbe, $body = null){
     $api_response = curl_exec($curl);
   }
 
+  if ($result_as_array) {
+    $api_response = json_decode($api_response);
+  } else {
+    $api_response = json_decode($api_response, true);
+  }
+
   curl_close($curl);
 
   return $api_response;
-}
-
-function call_API_GET($entry_point){
-    return call_API($entry_point, 'GET');
-}
-
-function callAPI_POST($entry_point, $body){
-  return call_API($entry_point, 'POST', $body);
-}
-
-function callAPI_PATCH($entry_point, $body){
-  return call_API($entry_point, 'PATCH', $body);
 }
 
 ?>

@@ -53,9 +53,8 @@ if(isset($_POST['member_filter'])){
   if ($_POST['user_filter'] == 0) {
     echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
-    $json_array_id_membre = call_API_GET("/api/membres/". $id_membre);
-    $array_id_membre = json_decode($json_array_id_membre);
-    $nom_membre = $array_id_membre->Nom;
+    $json_id_membre = call_API("/api/membres/". $id_membre, "GET");
+    $nom_membre = $json_id_membre->Nom;
     if (in_array(strtoupper($nom_membre[0]), $voyelles)) {
       echo "<h1 class = 'titre'>Historique des propositions d'".$nom_membre."</h1>";
     } else {
@@ -71,11 +70,10 @@ if(isset($_POST['member_filter'])){
 
 
 // On récupère les anciennes semaines
-$get_historique = call_API_GET("/api/historique");
-$array_historique = json_decode($get_historique);
+$json_historique = call_API("/api/historique", "GET");
 
-$array_historique_semaines = $array_historique->semaines;
-$array_historique_membres = $array_historique->membres;
+$array_historique_semaines = $json_historique->semaines;
+$array_historique_membres = $json_historique->membres;
 
 // Affichage du dropdown de sélection du membre pour filtrer
 $array_proposeurs = array();
@@ -125,9 +123,7 @@ if (isset($_POST['designer_film_gagant'])) {
   }
   $json_semaine = json_encode($array_semaine);
 
-  // call API
-  $json_semaine = callAPI_PATCH("/api/semaine/".$_POST['semaineId'], $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+  call_API("/api/semaine/".$_POST['semaineId'], "PATCH", $json_semaine);
 }
 
 // Filtrer les propositions du membre sélectionné

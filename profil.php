@@ -11,11 +11,10 @@ if (!isset($_SESSION['user'])) {
 
 // Récupérer les informations de l'utilisateur connecté
 $user_id = $_SESSION['user'];
-$user = call_API_GET("/api/membres/" . $user_id);
-$array_user = json_decode($user);
+$json_user = call_API("/api/membres/" . $user_id, "GET");
 
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
-if (empty($array_user)) {
+if (empty($json_user)) {
     echo "Erreur: Impossible de récupérer les informations de l'utilisateur.";
     exit();
 }
@@ -46,18 +45,17 @@ if (empty($array_user)) {
 
     <h1 class = 'titre'>Profil de l'utilisateur</h1>
     <p>
-        <strong>Nom:</strong> <?php echo htmlspecialchars($array_user->Nom); ?><br/>
-        <strong>Email:</strong> <?php echo htmlspecialchars($array_user->mail); ?>
+        <strong>Nom:</strong> <?php echo htmlspecialchars($json_user->Nom); ?><br/>
+        <strong>Email:</strong> <?php echo htmlspecialchars($json_user->mail); ?>
     </p>
     <br />
 
     <?php
     // Récupérer les films gagnants
-    $films_gagnants = call_API_GET("/api/filmsGagnants");
-    $array_films = json_decode($films_gagnants);
+    $json_films_gagnants = call_API("/api/filmsGagnants", "GET");
 
     // Vérifier si les informations des films ont été récupérées avec succès
-    if (empty($array_films)) {
+    if (empty($json_films_gagnants)) {
         echo "Erreur: Impossible de récupérer les informations des films gagnants.";
         exit();
     }
@@ -65,8 +63,8 @@ if (empty($array_user)) {
 
     <?php
     // Filtrer les films gagnants pour ne garder que ceux proposés par l'utilisateur connecté
-    $mes_films_gagnants = array_filter($array_films, function($film) use ($array_user) {
-        return $film->propositions[0]->semaine->proposeur->Nom === $array_user->Nom;
+    $mes_films_gagnants = array_filter($json_films_gagnants, function($film) use ($json_user) {
+        return $film->propositions[0]->semaine->proposeur->Nom === $json_user->Nom;
     });
     ?>
 
@@ -111,7 +109,7 @@ if (empty($array_user)) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($array_films as $film): ?>
+                <?php foreach ($json_films_gagnants as $film): ?>
                     <tr>
                         <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
                         <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>

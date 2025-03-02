@@ -2,10 +2,8 @@
 
 include "call_api.php";
 
-$json_current_semaine = call_API_GET("/api/currentSemaine");
-$array_current_semaine = json_decode($json_current_semaine);
-$id_current_semaine = $array_current_semaine[0]->id;
-
+$json_current_semaine = call_API("/api/currentSemaine", "GET");
+$id_current_semaine = $json_current_semaine[0]->id;
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){
@@ -24,17 +22,16 @@ function printFilmsProposes($id_semaine){
 
 // Affiche le film victorieux
 function printResultatVote($id_semaine){
-    $film_victorieux = call_API_GET("/api/filmVictorieux/".$id_semaine);
-    $film_victorieux_array = json_decode($film_victorieux);
-    if(empty($film_victorieux_array)){//il n'y a pas de propositions 
+    $json_film_victorieux = call_API("/api/filmVictorieux/".$id_semaine, "GET");
+    if(empty($json_film_victorieux)){//il n'y a pas de propositions 
       echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
-    }elseif(count($film_victorieux_array) == 1){//Affiche le film victorieux
-      $film_victorieux = $film_victorieux_array[0]->film;
+    }elseif(count($json_film_victorieux) == 1){//Affiche le film victorieux
+      $film_victorieux = $json_film_victorieux[0]->film;
       echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
     }else{
-      $film_victorieux = $film_victorieux_array[0]->film;
+      $film_victorieux = $json_film_victorieux[0]->film;
       echo '<mark>Tous les utilisateurs ont voté. Il y a égalité entre les films suivants : <br/>';
-      foreach($film_victorieux_array as $film_egalite) {
+      foreach($json_film_victorieux as $film_egalite) {
         echo $film_egalite->film->titre.'<br/>';
       }
       echo '</mark>';
@@ -43,11 +40,9 @@ function printResultatVote($id_semaine){
 
 // Affichage de la liste des membres qui ont déjà voté
 function printUserAyantVote(){
-  $current_semaine_json = call_API_GET("/api/currentSemaine");
-  $current_semaine_array = json_decode($current_semaine_json);
-  $votants_array = $current_semaine_array[0]->votants;
+  $current_semaine_json = call_API("/api/currentSemaine", "GET");
+  $votants_array = $current_semaine_json[0]->votants;
   
-
   foreach($votants_array as $votant){
     echo "<mark><b>".$votant->votant->Nom. "</b> a voté<br/></mark>";
   }
@@ -58,10 +53,9 @@ function printUserAyantVote(){
 
 //Affiche la liste de tout les proposeurs suivant la semaine $id_semaine
 function printNextproposeurs($id_semaine){
-  $next_proposeurs = call_API_GET("/api/nextProposeurs/".$id_semaine);
-  $next_proposeurs_array = json_decode($next_proposeurs);
+  $json_next_proposeurs = call_API("/api/nextProposeurs/".$id_semaine, "GET");
 
-  foreach($next_proposeurs_array as $semaine){
+  foreach($json_next_proposeurs as $semaine){
     // création d'une DateTime afin de pouvoir formater
     $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
     echo "<mark>".$dateSemaine->format('Y-m-d');
@@ -88,20 +82,18 @@ function printChoixvote($id_semaine){
     echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
   }else{
     // Récupération de la liste des membres (pour le header)
-    $get_membres = call_API_GET("/api/membres");
-    $membres_array = json_decode($get_membres);
+    $json_membres = call_API("/api/membres", "GET");
 
     // Récupération des propositions avec votes
-    $get_propositions_et_votes = call_API_GET("/api/votes/".$id_semaine);
-    $array_propositions_et_votes = json_decode($get_propositions_et_votes);
-
+    // @TODO : renommer $array_propositions_et_votes en $json_propositions_et_votes
+    $array_propositions_et_votes = call_API("/api/votes/".$id_semaine, "GET");
 
     echo "<TABLE border = '1px'>";
    
     // Affichage du header du tableau :
     echo "<TR>";
     echo "<TD></TD><TD></TD>";
-    foreach($membres_array as $data_membre){ //on crée une colonne pour chaque membre
+    foreach($json_membres as $data_membre){ //on crée une colonne pour chaque membre
       if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
         echo "<TD>";
         echo $data_membre->Prenom;
@@ -147,13 +139,12 @@ function printChoixvote($id_semaine){
       //Colonne Note
       echo "<TD>";
 
-      $get_film_gagnant = call_API_GET("/api/filmVictorieux/".$id_semaine);
-      $film_gagnant_array = json_decode($get_film_gagnant);
+      $json_film_gagnant = call_API("/api/filmVictorieux/".$id_semaine, "GET");
 
       $id_proposition = $proposition_et_votes->id;
       $id_film = $proposition_et_votes->film->id;
 
-      if($film_gagnant_array[0]->id == $id_proposition){
+      if($json_film_gagnant[0]->id == $id_proposition){
 
         // Parcourir le tableau des notes et calcul de la moyenne
         $nb_notes = 0;
