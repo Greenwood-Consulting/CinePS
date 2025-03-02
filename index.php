@@ -306,22 +306,22 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
               if($current_user_a_vote){//l'user a voté
                 echo '<mark>Vous avez déjà voté</mark>';
               }else{//l'user n'a pas voté
+                $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->Nom;
+
                 echo'<h2 class="text-warning">Vous devez voter </h2>';
                 echo "<br />";
                 echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
                 echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
-                echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
+                echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont :</h2>';
+                
+                $nombre_proposition = count($json_current_semaine[0]->propositions);
                 ?>
+
                 <form method="POST" action="save_vote.php">
                 <?php
-                // récupération de la semaine courrante (contenant les propositions)
-                $array_current_semaine = call_API("/api/currentSemaine", "GET"); // @TODO : renommer $array_current_semaine en $json_currentSemaine
-                // @TODO : supprimer ce call API (déjà fait dans calcul_etat.php ?)
-                $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
-                $nombre_proposition = count($array_current_semaine[0]->propositions);
 
                 echo "<table>";
-                foreach($array_current_semaine[0]->propositions as $proposition){
+                foreach($json_current_semaine[0]->propositions as $proposition){
                   echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="1" min="1" max="'.$nombre_proposition.'">'.'</mark> </td></tr>';                }
                 echo "</table>";
                 ?>
