@@ -7,13 +7,13 @@ $id_current_semaine = $json_current_semaine[0]->id;
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){
-  global $array_current_semaine;
+  global $json_current_semaine;
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
 
-  if (empty($array_current_semaine[0]->propositions) || !$array_current_semaine[0]->proposition_termine) { // Aucun film n'a été proposé ou proposition non terminée
+  if (empty($json_current_semaine[0]->propositions) || !$json_current_semaine[0]->proposition_termine) { // Aucun film n'a été proposé ou proposition non terminée
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
-    foreach($array_current_semaine[0]->propositions as $proposition){
+    foreach($json_current_semaine[0]->propositions as $proposition){
       echo '<mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a>';
       echo $proposition->film->sortie_film.'</mark></br>'; 
     }

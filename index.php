@@ -269,17 +269,17 @@ if(isset($_POST['chatGPT'])){
 
 include('calcul_etat.php');
 
-if ($array_current_semaine[0]->type == "PSSansFilm") {
+if ($json_current_semaine[0]->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";
 }
-if ($array_current_semaine[0]->type == "PasDePS") {
+if ($json_current_semaine[0]->type == "PasDePS") {
   echo "<mark>Il n'y a pas de PS cette semaine</mark>";
 }
-if ($array_current_semaine[0]->type == "PSAvecFilm") {
+if ($json_current_semaine[0]->type == "PSAvecFilm") {
   // Affichage de la liste des utilisateurs ayant déjà voté
   printUserAyantVote($id_current_semaine);
 
-  if ($array_current_semaine[0]->proposition_termine){
+  if ($json_current_semaine[0]->proposition_termine){
     echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
   } else {
     echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
@@ -316,6 +316,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                 <?php
                 // récupération de la semaine courrante (contenant les propositions)
                 $array_current_semaine = call_API("/api/currentSemaine", "GET"); // @TODO : renommer $array_current_semaine en $json_currentSemaine
+                // @TODO : supprimer ce call API (déjà fait dans calcul_etat.php ?)
                 $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
                 $nombre_proposition = count($array_current_semaine[0]->propositions);
 
@@ -375,7 +376,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
                   <input type="text" id="theme" name="theme" value="<?php  echo $array_current_semaine[0]->theme; ?>" class="text-dark">
 
                   <?php 
-                    if (empty($array_current_semaine[0]->theme)) {
+                    if (empty($json_current_semaine[0]->theme)) {
                       echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
                     } else {
                       echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
@@ -390,7 +391,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$array_current_semaine[0]->proposeur->Nom."</mark>";
+            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->Nom."</mark>";
           }else{//Sinon on indique que aucun proposeur n'est défini
             echo "<mark>Aucun proposeur n'a encore été défini</mark>";
           }
