@@ -37,7 +37,7 @@ var x = setInterval(function() {
 
 </script>
 
-  <title>CinePS</title>  
+  <title>CinePS</title>
   
 <link href="./main.3f6952e4.css" rel="stylesheet">
 <style>
@@ -157,6 +157,7 @@ var x = setInterval(function() {
             <div class="text-content">
               <!-- Titre de la page -->
               <h1 class="text-warning">
+                <img src="assets/logo/logo.png" alt="CinePS" style="height: 1em; vertical-align: top; position: relative; top: -5px;" />
                 CinePS
                 <sup>
                   <span style="font-size: 50%; vertical-align: top;">
