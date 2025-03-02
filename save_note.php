@@ -16,7 +16,7 @@ if(isset($_POST['notes'])){
                 "note" => $note
             );
             $json_note = json_encode($array_note);
-            callAPI_POST("/api/note", $json_note);
+            call_API("/api/note", "POST", $json_note);
         }
         if ($note == "abs") {
             $array_abstention = array(
@@ -24,7 +24,7 @@ if(isset($_POST['notes'])){
                 "membre_id" => $membre_id
             );
             $json_abstention = json_encode($array_abstention);
-            callAPI_POST("/api/note", $json_abstention);
+            call_API("/api/note", "POST", $json_abstention);
         }
     }
     header('Location: profil.php');
@@ -42,7 +42,7 @@ if(isset($_POST['id_film'])){
           "note" => $note,
       );
       $json_note = json_encode($array_note);
-      callAPI_POST("/api/note", $json_note);
+      call_API("/api/note", "POST", $json_note);
       header('Location: historique_film.php');
 }
 

@@ -4,7 +4,7 @@ include('common.php');
 
 //Construction du tableau data_score
 $data_score = [];
-$array_score_film = $array_current_semaine[0]->propositions;
+$array_score_film = $json_current_semaine[0]->propositions;
 foreach($array_score_film as $film){
   array_push($data_score, array("Film" => $film->film->titre, "Score" => $film->score));
 
@@ -13,17 +13,15 @@ $count_data_score = count($data_score);
 
 //construction du tableau data_proposeur
 $data_proposeurs = [];
-$get_proposeurs = call_API_GET("/api/getNbPropositionsParProposeur");
-$array_proposeurs = json_decode($get_proposeurs);
-foreach($array_proposeurs as $proposeurs){
+$json_proposeurs = call_API("/api/getNbPropositionsParProposeur", "GET");
+foreach($json_proposeurs as $proposeurs){
   array_push($data_proposeurs, array("Proposeur" => $proposeurs->proposeur, "nombre" => $proposeurs->nb_semaines));
 }
 
 $count_data_proposeurs = count($data_proposeurs);
 
 // récupérer les films gaganants
-$filmsGagnants = call_API_GET("/api/filmsGagnants");
-$array_filmsGagnants = json_decode($filmsGagnants);
+$array_filmsGagnants = call_API("/api/filmsGagnants", "GET"); // @TODO : renommer $array_filmsGagnants en $json_films_gagnants ?
 
 //Construction du tableau data_année
 $data_annee = [];
@@ -187,8 +185,7 @@ $count_data_annee = count($data_annee);
     </p>
 
     <?php
-    $satisfaction_data = call_API_GET("/api/usersSatisfaction");
-    $array_satisfaction = json_decode($satisfaction_data, true);
+    $array_satisfaction = call_API("/api/usersSatisfaction", "GET", null, true);
 
     // Sort the array by satisfactionVote in ascending order
     usort($array_satisfaction, function($a, $b) {
@@ -222,8 +219,7 @@ $count_data_annee = count($data_annee);
           Concrètement : il s'agit de la moyenne des notes qu'il a attribuées aux différents films (via sa page de profil ou la page historique).
         </p>
     <?php
-    $notes_moyennes_data = call_API_GET("/api/usersNotesMoyennes");
-    $array_notes_moyennes = json_decode($notes_moyennes_data, true);
+    $array_notes_moyennes = call_API("/api/usersNotesMoyennes", "GET", null, true);
 
     // Sort the array by averageNote in descending order
     usort($array_notes_moyennes, function($a, $b) {

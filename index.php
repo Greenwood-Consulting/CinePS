@@ -186,9 +186,8 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API pour terminer les propositions
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+  // Terminer les propositions
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -211,9 +210,8 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   );
   $json_proposition = json_encode($array_proposition);
 
-  // call API pour créer une nouvelle proposition
-  $json_proposition = callAPI_POST("/api/proposition", $json_proposition);
-  $array_proposition = json_decode($json_proposition);
+  // Créer une nouvelle proposition
+  call_API("/api/proposition", "POST", $json_proposition);
 
   echo '<br/>';
   echo '<br/>';
@@ -227,18 +225,16 @@ if(isset($_POST['new_theme'])){//si on valide le theme
   );
   $json_semaine = json_encode($array_semaine);
 
-  // call API pour définir le thème des propositions de la semaine
-  $json_semaine = callAPI_PATCH("/api/semaine/".$id_current_semaine, $json_semaine);
-  $array_semaine = json_decode($json_semaine);
+  // Définir le thème des propositions de la semaine
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 }
 
 //Propostion comportement 2 : on vient du bouton seconde_chance
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $id_proposeur = addslashes($_SESSION['user']);
 
-  // call API
-  $json_proposition = call_API_GET("/api/PropositionPerdante/". $id_proposeur , $json_proposition);
-  $array_proposition = json_decode($json_proposition);
+  // @TODO : à revoir, je comprends pas à quoi ça sert
+  $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -258,7 +254,7 @@ if(isset($_POST['chatGPT'])){
   $json_body = json_encode($array_body);
 
   // call API pour créer des propositions avec ChatGPT
-  $json_body = callAPI_POST("/api/propositionOpenAI", $json_body);
+  call_API("/api/propositionOpenAI", "POST", $json_body);
 
   // Redirection après mise à jour
   header("Location: ".$_SERVER['PHP_SELF']);
@@ -273,17 +269,17 @@ if(isset($_POST['chatGPT'])){
 
 include('calcul_etat.php');
 
-if ($array_current_semaine[0]->type == "PSSansFilm") {
+if ($json_current_semaine[0]->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";
 }
-if ($array_current_semaine[0]->type == "PasDePS") {
+if ($json_current_semaine[0]->type == "PasDePS") {
   echo "<mark>Il n'y a pas de PS cette semaine</mark>";
 }
-if ($array_current_semaine[0]->type == "PSAvecFilm") {
+if ($json_current_semaine[0]->type == "PSAvecFilm") {
   // Affichage de la liste des utilisateurs ayant déjà voté
   printUserAyantVote($id_current_semaine);
 
-  if ($array_current_semaine[0]->proposition_termine){
+  if ($json_current_semaine[0]->proposition_termine){
     echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
   } else {
     echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
@@ -310,22 +306,22 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
               if($current_user_a_vote){//l'user a voté
                 echo '<mark>Vous avez déjà voté</mark>';
               }else{//l'user n'a pas voté
+                $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->Nom;
+
                 echo'<h2 class="text-warning">Vous devez voter </h2>';
                 echo "<br />";
                 echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
                 echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
-                echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont:</h2>';
+                echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont :</h2>';
+                
+                $nombre_proposition = count($json_current_semaine[0]->propositions);
                 ?>
+
                 <form method="POST" action="save_vote.php">
                 <?php
-                // récupération de la semaine courrante (contenant les propositions)
-                $current_semaine = call_API_GET("/api/currentSemaine");
-                $array_current_semaine = json_decode($current_semaine);
-                $proposeur_cette_semaine = $array_current_semaine[0]->proposeur;
-                $nombre_proposition = count($array_current_semaine[0]->propositions);
 
                 echo "<table>";
-                foreach($array_current_semaine[0]->propositions as $proposition){
+                foreach($json_current_semaine[0]->propositions as $proposition){
                   echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="1" min="1" max="'.$nombre_proposition.'">'.'</mark> </td></tr>';                }
                 echo "</table>";
                 ?>
@@ -377,10 +373,10 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
 
                 <form method="POST" action="index.php">
                   <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
-                  <input type="text" id="theme" name="theme" value="<?php  echo $array_current_semaine[0]->theme; ?>" class="text-dark">
+                  <input type="text" id="theme" name="theme" value="<?php  echo $json_current_semaine[0]->theme; ?>" class="text-dark">
 
                   <?php 
-                    if (empty($array_current_semaine[0]->theme)) {
+                    if (empty($json_current_semaine[0]->theme)) {
                       echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
                     } else {
                       echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
@@ -395,7 +391,7 @@ if ($array_current_semaine[0]->type == "PSAvecFilm") {
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$array_current_semaine[0]->proposeur->Nom."</mark>";
+            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->Nom."</mark>";
           }else{//Sinon on indique que aucun proposeur n'est défini
             echo "<mark>Aucun proposeur n'a encore été défini</mark>";
           }

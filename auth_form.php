@@ -8,14 +8,14 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
-    $user = call_API_GET("/api/membres/".$id_membre);
-    $array_user = json_decode($user);
+    $json_user = call_API("/api/membres/".$id_membre, "GET");
 
-    if(! empty($array_user)){//On vérifie qui'il y est un mdp pour l'utilisateur connecté
+    if(! empty($json_user)){//On vérifie qui'il y ait un mdp pour l'utilisateur connecté
         //$password = hash('sha256', $password);
+        // @TODO : à revoir, je comprends pas tout
 
-        if($array_user->mdp == $password){//Le mot de passe correspond on autorise la connection
-            $_SESSION['user'] = $array_user->id;     
+        if($json_user->mdp == $password){//Le mot de passe correspond on autorise la connection
+            $_SESSION['user'] = $json_user->id;     
         }else{//sinon on refuse la connection
             echo 'Le mdp n\'est pas valide';
         } 
@@ -25,17 +25,15 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
-    $user = call_API_GET("/api/membres/".$_SESSION['user']);
-    $array_user = json_decode($user);
+    $json_user = call_API("/api/membres/".$_SESSION['user'], "GET");
     // @todo: remplacer le style par une classe CSS (à faire quand le fichier CSS sera refactorisé)
     echo "<div class=\"login-form\">
-            Utilisateur connecté : <a href='profil.php' style='color: gold;'>".$array_user->Nom."</a>";
+            Utilisateur connecté : <a href='profil.php' style='color: gold;'>".$json_user->Nom."</a>";
     echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>
         </div>";
 }
 else{ //Sinon on propose la connexion
-    $users = call_API_GET("/api/membres");
-    $array_users = json_decode($users);
+    $json_users = call_API("/api/membres", "GET");
 
     echo "";
     echo'<form method="post" action="index.php" class="login-form">';
@@ -44,7 +42,7 @@ else{ //Sinon on propose la connexion
     echo '      <div class="field-group">
                     <label for="user">Membres</label>
                     <select class="text-dark" name="user" id="user">';
-                    foreach($array_users as $user){ //Afficher un utlisateur
+                    foreach($json_users as $user){ //Afficher un utlisateur
                         echo"<option class='text-dark' value=".$user->id.">". $user->Nom." ".$user->Prenom."</option>";
                     }
     echo "           </select>

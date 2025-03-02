@@ -1,6 +1,5 @@
 <?php
 include 'header.php';
-include 'env.php';
 include('common.php');
 ?>
 
@@ -23,9 +22,7 @@ include('common.php');
             "mdp" => "Toto"
         );
         $json_membre = json_encode($array_membre);
-        $membre = callAPI_POST("/api/newmembre", $json_membre);
-        $new_membre = json_decode($membre);
-   
+        call_API("/api/newmembre", "POST", $json_membre);
     }
 ?>
 
@@ -67,14 +64,11 @@ if(isset($_POST['new_proposeur'])){
     );
     $json_semaine = json_encode($array_semaine);
 
-    $semaine = callAPI_POST("/api/newSemaine", $json_semaine);
-    $new_semaine = json_decode($semaine);
-
+    call_API("/api/newSemaine", "POST", $json_semaine);
 }
 
 //Formulaire de création de semaine
-$membres_API = call_API_GET("/api/membres");
-$decode_membre = json_decode($membres_API);
+$decode_membre = call_API("/api/membres", "GET");
 echo '<form method="post" action="">';
 
 // Membre proposeur
@@ -109,9 +103,7 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
-$get_membres = call_API_GET("/api/membres");
-$membres = json_decode($get_membres);
-
+$membres = call_API("/api/membres", "GET");
 
 foreach($membres as $membre) {
     echo $membre->Nom;
@@ -130,7 +122,7 @@ if(isset($_POST['id']) && isset($_POST['actif'])){
     $statut_activation = array("actif" => $actif);
     $json_statut_activation = json_encode($statut_activation);
 
-    callAPI_PATCH("/api/actifMembre/".$id, $json_statut_activation);
+    call_API("/api/actifMembre/".$id, "PATCH", $json_statut_activation);
 }
 ?>
 
