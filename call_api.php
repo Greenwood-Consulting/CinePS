@@ -54,7 +54,11 @@ function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
     exit();
   }
 
-  $decoded_response = json_decode($api_response);
+  if ($result_as_array) {
+    $decoded_response = json_decode($api_response, true);
+  } else {
+    $decoded_response = json_decode($api_response);
+  }
   
   // Si le token est expiré, on génère un nouveau token
   if (is_object($decoded_response) && isset($decoded_response->code) && $decoded_response->code == "401") {
@@ -71,17 +75,17 @@ function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
 
     // ré-exécution de la requête
     $api_response = curl_exec($curl);
-  }
 
-  if ($result_as_array) {
-    $api_response = json_decode($api_response);
-  } else {
-    $api_response = json_decode($api_response, true);
+    if ($result_as_array) {
+      $decoded_response = json_decode($api_response, true);
+    } else {
+      $decoded_response = json_decode($api_response);
+    }
   }
 
   curl_close($curl);
 
-  return $api_response;
+  return $decoded_response;
 }
 
 ?>
