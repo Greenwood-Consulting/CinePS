@@ -10,7 +10,7 @@ function printFilmsProposes($id_semaine){
   global $json_current_semaine;
   echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
 
-  if (empty($json_current_semaine[0]->propositions) || !$json_current_semaine[0]->proposition_termine) { // Aucun film n'a été proposé ou proposition non terminée
+  if (empty($json_current_semaine[0]->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
     foreach($json_current_semaine[0]->propositions as $proposition){
