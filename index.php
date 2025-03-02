@@ -373,7 +373,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
 
                 <form method="POST" action="index.php">
                   <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
-                  <input type="text" id="theme" name="theme" value="<?php  echo $array_current_semaine[0]->theme; ?>" class="text-dark">
+                  <input type="text" id="theme" name="theme" value="<?php  echo $json_current_semaine[0]->theme; ?>" class="text-dark">
 
                   <?php 
                     if (empty($json_current_semaine[0]->theme)) {
