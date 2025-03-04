@@ -34,7 +34,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     ?>
     <div class="login-form">
         <ul class="menu">
-            <li class="menu-item has-submenu">
+            <li class="has-submenu">
                 <button type="button" class="menu-button"><?php echo $json_user->Nom; ?></button>
                 <ul class="submenu">
                     <li><a href="profil.php">Profil</a></li>
