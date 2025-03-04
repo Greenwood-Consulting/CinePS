@@ -32,26 +32,7 @@ table{
 a:visited{
   color: rgb(240, 173, 78);
 }
-.btn{
-  display: inline-block;
-  background-color: #d0880d00; 
-  border-color: rgb(240, 173, 78);
-  color: rgb(240, 173, 78);
-  font-family: inherit;
-  font-size: large;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: 20px;
-  padding-right: 20px;
-  /* margin-left: 30%;
-  margin-top: 8%; */
-  top: 0;
-}
 
-.btn:hover{
-  background-color: rgb(240, 173, 78);
-  color: white;
-}
 
 #titre{
     text-align: center;
@@ -176,4 +157,110 @@ button {
       position: static; /* Annule le positionnement absolu */
       margin-left: 0; /* Supprime la marge de droite */
   }
+}
+
+
+
+
+
+
+/**********************************************
+  *                 Boutons                   *
+  *********************************************/
+
+.btn, .menu-button {
+  /* Couleurs */
+  background-color: #d0880d00;
+  border-color: rgb(240, 173, 78);
+  color: rgb(240, 173, 78);
+
+  /* Font */
+  font-family: inherit;
+  font-size: large;
+
+  /* Padding et marges */
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* margin-left: 30%;
+  margin-top: 8%; */
+
+  /* Positionnement */
+  display: inline-block;
+}
+
+/* Effet hover pour les boutons */
+.btn:hover, .menu-button:hover, .submenu a:hover {
+  background-color: rgb(240, 173, 78);
+  color: white;
+}
+
+
+
+/* Style de la barre de navigation */
+.menu {
+  display: flex;
+}
+
+.menu, .submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Style du bouton principal */
+.menu-button {
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  width: auto; /* Ajuste automatiquement la largeur en fonction du texte */
+
+  margin-right: 20px;
+}
+
+
+
+
+/* Conteneur du menu déroulant */
+.has-submenu {
+  position: relative;
+}
+
+/* Correction pour coller le menu juste sous le bouton */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Colle le sous-menu juste sous le bouton */
+  right: 20px; /* Aligne le bord droit du menu avec le bouton qui a une margin de 10px à droite */
+
+  /* couleurs */
+  background-color: black;
+  border: 1px solid rgb(240, 173, 78);
+
+  white-space: nowrap;
+  width: auto;
+  border-radius: 0; /* Supprime tout arrondi */
+}
+
+/* Style des liens du sous-menu */
+.submenu li {
+  border-bottom: 1px solid rgb(240, 173, 78);
+}
+.submenu li:last-child {
+  border-bottom: none;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px;
+  color: rgb(240, 173, 78);;
+  text-decoration: none;
+}
+
+/* Affichage du menu au survol */
+.has-submenu:hover .submenu {
+  display: block;
 }
