@@ -33,6 +33,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
             <li class="has-submenu">
                 <button type="button" class="menu-button">
                     <?php echo $json_user->Nom; ?>
+                    <!-- Petit triangle en SVG pour indiquer qu'il y a un sous-menu -->
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
