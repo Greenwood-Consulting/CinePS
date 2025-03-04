@@ -177,3 +177,111 @@ button {
       margin-left: 0; /* Supprime la marge de droite */
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Style de la barre de navigation */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+/* Style du bouton principal */
+.menu-button {
+  display: inline-block;
+
+  /* couleurs */
+  background-color: #d0880d00; ;
+  border-color: rgb(240, 173, 78);
+  color: rgb(240, 173, 78);
+  border-color: rgb(240, 173, 78);
+
+  /* font */
+  font-family: inherit;
+  font-size: large;
+
+  /* padding et marges */
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+
+  top: 0;
+
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  width: auto; /* Ajuste automatiquement la largeur en fonction du texte */
+}
+
+/* Effet hover pour le bouton et les liens du sous-menu */
+.menu-button:hover, .submenu a:hover  {
+  background-color: rgb(240, 173, 78);
+  color: white;
+}
+
+
+
+/* Conteneur du menu déroulant */
+.has-submenu {
+  position: relative;
+}
+
+/* Correction pour coller le menu juste sous le bouton */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Colle le sous-menu juste sous le bouton */
+  right: 10px; /* Aligne le bord droit du menu avec le bouton qui a une margin de 10px à droite */
+  left: auto; /* Annule toute autre position à gauche */
+
+  /* couleurs */
+  background-color: black;
+  border: 1px solid #ffc107;
+  list-style: none;
+
+  /* padding et marges */
+  padding: 0;
+  margin: 0; /* Supprime l'espace */
+
+  white-space: nowrap;
+  width: auto;
+  border-radius: 0; /* Supprime tout arrondi */
+}
+
+
+/* Style des liens du sous-menu */
+.submenu li {
+  border-bottom: 1px solid #ffc107;
+}
+
+.submenu li:last-child {
+  border-bottom: none;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px;
+  color: #ffc107;
+  text-decoration: none;
+}
+
+/* Affichage du menu au survol */
+.has-submenu:hover .submenu {
+  display: block;
+}

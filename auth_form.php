@@ -27,10 +27,25 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     $json_user = call_API("/api/membres/".$_SESSION['user'], "GET");
     // @todo: remplacer le style par une classe CSS (à faire quand le fichier CSS sera refactorisé)
-    echo "<div class=\"login-form\">
+    /*echo "<div class=\"login-form\">
             Utilisateur connecté : <a href='profil.php' style='color: gold;'>".$json_user->Nom."</a>";
     echo "<a href = 'deconnexion.php'><button name='deconnexion' type='button' class='btn btn-warning '>Se deconnecter</button></a>
-        </div>";
+        </div>";*/
+    ?>
+    <div class="login-form">
+    <nav aria-label="Main">
+        <ul class="menu">
+            <li class="menu-item has-submenu">
+                <button type="button" class="menu-button"><?php echo $json_user->Nom; ?></button>
+                <ul class="submenu">
+                    <li><a href="profil.php">Profil</a></li>
+                    <li><a href="deconnexion.php">Se déconnecter</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    </div>
+    <?php
 }
 else{ //Sinon on propose la connexion
     $json_users = call_API("/api/membres", "GET");
