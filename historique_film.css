@@ -190,8 +190,6 @@ button {
   display: inline-block;
 }
 
-
-
 /* Effet hover pour les boutons */
 .btn:hover, .menu-button:hover, .submenu a:hover {
   background-color: rgb(240, 173, 78);
@@ -219,6 +217,8 @@ button {
 
   white-space: nowrap; /* Empêche le texte de passer à la ligne */
   width: auto; /* Ajuste automatiquement la largeur en fonction du texte */
+
+  margin-right: 20px;
 }
 
 
@@ -234,7 +234,7 @@ button {
   display: none;
   position: absolute;
   top: 100%; /* Colle le sous-menu juste sous le bouton */
-  right: 10px; /* Aligne le bord droit du menu avec le bouton qui a une margin de 10px à droite */
+  right: 20px; /* Aligne le bord droit du menu avec le bouton qui a une margin de 10px à droite */
 
   /* couleurs */
   background-color: black;
@@ -245,12 +245,10 @@ button {
   border-radius: 0; /* Supprime tout arrondi */
 }
 
-
 /* Style des liens du sous-menu */
 .submenu li {
   border-bottom: 1px solid rgb(240, 173, 78);
 }
-
 .submenu li:last-child {
   border-bottom: none;
 }
