@@ -33,7 +33,6 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
         </div>";*/
     ?>
     <div class="login-form">
-    <nav aria-label="Main">
         <ul class="menu">
             <li class="menu-item has-submenu">
                 <button type="button" class="menu-button"><?php echo $json_user->Nom; ?></button>
@@ -43,7 +42,6 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
                 </ul>
             </li>
         </ul>
-    </nav>
     </div>
     <?php
 }
