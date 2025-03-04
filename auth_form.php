@@ -35,7 +35,12 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     <div class="login-form">
         <ul class="menu">
             <li class="has-submenu">
-                <button type="button" class="menu-button"><?php echo $json_user->Nom; ?></button>
+                <button type="button" class="menu-button">
+                    <?php echo $json_user->Nom; ?>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
                 <ul class="submenu">
                     <li><a href="profil.php">Profil</a></li>
                     <li><a href="deconnexion.php">Se déconnecter</a></li>
