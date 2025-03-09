@@ -11,9 +11,9 @@ if ($json_current_semaine === null || isset($json_current_semaine->error)) {
 
 
 //Fonction d'affichage
-function printFilmsProposes($id_semaine){
+function printFilmsProposes(){
   global $json_current_semaine;
-  echo '<h2 class="text-warning">Liste des films proposés</h2><br/>';
+  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine[0]->proposeur->Nom.'</h2><br/>';
 
   if (empty($json_current_semaine[0]->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
@@ -27,26 +27,27 @@ function printFilmsProposes($id_semaine){
 
 // Affiche le film victorieux
 function printResultatVote($id_semaine){
-    $json_film_victorieux = call_API("/api/filmVictorieux/".$id_semaine, "GET");
-    if(empty($json_film_victorieux)){//il n'y a pas de propositions 
-      echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
-    }elseif(count($json_film_victorieux) == 1){//Affiche le film victorieux
-      $film_victorieux = $json_film_victorieux[0]->film;
-      echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
-    }else{
-      $film_victorieux = $json_film_victorieux[0]->film;
-      echo '<mark>Tous les utilisateurs ont voté. Il y a égalité entre les films suivants : <br/>';
-      foreach($json_film_victorieux as $film_egalite) {
-        echo $film_egalite->film->titre.'<br/>';
-      }
-      echo '</mark>';
+  $json_film_victorieux = call_API("/api/filmVictorieux/".$id_semaine, "GET");
+  // @TOTO : est-ce qu'on ne peut pas récupérer le film victorieux directement depuis $json_current_semaine ?
+  if(empty($json_film_victorieux)){//il n'y a pas de propositions 
+    echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
+  }elseif(count($json_film_victorieux) == 1){//Affiche le film victorieux
+    $film_victorieux = $json_film_victorieux[0]->film;
+    echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
+  }else{
+    $film_victorieux = $json_film_victorieux[0]->film;
+    echo '<mark>Tous les utilisateurs ont voté. Il y a égalité entre les films suivants : <br/>';
+    foreach($json_film_victorieux as $film_egalite) {
+      echo $film_egalite->film->titre.'<br/>';
     }
+    echo '</mark>';
+  }
 }
 
 // Affichage de la liste des membres qui ont déjà voté
 function printUserAyantVote(){
-  $current_semaine_json = call_API("/api/currentSemaine", "GET");
-  $votants_array = $current_semaine_json[0]->votants;
+  global $json_current_semaine;
+  $votants_array = $json_current_semaine[0]->votants;
   
   foreach($votants_array as $votant){
     echo "<mark><b>".$votant->votant->nom. "</b> a voté<br/></mark>";
@@ -78,10 +79,11 @@ function printNextproposeurs($id_semaine){
 }
 
 function printChoixvote($id_semaine){
-  $proposeur_prenom -> $current_semaine_array[0]->proposeur->prenom;
+  global $json_current_semaine;
 
-  $propositions_array = $current_semaine_array[0]->propositions;
- 
+  $proposeur_prenom = $json_current_semaine[0]->proposeur->Prenom;
+
+  $propositions_array = $json_current_semaine[0]->propositions;
 
   if(count($propositions_array)==0){
     echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
