@@ -291,22 +291,53 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
     if($vote_period){//nous sommes en période de vote
       if($proposition_semaine){//les propositions ont été faite
         if($vote_termine_cette_semaine){//le vote est terminé
+          // L'utilisateur est connecté
+          // nous sommes en période de vote
+          // les propositions ont été faites
+          // le vote est terminé
           echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
           printResultatVote($id_current_semaine);
           echo "<a href='resultat_vote.php'><button type='button' class='btn btn-warning'>Résultat vote</button></a>";
           /*printChoixvote($id_current_semaine);*/
 
-        }else{//le vote n'est pas terminé
-          if(!$is_actif){//si il y a des membres actifs
-            echo "Votre compte a été desactivé";
+        }else{
+          if(!$is_actif){
+            // L'utilisateur est connecté
+            // nous sommes en période de vote
+            // les propositions ont été faites     
+            // le vote n'est pas terminé
+            // l'utilisateur connecté est désactivé
+            echo "Votre compte a été desactivé donc vous ne pouvez pas voter";
           }else{
             //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
-            if($is_proposeur){//si l'user est proposeur
+            if($is_proposeur){
+              // L'utilisateur est connecté
+              // nous sommes en période de vote
+              // les propositions ont été faites     
+              // le vote n'est pas terminé
+              // l'utilisateur connecté est actif
+              // l'utilisateur connecté est le proposeur de la semaine
               echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
-            }else{//sinon il ne l'est pas
-              if($current_user_a_vote){//l'user a voté
+              // @TODO : afficher les propositions mais sans pouvoir voter
+            }else{
+              if($current_user_a_vote){
+                // L'utilisateur est connecté
+                // nous sommes en période de vote
+                // les propositions ont été faites     
+                // le vote n'est pas terminé
+                // l'utilisateur connecté est actif
+                // l'utilisateur connecté n'est pas le proposeur de la semaine
+                // l'utilisateur connecté a voté
                 echo '<mark>Vous avez déjà voté</mark>';
-              }else{//l'user n'a pas voté
+                // @TODO : afficher les propositions mais sans pouvoir voter
+              }else{
+                // L'utilisateur est connecté
+                // nous sommes en période de vote
+                // les propositions ont été faites     
+                // le vote n'est pas terminé
+                // l'utilisateur connecté est actif
+                // l'utilisateur connecté n'est pas le proposeur de la semaine
+                // l'utilisateur connecté n'a pas encore voté
                 $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->nom;
 
                 echo'<h2 class="text-warning">Vous devez voter </h2>';
@@ -334,89 +365,128 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
           }
         }
       }else{//la proposition n'est pas encore faite
-        if($is_proposeur){//on affiche la liste des films pour le proposeurs quand il n'a pas terminé la proposition
-          
-            echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
-            printFilmsProposes($id_current_semaine);
-            echo '<br/><br />';
-            ?>
-            <form method="POST" action="index.php">
-            <label> Proposition de films:</label>
-              <?php
-              if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire
-                echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
-                      <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-              }
-              ?>
-              
-              <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
-              <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
-              <input type="number" name="date"  placeholder="Année" class="text-dark" >
-              
-              <?php
-              echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-              echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
-              echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
-              echo '&nbsp;&nbsp;';
-              //echo '<button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>';
-              echo '<div id="animationOverlay"></div>';
-              ?>
-            </form>
-            <br />
-            <button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
+        if($is_proposeur){
+          // L'utilisateur est connecté
+          // nous sommes en période de vote
+          // la proposition n'est pas encore faite
+          // l'utilisateur connecté est le proposeur de la semaine
 
-            <!-- Overlay et contenu du pop-up -->
-            <div class="overlay" id="popup-overlay">
-              <div class="popup" onclick="event.stopPropagation();">
-                <!-- Bouton de fermeture en tant que span -->
-                <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
-                <h2 class="text-warning">Proposition ChatGPT</h2>
+          //on affiche la liste des films pour le proposeurs tant qu'il n'a pas terminé la proposition
+          echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
+          printFilmsProposes($id_current_semaine);
+          echo '<br/><br />';
+          ?>
 
-                <form method="POST" action="index.php">
-                  <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
-                  <input type="text" id="theme" name="theme" value="<?php  echo $json_current_semaine[0]->theme; ?>" class="text-dark">
-
-                  <?php 
-                    if (empty($json_current_semaine[0]->theme)) {
-                      echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
-                    } else {
-                      echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
-                    }
-                  ?>
-
-                  <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
-                </form>
-              </div>
-            </div>
-
+          <form method="POST" action="index.php">
+          <label> Proposition de films:</label>
             <?php
+
+            // @TODO : sortir dans un formulaire à part le formulaire du thème ?
+            if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire de proposition de thème
+            // @TODO : si thème défini, afficher le thème ou alors
+            // Afficher le formulaire avec le thème pré-saisi ?
+              echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
+                    <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
+            }
+            ?>
+            
+            <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
+            <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
+            <input type="number" name="date"  placeholder="Année" class="text-dark" >
+            
+            <?php
+            echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
+            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
+            echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
+            echo '&nbsp;&nbsp;';
+            //echo '<button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>';
+            echo '<div id="animationOverlay"></div>';
+            ?>
+          </form>
+
+
+          <br />
+          <button onclick="openPopup()" class="btn btn-warning">ChatGPT</button> <!-- Pourquoi le bouton ChatGPT est-il ici et pas dans le formulaire ? -->
+
+          <!-- Overlay et contenu du pop-up -->
+          <div class="overlay" id="popup-overlay">
+            <div class="popup" onclick="event.stopPropagation();">
+              <!-- Bouton de fermeture en tant que span -->
+              <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
+              <h2 class="text-warning">Proposition ChatGPT</h2>
+
+              <form method="POST" action="index.php">
+                <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
+                <input type="text" id="theme" name="theme" value="<?php  echo $json_current_semaine[0]->theme; ?>" class="text-dark">
+
+                <?php 
+                  if (empty($json_current_semaine[0]->theme)) {
+                    echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
+                  } else {
+                    echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
+                  }
+                ?>
+
+                <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
+              </form>
+            </div>
+          </div>
+
+          <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
-          if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
+          if($proposeur_cette_semaine){
+            // L'utilisateur est connecté
+            // nous sommes en période de vote
+            // la proposition n'est pas encore faite
+            // l'utilisateur connecté n'est pas le proposeur de la semaine
+            // Il y a un proposeur défini pour cette semaine
             echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->nom."</mark>";
-          }else{//Sinon on indique que aucun proposeur n'est défini
+          }else{
+            // L'utilisateur est connecté
+            // nous sommes en période de vote
+            // la proposition n'est pas encore faite
+            // l'utilisateur connecté n'est pas le proposeur de la semaine
+            // Il n'y a pas de proposeur défini pour cette semaine
             echo "<mark>Aucun proposeur n'a encore été défini</mark>";
           }
         }
       }
-    }else{//nous ne sommes pas en période de vote
+    }else{
+      // L'utilisateur est connecté
+      //nous ne sommes pas en période de vote, nous sommes en période de visionnage du film
       printResultatVote($id_current_semaine);
     }
-  }else{//aucun utilisateur est connecté
-    if($vote_period){//nous sommes en période de vote mais nous ne sommes pas connectés
-      if($proposition_semaine){//les propositions ont été faite mais nous ne sommes pas connectés
-        if($vote_termine_cette_semaine){//le vote est terminé et pas connecté
+  }else{// l'utilisateur n'est pas connecté
+    if($vote_period){//nous sommes en période de vote
+      if($proposition_semaine){//les propositions ont été faites
+        if($vote_termine_cette_semaine){
+          // L'utilisateur n'est pas connecté
+          // nous sommes en période de vote
+          // les propositions ont été faites
+          // le vote est terminé
           printResultatVote($id_current_semaine);
-        }else{//le vote n'est pas terminé mais pas connecté
+        }else{
+          // L'utilisateur n'est pas connecté
+          // nous sommes en période de vote
+          // les propositions ont été faites
+          // le vote n'est pas terminé
           printFilmsProposes($id_current_semaine);
         }
-      }else{//la proposition n'est pas encore faite et pas connecté
+      }else{
+        // l'utilisateur n'est pas connecté
+        // nous sommes en période de vote
+        // la proposition n'est pas encore faite
         echo '<mark>la proposition n\'a pas encore été faite</mark>';
       }
-    }else{//nous ne sommes pas en période de vote et pas connecté
+    }else{
+      // l'utilisateur n'est pas connecté
+      // nous ne sommes pas en période de vote
       printResultatVote($id_current_semaine);
     }
   }
 }
+
+// Affichage des proposeurs des prochaines semaines
 echo "<br/>";
 echo '<h2 class="text-warning">Les prochains proposeurs</h2><br/>';
 printNextproposeurs($id_current_semaine);
