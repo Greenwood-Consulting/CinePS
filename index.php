@@ -290,7 +290,8 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
   if($connecte){//l'utilisateur est connecté
     if($vote_period){//nous sommes en période de vote
       if($proposition_semaine){//les propositions ont été faite
-        if($vote_termine_cette_semaine){//le vote est terminé
+        if($vote_termine_cette_semaine){
+          //le vote est terminé
           // L'utilisateur est connecté
           // nous sommes en période de vote
           // les propositions ont été faites
@@ -307,7 +308,8 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             // les propositions ont été faites     
             // le vote n'est pas terminé
             // l'utilisateur connecté est désactivé
-            echo "Votre compte a été desactivé donc vous ne pouvez pas voter";
+            echo "<mark>Votre compte a été desactivé donc vous ne pouvez pas voter</mark><br />";
+            printFilmsProposes();
           }else{
             //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
             if($is_proposeur){
@@ -317,8 +319,8 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
               // le vote n'est pas terminé
               // l'utilisateur connecté est actif
               // l'utilisateur connecté est le proposeur de la semaine
-              echo '<mark>Le vote n\'est pas terminé vous devez attendre</mark>';
-              // @TODO : afficher les propositions mais sans pouvoir voter
+              echo '<mark>Vous êtes le proposeur de la semaine donc vous ne pouvez pas voter. Le vote n\'est pas encore terminé.</mark><br />';
+              printFilmsProposes();
             }else{
               if($current_user_a_vote){
                 // L'utilisateur est connecté
@@ -328,8 +330,8 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
                 // l'utilisateur connecté est actif
                 // l'utilisateur connecté n'est pas le proposeur de la semaine
                 // l'utilisateur connecté a voté
-                echo '<mark>Vous avez déjà voté</mark>';
-                // @TODO : afficher les propositions mais sans pouvoir voter
+                echo '<mark>Vous avez déjà voté</mark><br />';
+                printFilmsProposes();
               }else{
                 // L'utilisateur est connecté
                 // nous sommes en période de vote
@@ -373,7 +375,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
 
           //on affiche la liste des films pour le proposeurs tant qu'il n'a pas terminé la proposition
           echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
-          printFilmsProposes($id_current_semaine);
+          printFilmsProposes();
           echo '<br/><br />';
           ?>
 
@@ -440,14 +442,14 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             // la proposition n'est pas encore faite
             // l'utilisateur connecté n'est pas le proposeur de la semaine
             // Il y a un proposeur défini pour cette semaine
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->nom."</mark>";
+            echo"<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->nom."</mark>";
           }else{
             // L'utilisateur est connecté
             // nous sommes en période de vote
             // la proposition n'est pas encore faite
             // l'utilisateur connecté n'est pas le proposeur de la semaine
             // Il n'y a pas de proposeur défini pour cette semaine
-            echo "<mark>Aucun proposeur n'a encore été défini</mark>";
+            echo "<mark>Aucun proposeur n'a encore été défini pour cette semaine.</mark>";
           }
         }
       }
@@ -470,7 +472,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
           // nous sommes en période de vote
           // les propositions ont été faites
           // le vote n'est pas terminé
-          printFilmsProposes($id_current_semaine);
+          printFilmsProposes();
         }
       }else{
         // l'utilisateur n'est pas connecté
