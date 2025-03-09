@@ -453,7 +453,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
       }
     }else{
       // L'utilisateur est connecté
-      //nous ne sommes pas en période de vote, nous sommes en période de visionnage du film
+      // nous ne sommes pas en période de vote, nous sommes en période de visionnage du film
       printResultatVote($id_current_semaine);
     }
   }else{// l'utilisateur n'est pas connecté
