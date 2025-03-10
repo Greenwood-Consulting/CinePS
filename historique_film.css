@@ -47,6 +47,14 @@ h2, p, ul{
   border-radius: 5px; /* Optionnel : arrondir les coins du fond */
 }
 
+.footer_div {
+  text-align: center;
+}
+
+.footer_text{
+  background-color: #000000c7;
+}
+
 ul {
   margin-left: 30%;
   padding-left: 20px;

@@ -260,6 +260,8 @@ foreach($array_historique_semaines as $semaine){
     </div>
     
   </div>
+  
+  <?php include('footer.php'); ?>
 
   <!-- Script JavaScript intégré -->
   <script>
