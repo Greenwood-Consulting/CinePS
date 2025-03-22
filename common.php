@@ -3,7 +3,12 @@
 include "call_api.php";
 
 $json_current_semaine = call_API("/api/currentSemaine", "GET");
-$id_current_semaine = $json_current_semaine[0]->id;
+if ($json_current_semaine === null || isset($json_current_semaine->error)) {
+  $id_current_semaine = null;
+} else {
+  $id_current_semaine = $json_current_semaine[0]->id;
+}
+
 
 //Fonction d'affichage
 function printFilmsProposes($id_semaine){
@@ -320,6 +325,7 @@ echo "</TABLE>";
               echo '    <option value="9">9 - Borderline Chef d\'oeuvre</option>';
               echo '    <option value="10">10 - Chef d\'oeuvre</option>';
               echo '    <option value="11">11 - Up to eleven</option>';
+              echo '    <option value="abs">Ne pas noter</option>';
               echo '  </select>';
               echo "  <button type='submit' name='id_film' value='".$id_film."'>Noter</button>";
               echo "</form>";
