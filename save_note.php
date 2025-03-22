@@ -32,18 +32,28 @@ if(isset($_POST['notes'])){
 
 // Sauvegarde d'une note
 if(isset($_POST['id_film'])){
-      $membre_id = ($_SESSION['user']);
-      $note = addslashes(($_POST['note']));
-      $id_film = $_POST['id_film'];
-  
-      $array_note = array(
-          "film_id" => $id_film,
-          "membre_id" => $membre_id,
-          "note" => $note,
-      );
-      $json_note = json_encode($array_note);
-      call_API("/api/note", "POST", $json_note);
-      header('Location: historique_film.php');
+    $membre_id = ($_SESSION['user']);
+    $id_film = $_POST['id_film'];
+    $note = addslashes(($_POST['note']));
+
+    if ($note == "abs") { // L'utilisateur décide de ne pas noter le film
+        $array_abstention = array(
+            "film_id" => $id_film,
+            "membre_id" => $membre_id
+        );
+        $json_abstention = json_encode($array_abstention);
+        call_API("/api/note", "POST", $json_abstention);
+    } else { // L'utilisateur note le film
+        $array_note = array(
+            "film_id" => $id_film,
+            "membre_id" => $membre_id,
+            "note" => $note,
+        );
+        $json_note = json_encode($array_note);
+        call_API("/api/note", "POST", $json_note);
+    }
+    header('Location: historique_film.php');
+
 }
 
 exit();

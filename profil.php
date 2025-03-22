@@ -93,7 +93,7 @@ if (empty($json_user)) {
         <ul class = "explication">
             <li>On ne voit la note moyenne d'un film que si on a soi même noté le film</li>
             <li>Si on reste sur <em>-- Choisir une note --</em> alors cela correspond à ne pas noter le film</li>
-            <li>Si on clique sur <em>S'abstenir</em> c'est équivalent à noter le film mais sans donner de note, pas exemple si vous n'avez pas vu le film. Dans ce cas vous verrez la note moyenne du film</li>
+            <li>Si on clique sur <em>Ne pas noter</em> c'est équivalent à noter le film mais sans donner de note, pas exemple si vous n'avez pas vu le film. Dans ce cas vous verrez la note moyenne du film</li>
         </ul>
     </p>
 
@@ -138,7 +138,7 @@ if (empty($json_user)) {
                                     <option value="9">9 - Borderline Chef d\'oeuvre</option>';
                                     <option value="10">10 - Chef d\'oeuvre</option>';
                                     <option value="11">11 - Up to eleven</option>';
-                                    <option value="abs">S'abstenir</option>
+                                    <option value="abs">Ne pas noter</option>
                                 </select>
                             <?php 
                                 else: 
