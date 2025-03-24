@@ -49,11 +49,11 @@ include('common.php');
     include('nav.php'); 
     ?>
   </div>
-  <div class="right-form">
+
     <?php
     include('auth_form.php');
     ?>
-  </div>
+
 </div>
 
 <div class="main-content">

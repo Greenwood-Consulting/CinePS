@@ -1,3 +1,10 @@
+:root {
+  --user-color: #ffc107;
+  --bg-orange: rgb(240, 173, 78);
+  --text-color: var(--user-color);
+  --hover-text-color: white;
+}
+
 body {
     background-image: url("./assets/images/space.jpg");
     background-position: center;
@@ -119,21 +126,58 @@ button {
   display: flex; /* Pour aligner les boutons horizontalement */
   justify-content: center; /* Centre les boutons de navigation */
   align-items: center; /* Aligne verticalement les éléments */
+  box-sizing: border-box;
 }
 
 .centered-buttons {
-  margin: 0 auto; /* Centre les boutons horizontalement */
+  flex-grow: 1;
   display: flex;
+  justify-content: center;
   gap: 10px; /* Espace entre les boutons */
 }
 
 /* Formulaire de connexion */
 
-.login-form {
-  position: absolute;
-  right: 10px; /* Positionne le formulaire sur la droite */
-  top: 10px; /* Centre verticalement le formulaire */
+.login-menu {
+  position: relative; 
 }
+
+.login-menu .logged-user-button {
+  border: 2px solid var(--user-color);
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+.login-menu .logged-user-button:hover {
+  background-color: var(--bg-orange);
+  color: var(--hover-text-color);
+}
+
+.login-menu .dropdown {
+  position: absolute;
+  display: none;
+  right: 0;
+}
+  
+.login-menu:hover .dropdown {
+  display: flex; 
+  flex-direction: column;
+}
+
+.login-menu .dropdown-item {
+  padding: 10px 16px;
+  text-decoration: none;
+  border: 1px solid var(--user-color);
+  white-space: nowrap;
+}
+
+.login-menu .dropdown-item:hover {
+  background-color: var(--bg-orange);
+  color: var(--hover-text-color);
+}
+
+/* ------------------- */
+
 
 .form-group {
   display: flex;
