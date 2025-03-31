@@ -267,8 +267,12 @@ if(isset($_POST['chatGPT'])){
 <?php
 
 
-
-include('calcul_etat.php');
+if (isset($id_current_semaine)) {
+  include('calcul_etat.php');
+} else {
+  echo "<mark>Il n'y a pas de current semaine</mark>";
+  exit();
+}
 
 if ($json_current_semaine[0]->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";
