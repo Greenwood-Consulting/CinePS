@@ -1,14 +1,41 @@
 <?php
 include('header.php');
 include('common.php');
+include('calcul_etat.php');
+
+function renomme_et_permute_films(array $tableau_films): array {
+
+  usort($tableau_films, function ($a, $b) {
+      // Création d'un nombre pseudo-aléatoire à partir de l'ID
+      $hashA = crc32($a['Film']);
+      $hashB = crc32($b['Film']);
+      return $hashA <=> $hashB;
+  });
+
+  // Renommer les films avec des noms de chevaux
+  $noms_chevaux = ['Prince du Vent', 'Velours Tempétueux', 'Général du Pommeau', 'Cacahuète du logis', 'Jolly-Jumper', 'Bricks and Mortar', 'Brise de Nuit', 'Prince de la Vigne'];
+  foreach ($tableau_films as $index => &$film) {
+      $film['Film'] = $noms_chevaux[$index % count($noms_chevaux)];
+  }
+
+  return $tableau_films;
+}
 
 //Construction du tableau data_score
 $data_score = [];
 $array_score_film = $json_current_semaine[0]->propositions;
-foreach($array_score_film as $film){
-  array_push($data_score, array("Film" => $film->film->titre, "Score" => $film->score));
 
+// On fabrique le tableau data_score qui permet d'afficher le graphe
+foreach($array_score_film as $film){
+  $titre_film = $film->film->titre;
+  array_push($data_score, array("Film" => $titre_film, "Score" => $film->score));
 }
+
+if (!$vote_termine_cette_semaine && !$current_user_a_vote && !$is_proposeur) {
+  // Permutation des films afin qu'on ne puisse pas savoir quel film correspond à quel score
+  $data_score = renomme_et_permute_films($data_score);
+}
+
 $count_data_score = count($data_score);
 
 //construction du tableau data_proposeur
@@ -203,7 +230,7 @@ $count_data_annee = count($data_annee);
       <tbody>
       <?php foreach ($array_satisfaction as $user): ?>
         <tr>
-        <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+        <td><?php echo htmlspecialchars($user['user']['nom']); ?></td>
         <td><?php echo rtrim(rtrim(number_format($user['satisfactionVote'], 2), '0'), '.'); ?></td>
         </tr>
       <?php endforeach; ?>
@@ -237,7 +264,7 @@ $count_data_annee = count($data_annee);
       <tbody>
         <?php foreach ($array_notes_moyennes as $user): ?>
           <tr>
-            <td><?php echo htmlspecialchars($user['user']['Nom']); ?></td>
+            <td><?php echo htmlspecialchars($user['user']['nom']); ?></td>
             <td>
               <?php 
               $noteText = $user['nbNotes'] == 1 ? 'note' : 'notes';
@@ -282,7 +309,7 @@ $count_data_annee = count($data_annee);
     // Count the number of high score films per proposeur
     $proposeur_high_score_count = [];
     foreach ($films_high_score as $film) {
-      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      $proposeur = $film->propositions[0]->semaine->proposeur->nom;
       if (!isset($proposeur_high_score_count[$proposeur])) {
         $proposeur_high_score_count[$proposeur] = 0;
       }
@@ -305,7 +332,7 @@ $count_data_annee = count($data_annee);
     // Count the number of low score films per proposeur
     $proposeur_low_score_count = [];
     foreach ($films_low_score as $film) {
-      $proposeur = $film->propositions[0]->semaine->proposeur->Nom;
+      $proposeur = $film->propositions[0]->semaine->proposeur->nom;
       if (!isset($proposeur_low_score_count[$proposeur])) {
       $proposeur_low_score_count[$proposeur] = 0;
       }
@@ -371,7 +398,7 @@ $count_data_annee = count($data_annee);
           <tr>
             <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
             <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
-            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+            <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->nom); ?></td>
             <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
             <td><?php echo $nb_notes . ($nb_notes == 1 ? " note" : " notes"); ?></td>
           </tr>
@@ -424,7 +451,7 @@ $count_data_annee = count($data_annee);
       // Ajout de la moyenne du film au total des moyennes du proposeur
       if (!isset($moyennes_films_par_proposeur[$proposeur->id])) {
         $moyennes_films_par_proposeur[$proposeur->id] = ['total_moyennes' => 0, 'count' => 0, 'nb_notes' => 0];
-        $moyennes_films_par_proposeur[$proposeur->id]['Nom'] = $proposeur->Nom;
+        $moyennes_films_par_proposeur[$proposeur->id]['Nom'] = $proposeur->nom;
       }
 
       $moyennes_films_par_proposeur[$proposeur->id]['total_moyennes'] += $note_moyenne_film_hors_proposeur;
