@@ -48,7 +48,26 @@ git clone https://github.com/<votre-compte>/CinePS.git
 
 ## Configuration
 
-*(à compléter)*
+### Configuration des variables d'environnement 🌐
+
+Le fichier `config/env.php` contient les variables nécessaires pour configurer le client CinePS. Voici la liste des variables à définir :
+
+- **`API_URL`** : L'URL de base de l'API CinePS-API (par exemple, `http://localhost:8000`).  
+    *Utilisée pour effectuer les appels API vers le serveur CinePS-API.*
+
+- **`API_MAIL`** : L'adresse e-mail utilisée pour s'authentifier auprès de l'API.  
+    *Permet d'identifier l'utilisateur ou le client lors des appels API.*
+
+- **`API_PASSWORD`** : Le mot de passe associé à l'adresse e-mail pour l'authentification.  
+    *Assure la sécurité des échanges avec l'API.*
+
+- **`FIN_PERIODE_VOTE`** : L'heure de fin de la période de vote (par exemple, `Fri 18:00`).  
+    *Détermine le moment où les votes pour le film de la semaine sont clôturés.*
+
+- **`VIDEOS_YOUTUBE`** : Une liste d'identifiants de vidéos YouTube (par exemple, `['D5ssxpM_k5M', 'SVUdV4yxylU']`).  
+    *Représente les vidéos disponibles pour consultation via la page 'à propos'.*
+
+Pour configurer ces variables, éditez le fichier `config/env.php` et remplacez les valeurs par celles correspondant à votre environnement.
 
 ---
 
