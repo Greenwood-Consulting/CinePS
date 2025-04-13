@@ -1,4 +1,5 @@
 body {
+    /* Background */
     background-image: url("./assets/images/space.jpg");
     background-position: center;
     background-position: top;
@@ -7,34 +8,38 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    color: #ffc107;
     background-repeat: no-repeat;
+    /* couleurs */
+    color: #ffc107;
     background-color: black;
   }
 table{
-  background-color: #000000c7;
   text-align: center;
-  color: rgb(240, 173, 78);
   margin: 0 auto;
+  /* couleurs */
+  background-color: #000000c7;
+  color: rgb(240, 173, 78);
   border-color: rgb(240, 173, 78);
 }
-#tableau {
+#tableau { /* @TODO : pourquoi on a ça pour un tableau ? + Mauvais nom */
   vertical-align: center;
 }
 
 .titre{
-  color: #ffc107;
+  /* font */
   text-align: center;
   font-size: 70px;
   font-family: Roboto,Helvetica,Arial,sans-serif;
   font-weight: 900;
+  /* couleurs */
+  color: #ffc107;
 }
 a:visited{
   color: rgb(240, 173, 78);
 }
 
 
-#titre{
+#titre{ /* @TODO : pourquoi on a ça ? + Mauvais nom */
     text-align: center;
 }
 
@@ -42,9 +47,10 @@ h2, p, ul{
   margin-left: 30%;
   position: relative; /* Pour pouvoir positionner l'arrière-plan */
   display: inline-block; /* Pour que le fond ne s'étende que sur le texte */
-  background-color: #000000c7; /* Couleur de fond semi-opaque */
   padding: 5px 10px; /* Espacement interne pour rendre le texte lisible */
   border-radius: 5px; /* Optionnel : arrondir les coins du fond */
+  /* Couleurs */
+  background-color: #000000c7; /* Couleur de fond semi-opaque */
 }
 
 .footer_div {
@@ -56,7 +62,6 @@ h2, p, ul{
 }
 
 ul {
-  margin-left: 30%;
   padding-left: 20px;
 }
 
@@ -69,11 +74,13 @@ ul {
 }
 
 
-
 .texte-historique {
-  background-color: #000000c7;
+  max-width: 40%;              /* Largeur du bloc */
   display: inline-block;
-  margin-left: 30%;
+  padding: 10px;
+  border-radius: 5px;
+  /* couleurs */
+  background-color: #000000c7;
 }
 
 .texte-film-victorieux {
@@ -102,12 +109,13 @@ button {
   top: 0;
   left: 0;
   width: 100%; /* Pour s'étendre sur toute la largeur de la page */
-  background-color: #000; /* Couleur de fond pour rendre la zone visible */
   padding: 10px; /* Espacement interne pour un peu d'air autour des boutons */
   z-index: 1000; /* Pour que la zone reste au-dessus des autres éléments */
   display: flex; /* Pour aligner les boutons horizontalement */
   justify-content: center; /* Centre les boutons de navigation */
   align-items: center; /* Aligne verticalement les éléments */
+  /* Couleurs */
+  background-color: #000; /* Couleur de fond pour rendre la zone visible */
 }
 
 .centered-buttons {
