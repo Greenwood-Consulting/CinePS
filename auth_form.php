@@ -51,7 +51,7 @@ else{ //Sinon on propose la connexion
     $json_users = call_API("/api/membres", "GET");
 
     echo "";
-    echo'<form method="post" action="index.php" class="login-form">';
+    echo'<form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" class="login-form">';
     echo '<div class="form-group">
             <div class="fields">';
     echo '      <div class="field-group">
