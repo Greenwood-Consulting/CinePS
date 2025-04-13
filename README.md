@@ -1,6 +1,8 @@
 # Client CinePS 📽️🍿
 
-**Client PHP pour l'application CinePS, permettant d'interagir avec un serveur CinePS-API.** 🔗🌐
+**Client PHP CinePS, permettant d'interagir avec un serveur CinePS-API.** 🔗🌐
+
+Projet CinePS-API : https://github.com/Greenwood-Consulting/CinePS-API
 
 ---
 
@@ -52,6 +54,7 @@ git clone https://github.com/<votre-compte>/CinePS.git
 
 ## Utilisation
 
+*(A compléter)*
 Accédez au client CinePS via votre navigateur à l'URL configurée sur votre serveur web (par exemple `http://localhost/CinePS`).
 
 ---
