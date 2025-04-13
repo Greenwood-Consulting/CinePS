@@ -307,7 +307,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
               if($current_user_a_vote){//l'user a voté
                 echo '<mark>Vous avez déjà voté</mark>';
               }else{//l'user n'a pas voté
-                $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->Nom;
+                $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->nom;
 
                 echo'<h2 class="text-warning">Vous devez voter </h2>';
                 echo "<br />";
@@ -392,7 +392,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
           if($proposeur_cette_semaine){//Si il y a un proposeur défini on affiche qui c'est
-            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->Nom."</mark>";
+            echo"<mark>Les films n'ont pas été proposé. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->nom."</mark>";
           }else{//Sinon on indique que aucun proposeur n'est défini
             echo "<mark>Aucun proposeur n'a encore été défini</mark>";
           }

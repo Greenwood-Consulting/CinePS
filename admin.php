@@ -75,7 +75,7 @@ echo '<form method="post" action="">';
 echo '  <label>Membres</label>
         <select class="text-dark" name="user">';
             foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
-                echo"<option class='text-dark' value=".$membre->id.">". $membre->Nom." ".$membre->Prenom."</option>";
+                echo"<option class='text-dark' value=".$membre->id.">". $membre->nom." ".$membre->prenom."</option>";
             }
 echo "  </select>";
 echo "  <br/>";
@@ -106,7 +106,7 @@ echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br
 $membres = call_API("/api/membres", "GET");
 
 foreach($membres as $membre) {
-    echo $membre->Nom;
+    echo $membre->nom;
     echo "<form method='post' action='admin.php'>";
     echo "<input type='hidden' name='id' value='$membre->id'>";
     echo "<button type='submit' name='actif' value='1' class='actif'>Activer</button>";

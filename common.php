@@ -49,7 +49,7 @@ function printUserAyantVote(){
   $votants_array = $current_semaine_json[0]->votants;
   
   foreach($votants_array as $votant){
-    echo "<mark><b>".$votant->votant->Nom. "</b> a voté<br/></mark>";
+    echo "<mark><b>".$votant->votant->nom. "</b> a voté<br/></mark>";
   }
   if(empty($votants_array)){//Personne n'a voté
     echo '<mark>Personne n\'a voté pour l\'instant<br/></mark>';
@@ -65,7 +65,7 @@ function printNextproposeurs($id_semaine){
     $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
     echo "<mark>".$dateSemaine->format('Y-m-d');
     if ($semaine->type == 'PSAvecFilm'){
-      echo " - ".$semaine->proposeur->Nom."</mark>";
+      echo " - ".$semaine->proposeur->nom."</mark>";
     }
     if ($semaine->type == 'PSSansFilm'){
       echo " - Pas de Film 🥂</mark>";
@@ -78,7 +78,7 @@ function printNextproposeurs($id_semaine){
 }
 
 function printChoixvote($id_semaine){
-  $proposeur_prenom -> $current_semaine_array[0]->proposeur->Prenom;
+  $proposeur_prenom -> $current_semaine_array[0]->proposeur->prenom;
 
   $propositions_array = $current_semaine_array[0]->propositions;
  
@@ -99,9 +99,9 @@ function printChoixvote($id_semaine){
     echo "<TR>";
     echo "<TD></TD><TD></TD>";
     foreach($json_membres as $data_membre){ //on crée une colonne pour chaque membre
-      if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
+      if($data_membre->prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
         echo "<TD>";
-        echo $data_membre->Prenom;
+        echo $data_membre->prenom;
         echo "</TD>";
       }
     }
@@ -209,7 +209,7 @@ echo "</TABLE>";
   function printChoixvoteFromArray($array_semaine, $array_historique_membres){
 
     // prenom proposeur
-    $proposeur_prenom = $array_semaine->proposeur->Prenom;
+    $proposeur_prenom = $array_semaine->proposeur->prenom;
   
     // récupération des propositions
     $get_propositions = $array_semaine->propositions;
@@ -237,9 +237,9 @@ echo "</TABLE>";
       echo "<TR>";
       echo "<TD></TD><TD></TD>";
       foreach($array_historique_membres as $data_membre){ //on crée une colonne pour chaque membre
-        if($data_membre->Prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
+        if($data_membre->prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
           echo "<TD>";
-          echo $data_membre->Prenom;
+          echo $data_membre->prenom;
           echo "</TD>";
         }
       }

@@ -45,7 +45,7 @@ if (empty($json_user)) {
 
     <h1 class = 'titre'>Profil de l'utilisateur</h1>
     <p>
-        <strong>Nom:</strong> <?php echo htmlspecialchars($json_user->Nom); ?><br/>
+        <strong>Nom:</strong> <?php echo htmlspecialchars($json_user->nom); ?><br/>
         <strong>Email:</strong> <?php echo htmlspecialchars($json_user->mail); ?>
     </p>
     <br />
@@ -64,7 +64,7 @@ if (empty($json_user)) {
     <?php
     // Filtrer les films gagnants pour ne garder que ceux proposés par l'utilisateur connecté
     $mes_films_gagnants = array_filter($json_films_gagnants, function($film) use ($json_user) {
-        return $film->propositions[0]->semaine->proposeur->Nom === $json_user->Nom;
+        return $film->propositions[0]->semaine->proposeur->nom === $json_user->nom;
     });
     ?>
 
@@ -113,7 +113,7 @@ if (empty($json_user)) {
                     <tr>
                         <td><a href="<?php echo htmlspecialchars($film->imdb); ?>" target="_blank"><?php echo htmlspecialchars($film->titre); ?></a></td>
                         <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($film->propositions[0]->semaine->jour))); ?></td>
-                        <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->Nom); ?></td>
+                        <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->nom); ?></td>
                         <td>
                             <?php 
                             $current_user_a_note = false;

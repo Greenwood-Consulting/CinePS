@@ -32,7 +32,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
         <ul class="menu">
             <li class="has-submenu">
                 <button type="button" class="menu-button">
-                    <?php echo $json_user->Nom; ?>
+                    <?php echo $json_user->nom; ?>
                     <!-- Petit triangle en SVG pour indiquer qu'il y a un sous-menu -->
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -58,7 +58,7 @@ else{ //Sinon on propose la connexion
                     <label for="user">Membres</label>
                     <select class="text-dark" name="user" id="user">';
                     foreach($json_users as $user){ //Afficher un utlisateur
-                        echo"<option class='text-dark' value=".$user->id.">". $user->Nom." ".$user->Prenom."</option>";
+                        echo"<option class='text-dark' value=".$user->id.">". $user->nom." ".$user->prenom."</option>";
                     }
     echo "           </select>
                 </div>
