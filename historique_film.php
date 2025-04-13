@@ -54,7 +54,7 @@ if(isset($_POST['member_filter'])){
     echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
     $json_id_membre = call_API("/api/membres/". $id_membre, "GET");
-    $nom_membre = $json_id_membre->Nom;
+    $nom_membre = $json_id_membre->nom;
     if (in_array(strtoupper($nom_membre[0]), $voyelles)) {
       echo "<h1 class = 'titre'>Historique des propositions d'".$nom_membre."</h1>";
     } else {
@@ -78,18 +78,18 @@ $array_historique_membres = $json_historique->membres;
 // Affichage du dropdown de sélection du membre pour filtrer
 $array_proposeurs = array();
 $tous = new stdClass();
-$tous->Nom = "Tous les utilisateurs";
+$tous->nom = "Tous les utilisateurs";
 $tous->id = 0;
 $array_proposeurs['tous'] = $tous;
 foreach($array_historique_semaines as $semaine){
 
-  $array_proposeurs[$semaine->proposeur->Nom] = $semaine->proposeur;
+  $array_proposeurs[$semaine->proposeur->nom] = $semaine->proposeur;
 }
 echo'<form method="post" action="historique_film.php" class = "main-zone">
     <label>Membres</label>
         <select class="text-dark" name="user_filter">';
 foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
-    echo"<option class='text-dark' value=".$proposeur->id.($proposeur->id == $_POST['user_filter'] ? " selected" : "").">". $proposeur->Nom."</option>";
+    echo"<option class='text-dark' value=".$proposeur->id.($proposeur->id == $_POST['user_filter'] ? " selected" : "").">". $proposeur->nom."</option>";
 }
 echo"</select>";
 echo '<button type="submit" name="member_filter">Filtrer</button>';
@@ -157,7 +157,7 @@ function admin_semaine_edit(){
     <select class="text-dark" name="proposeurSemaine">';
     echo"<option class='text-dark' value='no'>-- Changer le proposeur --</option>";
     foreach($array_proposeurs as $proposeur){ //Afficher le titre du film de la proposition
-      echo"<option class='text-dark' value=".$proposeur->id.">". $proposeur->Nom."</option>";
+      echo"<option class='text-dark' value=".$proposeur->id.">". $proposeur->nom."</option>";
     }
     echo "  </select><br />";
 
@@ -203,7 +203,7 @@ foreach($array_historique_semaines as $semaine){
     
     if ( $semaine->type == 'PSAvecFilm'){ // semaine normale avec film
       // Titre de la semaine
-      $nom_proposeur = $semaine->proposeur->Nom;
+      $nom_proposeur = $semaine->proposeur->nom;
       if (in_array(strtoupper($nom_proposeur[0]), $voyelles)) {
         echo "<h2>Semaine du ".$dateSemaine->format('Y-m-d')." - Les propositions d'".$nom_proposeur;
       } else {

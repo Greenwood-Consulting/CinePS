@@ -2,6 +2,8 @@
 include('header.php');
 include('common.php');
 
+// @TODO: simplifier les if
+
 // Sauvegare de plusieurs notes en même temps
 if(isset($_POST['notes'])){
     $membre_id = ($_SESSION['user']);
