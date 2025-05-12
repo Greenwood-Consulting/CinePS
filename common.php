@@ -13,7 +13,7 @@ if ($json_current_semaine === null || isset($json_current_semaine->error)) {
 //Fonction d'affichage
 function printFilmsProposes(){
   global $json_current_semaine;
-  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine[0]->proposeur->Nom.'</h2><br/>';
+  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine[0]->proposeur->nom.'</h2><br/>';
 
   if (empty($json_current_semaine[0]->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';

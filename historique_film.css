@@ -75,10 +75,8 @@ ul {
 
 
 .texte-historique {
-  max-width: 40%;              /* Largeur du bloc */
   display: inline-block;
-  padding: 10px;
-  border-radius: 5px;
+  margin-left: 30%;
   /* couleurs */
   background-color: #000000c7;
 }
