@@ -26,6 +26,14 @@ include('call_api.php');
 
     <h1 class = 'titre'>A Propos de CinePS</h1>
 
+    <div class="github-repositories">
+      <h2>GitHub repositories</h2>
+      <ul>
+        <li><a href="https://github.com/Greenwood-Consulting/CinePS">cinePS front PHP</a></li>
+        <li><a href="https://github.com/Greenwood-Consulting/CinePS-API">cinePS api</a></li>
+      </ul>
+    </div>
+
     <!--
     <p>
         <strong>Version du client CinePS :</strong> <?php echo "VERSION" ?><br/>
