@@ -158,5 +158,7 @@ if (empty($json_user)) {
     </form>
 
 </div>
+
+<?php include('footer.php'); ?>
 </body>
 </html>

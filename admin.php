@@ -126,5 +126,7 @@ if(isset($_POST['id']) && isset($_POST['actif'])){
 }
 ?>
 
+<?php include('footer.php'); ?>
+
 </body>
 </html>

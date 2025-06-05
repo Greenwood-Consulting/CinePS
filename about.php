@@ -50,5 +50,7 @@ include('call_api.php');
     </div>
 
 </div>
+
+<?php include('footer.php'); ?>
 </body>
 </html>
