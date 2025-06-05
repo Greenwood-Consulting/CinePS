@@ -171,6 +171,12 @@ button {
       position: static; /* Annule le positionnement absolu */
       margin-left: 0; /* Supprime la marge de droite */
   }
+
+  /* hack to move down the title below 1280px */
+  /* use flex instead for global positioning */
+  .titre {
+    margin-top: 7rem;
+  }
 }
 
 
