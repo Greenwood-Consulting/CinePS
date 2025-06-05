@@ -44,13 +44,15 @@ include('call_api.php');
     <br />
 
     <h2>Vidéos de release</h2>
-    <div  class = "main-zone">
+    <div  class = "release-videos">
 
     <?php
     if (defined('VIDEOS_YOUTUBE') && is_array(VIDEOS_YOUTUBE)) {
       foreach (array_reverse(VIDEOS_YOUTUBE) as $video) {
-        echo '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . htmlspecialchars($video) . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br/><br/>';
-      }
+        ?>
+        <iframe src="https://www.youtube.com/embed/<?php echo htmlspecialchars($video) ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <?php
+        }
     } else {
       echo "Aucune vidéo disponible.";
     }
