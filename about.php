@@ -3,7 +3,7 @@ include('header.php');
 include('call_api.php');
 ?>
 
-    <title>A Propose de CinePS</title>
+    <title>A Propos de CinePS</title>
     <link rel="stylesheet" href="historique_film.css">
 </head>
 <body>
