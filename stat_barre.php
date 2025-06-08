@@ -501,5 +501,6 @@ $count_data_annee = count($data_annee);
   </table>
 
   </div>
+<?php include('footer.php'); ?>
 </body>
 </html>
