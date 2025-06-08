@@ -379,6 +379,7 @@ $count_data_annee = count($data_annee);
           <th>Proposeur</th>
           <th>Moyenne</th>
           <th>Nombre de notes</th>
+          <th>Écart type</th>
         </tr>
       </thead>
       <tbody>
@@ -401,6 +402,7 @@ $count_data_annee = count($data_annee);
             <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->nom); ?></td>
             <td><?php echo rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'); ?></td>
             <td><?php echo $nb_notes . ($nb_notes == 1 ? " note" : " notes"); ?></td>
+            <td><?php echo is_null($film->ecartType) ? "-" : $film->ecartType . " - " . ($film->ecartType > 2 ? "clivant" : "consensuel") ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
