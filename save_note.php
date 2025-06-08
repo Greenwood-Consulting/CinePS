@@ -1,5 +1,5 @@
 <?php
-include('header.php');
+include('includes/init.php');
 include('common.php');
 
 // @TODO: simplifier les if

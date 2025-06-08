@@ -1,5 +1,5 @@
 <?php
-include('header.php');
+include('includes/init.php');
 include('common.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté

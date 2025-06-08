@@ -1,6 +1,35 @@
 <?php
-include('header.php');
+include('includes/init.php');
 include('common.php');
+
+// ------------- reactions au formulaires ----------------------------
+// les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
+
+
+// Proposition comportement 2 : on vient du bouton new_proposition
+if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
+  // préparation du body de la requête POST
+  $titre_film = addslashes($_POST['titre_film']);
+  $sortie_film = addslashes($_POST['date']); 
+  $imdb_film = addslashes($_POST['lien_imdb']);  
+  $array_proposition = array(
+    'titre_film' => $titre_film,
+    'sortie_film' => $sortie_film,
+    'imdb_film' => $imdb_film
+  );
+  $json_proposition = json_encode($array_proposition);
+
+  // Créer une nouvelle proposition
+  call_API("/api/proposition", "POST", $json_proposition);
+
+  // Redirection après mise à jour
+  header("Location: " . $_SERVER['REQUEST_URI']);
+  exit;
+}
+
+
+// ------------- fin des reactions au formulaires ----------------------------
+
 
 // calcul de la date de fin de la période de vote
 $fin_periode_vote = new DateTime(FIN_PERIODE_VOTE, new DateTimeZone('Europe/Paris'));
@@ -9,6 +38,8 @@ $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 // conversion de la date de fin en timestamp JavaScript
 $deadline_vote = strtotime($fin_periode_vote);
 $deadline_vote = $deadline_vote*1000;
+
+include('header.php');
 ?>
 
 
@@ -198,26 +229,6 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 }
 
 
-//Propostion comportement 2 : on vient du bouton new_proposition
-if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
-  // préparation du body de la requête POST
-  $titre_film = addslashes($_POST['titre_film']);
-  $sortie_film = addslashes($_POST['date']); 
-  $imdb_film = addslashes($_POST['lien_imdb']);  
-  $array_proposition = array(
-    'titre_film' => $titre_film,
-    'sortie_film' => $sortie_film,
-    'imdb_film' => $imdb_film
-  );
-  $json_proposition = json_encode($array_proposition);
-
-  // Créer une nouvelle proposition
-  call_API("/api/proposition", "POST", $json_proposition);
-
-  echo '<br/>';
-  echo '<br/>';
-  echo '<br/>';
-}
 
 if(isset($_POST['new_theme'])){//si on valide le theme
   // préparation du body de la requête POST

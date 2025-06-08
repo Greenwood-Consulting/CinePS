@@ -1,6 +1,8 @@
 <?php
-include('header.php');
+include('includes/init.php');
 include('common.php');
+include('calcul_etat.php');
+include('header.php');
 ?>
 
     <link href="resultat_vote.css" rel="stylesheet">
@@ -8,8 +10,6 @@ include('common.php');
 </head>
 <body>
 <?php
-include('common.php');
-include('calcul_etat.php');
 echo "<h1 id = 'titre'>Résultat du vote</h1>";
 echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</button></a>";
   $deb= new DateTime ("Fri 16:00");

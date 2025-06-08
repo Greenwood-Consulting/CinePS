@@ -1,6 +1,5 @@
 <?php
-include('header.php');
-include('call_api.php');
+include('includes/init.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -20,6 +19,7 @@ if (empty($json_user)) {
 }
 
 // Afficher les informations de l'utilisateur
+include('header.php');
 ?>
 
     <title>Profil de l'utilisateur</title>
