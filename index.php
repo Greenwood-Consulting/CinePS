@@ -27,6 +27,71 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   exit;
 }
 
+//Proposition comportement 1 : on vient du bouton end_proposition
+if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
+  // préparation du body de la requête PATCH
+  $array_semaine = array(
+    'proposition_terminee' => 1
+  );
+  $json_semaine = json_encode($array_semaine);
+
+  // Terminer les propositions
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
+
+  // Redirection après mise à jour
+  header("Location: " . $_SERVER['REQUEST_URI']);
+  exit;
+}
+
+//si on valide le theme
+if(isset($_POST['new_theme'])){
+  // préparation du body de la requête POST
+  $array_semaine = array(
+    'theme' => $_POST['theme_film']
+  );
+  $json_semaine = json_encode($array_semaine);
+
+  // Définir le thème des propositions de la semaine
+  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
+
+  // Redirection après mise à jour
+  header("Location: " . $_SERVER['REQUEST_URI']);
+  exit;
+}
+
+//Propostion comportement 2 : on vient du bouton seconde_chance
+if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
+  $id_proposeur = addslashes($_SESSION['user']);
+
+  // @TODO : à revoir, je comprends pas à quoi ça sert
+  // a generer  et valider une nouvelle proposition composée de 5 films anciennement proposés et non gagnants choisis au hasard, par le proposeur
+  // le verbe HTTP et le nommage sont a revoir
+  $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
+
+  // Redirection après mise à jour
+  header("Location: " . $_SERVER['REQUEST_URI']);
+  exit;
+}
+
+//Propostion comportement 3 : on vient du bouton chatGPT
+if(isset($_POST['chatGPT'])){
+  if (isset($_POST['theme'])) {
+    $theme = addslashes($_POST['theme']);
+  }
+
+  // préparation du body de la requête POST
+  $array_body = array(
+    'theme' => $theme
+  );
+  $json_body = json_encode($array_body);
+
+  // call API pour créer des propositions avec ChatGPT
+  call_API("/api/propositionOpenAI", "POST", $json_body);
+
+  // Redirection après mise à jour
+  header("Location: " . $_SERVER['REQUEST_URI']);
+  exit;
+}
 
 // ------------- fin des reactions au formulaires ----------------------------
 
@@ -208,71 +273,6 @@ $deb = $deb->modify('-1 week');
 $fin = new DateTime(FIN_PERIODE_VOTE);
 $curdate=new DateTime();
 $vote_period=($curdate>=$deb && $curdate <= $fin);
-
-
-//Proposition comportement 1 : on vient du bouton end_proposition
-if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition terminée" ça va le mettre dans la bdd et un message s'affichera sur la fenetre
-  // préparation du body de la requête PATCH
-  $array_semaine = array(
-    'proposition_terminee' => 1
-  );
-  $json_semaine = json_encode($array_semaine);
-
-  // Terminer les propositions
-  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
-
-  // Redirection après mise à jour
-  header("Location: ".$_SERVER['PHP_SELF']);
-  exit();
-
-  echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
-}
-
-
-
-if(isset($_POST['new_theme'])){//si on valide le theme
-  // préparation du body de la requête POST
-  $array_semaine = array(
-    'theme' => $_POST['theme_film']
-  );
-  $json_semaine = json_encode($array_semaine);
-
-  // Définir le thème des propositions de la semaine
-  call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
-}
-
-//Propostion comportement 2 : on vient du bouton seconde_chance
-if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
-  $id_proposeur = addslashes($_SESSION['user']);
-
-  // @TODO : à revoir, je comprends pas à quoi ça sert
-  $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
-
-  // Redirection après mise à jour
-  header("Location: ".$_SERVER['PHP_SELF']);
-  exit();
-}
-
-//Propostion comportement 3 : on vient du bouton chatGPT
-if(isset($_POST['chatGPT'])){
-  if (isset($_POST['theme'])) {
-    $theme = addslashes($_POST['theme']);
-  }
-
-  // préparation du body de la requête POST
-  $array_body = array(
-    'theme' => $theme
-  );
-  $json_body = json_encode($array_body);
-
-  // call API pour créer des propositions avec ChatGPT
-  call_API("/api/propositionOpenAI", "POST", $json_body);
-
-  // Redirection après mise à jour
-  header("Location: ".$_SERVER['PHP_SELF']);
-  exit();
-
-}
 ?>
 <div class="container-fluid mt-9">
 <?php
