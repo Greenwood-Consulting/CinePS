@@ -105,7 +105,7 @@ if (empty($json_user)) {
                     <th>Titre</th>
                     <th>Semaine</th>
                     <th>Proposeur</th>
-                    <th>Noter</th>
+                    <th>Ma note</th>
                     <th>Moyenne</th>
                 </tr>
             </thead>
