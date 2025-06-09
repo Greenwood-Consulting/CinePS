@@ -156,6 +156,7 @@ button {
   margin-top: 80px; /* Ajuste cette valeur selon la hauteur du bandeau */
 }
 
+// Pour les écrans inférieurs à une largeur standard de 1280px
 @media (max-width: 1280px) { /* Ajuste la largeur selon le besoin */
   .fixed-header {
       flex-direction: column; /* Change la direction pour empiler les éléments verticalement */
@@ -170,6 +171,12 @@ button {
   .login-form {
       position: static; /* Annule le positionnement absolu */
       margin-left: 0; /* Supprime la marge de droite */
+  }
+
+  /* hack to move down the title below 1280px */
+  /* use flex instead for global positioning */
+  .titre {
+    margin-top: 7rem;
   }
 }
 
