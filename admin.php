@@ -1,6 +1,7 @@
 <?php
-include 'header.php';
+include('includes/init.php');
 include('common.php');
+include 'header.php';
 ?>
 
     <link rel="stylesheet" href="admin.css">

@@ -1,8 +1,3 @@
-<?php
-session_start();
-include 'config/env.php'; // constantes de l'application
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>

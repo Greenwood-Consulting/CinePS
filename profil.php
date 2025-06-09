@@ -1,6 +1,5 @@
 <?php
-include('header.php');
-include('call_api.php');
+include('includes/init.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -12,6 +11,8 @@ if (!isset($_SESSION['user'])) {
 // Récupérer les informations de l'utilisateur connecté
 $user_id = $_SESSION['user'];
 $json_user = call_API("/api/membres/" . $user_id, "GET");
+
+include('header.php');
 
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
 if (empty($json_user)) {

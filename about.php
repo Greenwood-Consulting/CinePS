@@ -1,6 +1,6 @@
 <?php
+include('includes/init.php');
 include('header.php');
-include('call_api.php');
 ?>
 
     <title>A Propos de CinePS</title>

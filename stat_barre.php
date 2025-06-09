@@ -1,5 +1,5 @@
 <?php
-include('header.php');
+include('includes/init.php');
 include('common.php');
 include('calcul_etat.php');
 
@@ -69,7 +69,7 @@ foreach($films_par_decennie as $decennie => $nb_films){
 
 $count_data_annee = count($data_annee);
 
-
+include('header.php');
 ?>
 
 
