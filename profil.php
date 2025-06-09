@@ -106,6 +106,7 @@ if (empty($json_user)) {
                     <th>Semaine</th>
                     <th>Proposeur</th>
                     <th>Noter</th>
+                    <th>Moyenne</th>
                 </tr>
             </thead>
             <tbody>
@@ -116,14 +117,18 @@ if (empty($json_user)) {
                         <td><?php echo htmlspecialchars($film->propositions[0]->semaine->proposeur->nom); ?></td>
                         <td>
                             <?php 
+                            // get the user rating for this movie
                             $current_user_a_note = false;
+                            $current_user_note = null;
                             foreach ($film->notes as $note) {
                                 if ($note->membre->id == $_SESSION['user']) {
                                     $current_user_a_note = true;
+                                    $current_user_note = $note->note;
                                     break;
                                 }
                             }
-                            if (!$current_user_a_note): ?>
+                            ?>
+                            <?php if (!$current_user_a_note): ?>
                                 <select name="notes[<?php echo $film->id; ?>]" id="<?php echo $film->id; ?>">
                                     <option value="no">-- Choisir une note --</option>
                                     <option value="0">0 - Christophe Barbier</option>';
@@ -140,15 +145,12 @@ if (empty($json_user)) {
                                     <option value="11">11 - Up to eleven</option>';
                                     <option value="abs">Ne pas noter</option>
                                 </select>
-                            <?php 
-                                else: 
-                                    if ($film->moyenne === null) {
-                                        echo "non noté";
-                                    } else {
-                                        echo htmlspecialchars(rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.'));
-                                    }
-                            endif; 
-                                ?>
+                            <?php else: ?>
+                                <?= (is_null($current_user_note)) ? "abstention" : $current_user_note; ?>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?= ($film->moyenne === null) ? "non noté" : htmlspecialchars(rtrim(rtrim(number_format($film->moyenne, 2), '0'), '.')); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
