@@ -12,6 +12,8 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user'];
 $json_user = call_API("/api/membres/" . $user_id, "GET");
 
+include('header.php');
+
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
 if (empty($json_user)) {
     echo "Erreur: Impossible de récupérer les informations de l'utilisateur.";
@@ -19,7 +21,6 @@ if (empty($json_user)) {
 }
 
 // Afficher les informations de l'utilisateur
-include('header.php');
 ?>
 
     <title>Profil de l'utilisateur</title>
