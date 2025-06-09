@@ -278,3 +278,13 @@ button {
 .has-submenu:hover .submenu {
   display: block;
 }
+
+/**********************************************
+*                 page about                  *
+**********************************************/
+
+/* hack to reset inline block on ul and h2, but keep the background only on text */
+.github-repositories ul, .github-repositories h2 {
+  display: table;
+}
+
