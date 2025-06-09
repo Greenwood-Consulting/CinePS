@@ -27,9 +27,9 @@ include('call_api.php');
     <h1 class = 'titre'>A Propos de CinePS</h1>
 
     <div class="github-repositories">
-      <h2>Dépôts Github</h2>
+      <h2>Dépôts GitHub</h2>
       <ul>
-        <li><a href="https://github.com/Greenwood-Consulting/CinePS">CinePS - Front PHP</a></li>
+        <li><a href="https://github.com/Greenwood-Consulting/CinePS">CinePS (Front PHP)</a></li>
         <li><a href="https://github.com/Greenwood-Consulting/CinePS-API">CinePS-API</a></li>
       </ul>
     </div>
