@@ -23,7 +23,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   call_API("/api/proposition", "POST", $json_proposition);
 
   // Redirection après mise à jour
-  header("Location: " . $_SERVER['REQUEST_URI']);
+  header("Location: index.php");
   exit;
 }
 
@@ -39,7 +39,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-  header("Location: " . $_SERVER['REQUEST_URI']);
+  header("Location: index.php");
   exit;
 }
 
@@ -55,7 +55,7 @@ if(isset($_POST['new_theme'])){
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-  header("Location: " . $_SERVER['REQUEST_URI']);
+  header("Location: index.php");
   exit;
 }
 
@@ -69,7 +69,7 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
 
   // Redirection après mise à jour
-  header("Location: " . $_SERVER['REQUEST_URI']);
+  header("Location: index.php");
   exit;
 }
 
@@ -89,7 +89,7 @@ if(isset($_POST['chatGPT'])){
   call_API("/api/propositionOpenAI", "POST", $json_body);
 
   // Redirection après mise à jour
-  header("Location: " . $_SERVER['REQUEST_URI']);
+  header("Location: index.php");
   exit;
 }
 
