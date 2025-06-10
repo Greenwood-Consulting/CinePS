@@ -63,10 +63,7 @@ if(isset($_POST['new_theme'])){
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $id_proposeur = addslashes($_SESSION['user']);
 
-  // @TODO : à revoir, je comprends pas à quoi ça sert
-  // a generer  et valider une nouvelle proposition composée de 5 films anciennement proposés et non gagnants choisis au hasard, par le proposeur
-  // le verbe HTTP et le nommage sont a revoir
-  $array_proposition = call_API("/api/PropositionPerdante/". $id_proposeur , "GET");
+  $array_proposition = call_API("/api/seconde-chance/".$id_proposeur , "POST");
 
   // Redirection après mise à jour
   header("Location: index.php");
