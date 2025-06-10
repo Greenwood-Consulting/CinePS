@@ -63,7 +63,7 @@ if(isset($_POST['new_theme'])){
 if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $id_proposeur = addslashes($_SESSION['user']);
 
-  $array_proposition = call_API("/api/seconde-chance/".$id_proposeur , "POST");
+  $array_proposition = call_API("/api/secondeChance/".$id_proposeur , "POST");
 
   // Redirection après mise à jour
   header("Location: index.php");
