@@ -44,7 +44,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
 }
 
 //si on valide le theme
-if(isset($_POST['new_theme'])){
+if(isset($_POST['update_theme'])){
   // préparation du body de la requête POST
   $array_semaine = array(
     'theme' => $_POST['theme_film']
@@ -391,18 +391,12 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
           ?>
 
           <form method="POST" action="index.php">
-          <label> Proposition de films:</label>
-            <?php
 
-            // @TODO : sortir dans un formulaire à part le formulaire du thème ?
-            if($etat_theme_non_propose){//si pas de thème déjà défini, on affiche le formulaire de proposition de thème
-            // @TODO : si thème défini, afficher le thème ou alors
-            // Afficher le formulaire avec le thème pré-saisi ?
-              echo '<input type="text" name="theme_film" placeholder="Thème film" class="text-dark"/>
-                    <button type="submit" name="new_theme" class="btn btn-warning">Choisissez un thème</button><br/><br/>';
-            }
-            ?>
+            <label>Thème:</label>
+            <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine[0]->theme ?>" />
+            <button type="submit" name="update_theme" class="btn btn-warning"><?= $etat_theme_non_propose? "Choisissez un thème" : "Modifiez le thème" ?></button><br/><br/>
             
+            <label>Proposition:</label>
             <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
             <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
             <input type="number" name="date"  placeholder="Année" class="text-dark" >
