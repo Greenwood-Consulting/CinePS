@@ -25,7 +25,7 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
   $_SESSION['token'] = recupererToken();
 }
 
-function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
+function call_API($entry_point, $verbe, $body = null, $result_as_array = false, $retry = 1){
   $curl = curl_init(API_URL.$entry_point);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
@@ -61,27 +61,19 @@ function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
   }
   
   // Si le token est expiré, on génère un nouveau token
+  //@TODO: pourquoi ne pas permettre de refaire la requet dans le cas $result_as_array = true ?
   if (is_object($decoded_response) && isset($decoded_response->code) && $decoded_response->code == "401") {
-    $_SESSION['token'] = recupererToken();
-    // On refait la requête avec le nouveau token
-    $headers = [
-      'Authorization: bearer '. $_SESSION['token'],
-      'Content-Type: application/json'
-    ];
-    if ($verbe == 'POST' || $verbe == 'PATCH') {
-      $headers[] = 'Content-Length: ' . strlen($body);
-    }
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-    // ré-exécution de la requête
-    $api_response = curl_exec($curl);
-
-    if ($result_as_array) {
-      $decoded_response = json_decode($api_response, true);
+    if($retry > 0) {
+      $_SESSION['token'] = recupererToken();
+      $decoded_response = call_API($entry_point, $verbe, $body, $result_as_array, $retry - 1);
     } else {
-      $decoded_response = json_decode($api_response);
+      http_response_code(401);
+      echo "Erreur 401: Unauthorized.";
+      exit;
     }
   }
+
+  //@TODO: manage other error codes
 
   curl_close($curl);
 
