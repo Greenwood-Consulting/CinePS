@@ -7,6 +7,6 @@ $json_current_semaine = call_API("/api/currentSemaine", "GET");
 if ($json_current_semaine === null || isset($json_current_semaine->error)) {
   $id_current_semaine = null;
 } else {
-  $id_current_semaine = $json_current_semaine[0]->id;
+  $id_current_semaine = $json_current_semaine->id;
 }
 ?>

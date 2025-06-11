@@ -23,7 +23,7 @@ function renomme_et_permute_films(array $tableau_films): array {
 
 //Construction du tableau data_score
 $data_score = [];
-$array_score_film = $json_current_semaine[0]->propositions;
+$array_score_film = $json_current_semaine->propositions;
 
 // On fabrique le tableau data_score qui permet d'afficher le graphe
 foreach($array_score_film as $film){
