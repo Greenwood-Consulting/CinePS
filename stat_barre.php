@@ -3,40 +3,34 @@ include('includes/init.php');
 include('common.php');
 include('calcul_etat.php');
 
-function renomme_et_permute_films(array $tableau_films): array {
+function renomme_et_permute_films(array $propositions): array {
 
-  usort($tableau_films, function ($a, $b) {
+  usort($propositions, function ($a, $b) {
       // Création d'un nombre pseudo-aléatoire à partir de l'ID
-      $hashA = crc32($a['Film']);
-      $hashB = crc32($b['Film']);
+      $hashA = crc32($a->film->titre);
+      $hashB = crc32($b->film->titre);
       return $hashA <=> $hashB;
   });
 
   // Renommer les films avec des noms de chevaux
   $noms_chevaux = ['Prince du Vent', 'Velours Tempétueux', 'Général du Pommeau', 'Cacahuète du logis', 'Jolly-Jumper', 'Bricks and Mortar', 'Brise de Nuit', 'Prince de la Vigne'];
-  foreach ($tableau_films as $index => &$film) {
-      $film['Film'] = $noms_chevaux[$index % count($noms_chevaux)];
+  foreach ($propositions as $index => &$proposition) {
+      $proposition->film->titre = $noms_chevaux[$index % count($noms_chevaux)];
   }
-
-  return $tableau_films;
+  unset($proposition); // rompre la référence avec le dernier élément
+  return $propositions;
 }
 
-//Construction du tableau data_score
-$data_score = [];
-$array_score_film = $json_current_semaine->propositions;
+// get propositions pour le classement des films de la semaine
+$propositions = $json_current_semaine->propositions;
 
-// On fabrique le tableau data_score qui permet d'afficher le graphe
-foreach($array_score_film as $film){
-  $titre_film = $film->film->titre;
-  array_push($data_score, array("Film" => $titre_film, "Score" => $film->score));
-}
+$obfuscatePropositions = !$vote_termine_cette_semaine && !$current_user_a_vote && !$is_proposeur;
 
-if (!$vote_termine_cette_semaine && !$current_user_a_vote && !$is_proposeur) {
+if ($obfuscatePropositions) {
   // Permutation des films afin qu'on ne puisse pas savoir quel film correspond à quel score
-  $data_score = renomme_et_permute_films($data_score);
+  $propositions = renomme_et_permute_films($propositions);
 }
 
-$count_data_score = count($data_score);
 
 //construction du tableau data_proposeur
 $data_proposeurs = [];
@@ -80,27 +74,31 @@ include('header.php');
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
+    // Google Charts: "Classic" vs "Material Design"
+    // The Material Charts are in beta. The appearance and interactivity are largely final, but many of the options available in Classic Charts are not yet available in them
+    // https://developers.google.com/chart/interactive/docs/gallery/barchart#creating-material-bar-charts
+    
+    // Load the Visualization API and the corechart package.
     google.charts.load('current', {packages: ['corechart', 'bar']});
-    google.charts.setOnLoadCallback(drawMaterial);
+    
+    // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart);
 
-    function drawMaterial() {
-      //draw data_score
-      var data_score = new google.visualization.DataTable();
-      data_score.addColumn('string', 'Film');
-      data_score.addColumn('number', '');
+    function drawChart() {
+      const propositions = <?= json_encode($propositions) ?>;
 
-      data_score.addRows([
-        <?php
-          for($i=0;$i<$count_data_score;$i++){
-            echo "['" . $data_score[$i]['Film'] . "'," . $data_score[$i]['Score'] . "],";
-          } 
-        ?>
-      ]);
+      // draw data_score: Classement des films de la semaine
+      const data_table = new google.visualization.DataTable();
+      data_table.addColumn('string', 'Film');
+      data_table.addColumn('number', '');
+      data_table.addRows(propositions.map(p => [p.film.titre, p.score]));
 
-      var materialOptions = {
+      var options = {
         chart: {
           title: ''
+        },
+        chartArea: {
+          left: 200
         },
         hAxis: {
           title: 'Score',
@@ -112,8 +110,22 @@ include('header.php');
         bars: 'horizontal'
       };
       
-      var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-      materialChart.draw(data_score, materialOptions);
+      // https://developers.google.com/chart/interactive/docs/gallery/barchart
+      const ranking_chart = new google.visualization.BarChart(document.getElementById('classement-semaine-chart'));
+      ranking_chart.draw(data_table, options);
+
+      <?php if (!$obfuscatePropositions): ?>
+        // Gestion du clic sur une barre proposition
+        google.visualization.events.addListener(ranking_chart, 'select', function() {
+          const selection = ranking_chart.getSelection();
+          if (selection.length > 0) {
+            const row = selection[0].row;
+            const propositionClicked = propositions[row];
+            // ouverture d'un nouvel onglet vers le lien imdb
+            window.open(propositionClicked.film.imdb, '_blank');
+          }
+        });
+      <?php endif; ?>
 
       //draw data_annee
       var data_annee = new google.visualization.DataTable();
@@ -143,9 +155,7 @@ include('header.php');
       };
       var materialChart = new google.charts.Bar(document.getElementById('chart_film_année'));
       materialChart.draw(data_annee, materialOptions);
-    }
 
-    function drawChart(){
       //draw data_proposeurs
       var data_proposeurs = new google.visualization.DataTable();
       data_proposeurs.addColumn('string', 'proposeurs');
@@ -186,8 +196,8 @@ include('header.php');
 
   <div class="main-content">
     <h1 class="titre">Statistiques</h1>
-    <h2>Classement Des films de la semaine</h2>
-    <div id="chart_div"  style="width: 40%; height: 200px" class="main-zone stat-chart"></div>
+    <h2>Classement des films de la semaine</h2>
+    <div id="classement-semaine-chart"  style="width: 40%; height: 200px" class="main-zone stat-chart"></div>
 
     <h2> Films vus par décennie</h2>
     <div id="chart_film_année" style="width: 40%; height: 200px" class="main-zone"></div>
