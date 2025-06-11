@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 // Récupérer les informations de l'utilisateur connecté
 $user_id = $_SESSION['user'];
-$json_user = call_API("/api/membres/" . $user_id, "GET");
+$json_user = ArrayUtils::find($membres, fn($m) => $m->id == $user_id);
 
 include('header.php');
 

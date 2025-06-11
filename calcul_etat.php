@@ -37,8 +37,8 @@ $is_actif = true;
 // Récupérer les membres depuis l'API
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
   // @TODO : changer le nom du endpoint /api/membres/{id} pour /api/membre/{id} ?
-  $json_membres = call_API("/api/membres/" . $_SESSION['user'], "GET");
+  $json_membre = ArrayUtils::find($membres, fn($m) => $m->id == $_SESSION['user']);
   //indique si le membre est actif ou non
-  $is_actif = $json_membres->actif;
+  $is_actif = $json_membre->actif;
 }
 ?>

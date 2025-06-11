@@ -72,6 +72,7 @@ function printNextproposeurs($id_semaine){
 
 function printChoixvote($id_semaine){
   global $json_current_semaine;
+  global $membres;
 
   $proposeur_prenom = $json_current_semaine->proposeur->Prenom;
 
@@ -80,9 +81,6 @@ function printChoixvote($id_semaine){
   if(count($propositions_array)==0){
     echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";
   }else{
-    // Récupération de la liste des membres (pour le header)
-    $json_membres = call_API("/api/membres", "GET");
-
     // Récupération des propositions avec votes
     // @TODO : renommer $array_propositions_et_votes en $json_propositions_et_votes
     $array_propositions_et_votes = call_API("/api/votes/".$id_semaine, "GET");
@@ -92,7 +90,7 @@ function printChoixvote($id_semaine){
     // Affichage du header du tableau :
     echo "<TR>";
     echo "<TD></TD><TD></TD>";
-    foreach($json_membres as $data_membre){ //on crée une colonne pour chaque membre
+    foreach($membres as $data_membre){ //on crée une colonne pour chaque membre
       if($data_membre->prenom != $proposeur_prenom){//On affiche tout le monde sauf le proposeur
         echo "<TD>";
         echo $data_membre->prenom;
