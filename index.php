@@ -406,44 +406,36 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
             <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
             <input type="number" name="date"  placeholder="Année" class="text-dark" >
-            
-            <?php
-            echo '<button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>';
-            echo '<button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>';
-            echo '<button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button>';
-            echo '&nbsp;&nbsp;';
-            //echo '<button onclick="openPopup()" class="btn btn-warning">ChatGPT</button>';
-            echo '<div id="animationOverlay"></div>';
-            ?>
-          </form>
+            <button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>
+            <button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>
 
+            <button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button><br /><br />
 
-          <br />
-          <button onclick="openPopup()" class="btn btn-warning">ChatGPT</button> <!-- Pourquoi le bouton ChatGPT est-il ici et pas dans le formulaire ? -->
+            <button type="button" onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
 
-          <!-- Overlay et contenu du pop-up -->
-          <div class="overlay" id="popup-overlay">
-            <div class="popup" onclick="event.stopPropagation();">
-              <!-- Bouton de fermeture en tant que span -->
-              <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
-              <h2 class="text-warning">Proposition ChatGPT</h2>
+            <!-- Overlay et contenu du pop-up -->
+            <div class="overlay" id="popup-overlay">
+              <div class="popup" onclick="event.stopPropagation();">
+                <!-- Bouton de fermeture en tant que span -->
+                <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
+                <h2 class="text-warning">Proposition ChatGPT</h2>
 
-              <form method="POST" action="index.php">
                 <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
-                <input type="text" id="theme" name="theme" value="<?php  echo $json_current_semaine[0]->theme; ?>" class="text-dark">
+                <input type="text" id="theme" name="theme" value="<?= $json_current_semaine[0]->theme; ?>" class="text-dark">
 
-                <?php 
-                  if (empty($json_current_semaine[0]->theme)) {
-                    echo "<br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />";
-                  } else {
-                    echo "<br />Tu as déjà défini un thème mais tu peux encore le changer<br />";
-                  }
-                ?>
+                <?php if (empty($json_current_semaine[0]->theme)): ?>
+                    <br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />
+                <?php else: ?>
+                    <br />Tu as déjà défini un thème mais tu peux encore le changer<br />
+                <?php endif; ?>
 
                 <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
-              </form>
+              </div>
             </div>
-          </div>
+            <!-- Overlay etoilé affiché lors de l'appel a chatGPT -->
+            <div id="animationOverlay"></div>
+
+          </form>
 
           <?php
         }else{//sinon les autres users sont informés que le proposeur n'a pas terminé ses propositions
