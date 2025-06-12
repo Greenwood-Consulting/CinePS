@@ -397,17 +397,20 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             <button type="submit" name="update_theme" class="btn btn-warning"><?= $etat_theme_non_propose? "Choisissez un thème" : "Modifiez le thème" ?></button><br/><br/>
             
             <label>Proposition:</label>
+            <!-- Proposition classique -->
             <input type="text" name="titre_film"  placeholder="Titre du film" class="text-dark" />
             <input type="text" name="lien_imdb" placeholder="Lien imdb" class="text-dark"/>
             <input type="number" name="date"  placeholder="Année" class="text-dark" >
-            <button type="submit" name="new_proposition" class="btn btn-warning">Proposer</button><br/>
+            <button type="submit" name="new_proposition" class="btn btn-warning">Proposer un film</button><br/>
             <button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>
 
+            <!-- Proposition seconde chance -->
             <button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button><br /><br />
 
+            <!-- Proposition ChatGPT -->
             <button type="button" onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
 
-            <!-- Overlay et contenu du pop-up -->
+            <!-- Overlay et contenu du pop-up pour Proposition ChatGPT-->
             <div class="overlay" id="popup-overlay">
               <div class="popup" onclick="event.stopPropagation();">
                 <!-- Bouton de fermeture en tant que span -->
