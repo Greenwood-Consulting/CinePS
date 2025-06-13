@@ -35,6 +35,8 @@ function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
     'Content-Type: application/json'
   ];
   if ($verbe == 'POST' || $verbe == 'PATCH') {
+    // $body ne doit pas pouvoir être null pour strlen et CURLOPT_POSTFIELDS
+    $body = $body ?? '';
     $headers[] = 'Content-Length: ' . strlen($body);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
   }
