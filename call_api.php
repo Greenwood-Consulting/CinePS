@@ -40,6 +40,9 @@ function call_API_de_base(&$curl, $verbe, $body, $result_as_array = false){
   if ($verbe == 'PATCH') { // paramétrage spécifique à PATCH
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
   }
+  if ($verbe == 'DELETE') {
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+  }
   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
   // exécution de la requête
