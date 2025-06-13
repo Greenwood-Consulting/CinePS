@@ -54,7 +54,7 @@ if(isset($_POST['member_filter'])){
   if ($_POST['user_filter'] == 0) {
     echo "<h1 class = 'titre'>Historique des propositions</h1>";
   } else {
-    $json_id_membre = call_API("/api/membres/". $id_membre, "GET");
+    $json_id_membre = ArrayUtils::find($membres, fn($m) => $m->id == $id_membre);
     $nom_membre = $json_id_membre->nom;
     if (in_array(strtoupper($nom_membre[0]), $voyelles)) {
       echo "<h1 class = 'titre'>Historique des propositions d'".$nom_membre."</h1>";
