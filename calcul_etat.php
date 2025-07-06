@@ -36,8 +36,7 @@ $etat_theme_non_propose = $json_current_semaine->theme == "";
 $is_actif = true;
 // Récupérer les membres depuis l'API
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-  // @TODO : changer le nom du endpoint /api/membres/{id} pour /api/membre/{id} ?
-  $json_membre = ArrayUtils::find($membres, fn($m) => $m->id == $_SESSION['user']);
+  $json_membre = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
   //indique si le membre est actif ou non
   $is_actif = $json_membre->actif;
 }

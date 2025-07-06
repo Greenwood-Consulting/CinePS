@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 // Récupérer les informations de l'utilisateur connecté
 $user_id = $_SESSION['user'];
-$json_user = ArrayUtils::find($membres, fn($m) => $m->id == $user_id);
+$json_user = array_values(array_filter($membres, fn($m) => $m->id == $user_id))[0] ?? null;
 
 include('header.php');
 

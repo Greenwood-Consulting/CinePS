@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'config/env.php'; // constantes de l'application
-require_once 'includes/helpers.php';
 include "call_api.php";
 
 $json_current_semaine = call_API("/api/currentSemaine", "GET");

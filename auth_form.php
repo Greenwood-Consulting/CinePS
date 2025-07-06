@@ -1,5 +1,4 @@
 <?php 
-require_once 'includes/helpers.php';
 
 //Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
 // si l'utilisateur se présente
@@ -9,7 +8,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
-    $json_user = ArrayUtils::find($membres, fn($m) => $m->id == $id_membre);
+    $json_user = array_values(array_filter($membres, fn($m) => $m->id == $id_membre))[0] ?? null;
 
     if(! empty($json_user)){//On vérifie qui'il y ait un mdp pour l'utilisateur connecté
         //$password = hash('sha256', $password);
@@ -26,7 +25,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
-    $json_user = ArrayUtils::find($membres, fn($m) => $m->id == $_SESSION['user']);
+    $json_user = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
 
     ?>
     <div class="login-form">
