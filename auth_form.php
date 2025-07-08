@@ -42,6 +42,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
                 </button>
                 <ul class="submenu">
                     <li><a href="profil.php">Profil</a></li>
+                    <li><a href="pre_selections.php">Pré-Sélections</a></li>
                     <li><a href="deconnexion.php">Se déconnecter</a></li>
                 </ul>
             </li>
@@ -76,7 +77,6 @@ else{ //Sinon on propose la connexion
         </div>
     </form>";
 }
-echo "</br>";
 
 
 ?>

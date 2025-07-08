@@ -1,0 +1,49 @@
+/* Structure générale des pages : header, footer, grid, sidebar, etc. */
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 1rem 0;
+  background-color: var(--color-bg);
+  background: linear-gradient(0deg, transparent 0%, var(--color-bg) 4%);
+}
+
+.header__container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.nav {
+  display: flex;
+  /* gap responsive. TODO envisager un burger button a la place? */
+  gap: clamp(0px, 1vw, 1rem);
+  flex-wrap: wrap;
+}
+
+/* Contenu principal */
+.main {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem !important; /* hauteur de la navbar */
+  padding: 2rem;
+}
+
+footer {
+  margin-bottom: 1rem;
+}
+
+/* layout inline de base */
+.lt__inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6em;
+  flex-wrap: wrap;
+}
