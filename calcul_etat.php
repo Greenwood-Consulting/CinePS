@@ -18,6 +18,17 @@ $no_propositions = empty($json_current_semaine->propositions);
 // @TODO : remplacer par currentSemaine ?
 $vote_termine_cette_semaine = call_API("/api/isVoteTermine/".$id_current_semaine, "GET");
 
+// Recuperation du lien de téléchargement
+if ($vote_termine_cette_semaine) {
+  $dLinkResponse = call_API("/api/dlink", "GET");
+  $dLink = $dLinkResponse?->value;
+
+  // RAZ si l'URL n'est pas correcte (par exemple: javascript:alert(1))
+  if(!filter_var($dLink, FILTER_VALIDATE_URL)) {
+    $dLink = '';
+  }
+}
+
 // get état connecte
 $connecte = isset($_SESSION['user']);
 
