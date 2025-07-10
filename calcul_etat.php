@@ -17,6 +17,17 @@ $no_propositions = empty($json_current_semaine->propositions);
 // get état vote_termine_cette_semaine
 $vote_termine_cette_semaine = $json_current_semaine->is_vote_termine;
 
+// Recuperation du lien de téléchargement
+if ($vote_termine_cette_semaine) {
+  $dLinkResponse = call_API("/api/dlink", "GET");
+  $dLink = $dLinkResponse?->value;
+
+  // RAZ si l'URL n'est pas correcte (par exemple: javascript:alert(1))
+  if(!filter_var($dLink, FILTER_VALIDATE_URL)) {
+    $dLink = '';
+  }
+}
+
 // get état connecte
 $connecte = isset($_SESSION['user']);
 
