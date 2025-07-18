@@ -5,12 +5,12 @@
 //Fonction d'affichage
 function printFilmsProposes(){
   global $json_current_semaine;
-  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine[0]->proposeur->nom.'</h2><br/>';
+  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine->proposeur->nom.'</h2><br/>';
 
-  if (empty($json_current_semaine[0]->propositions)) { // Aucun film n'a été proposé
+  if (empty($json_current_semaine->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
-    foreach($json_current_semaine[0]->propositions as $proposition){
+    foreach($json_current_semaine->propositions as $proposition){
       echo '<mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a>';
       echo $proposition->film->sortie_film.'</mark></br>'; 
     }
@@ -39,7 +39,7 @@ function printResultatVote($id_semaine){
 // Affichage de la liste des membres qui ont déjà voté
 function printUserAyantVote(){
   global $json_current_semaine;
-  $votants_array = $json_current_semaine[0]->votants;
+  $votants_array = $json_current_semaine->votants;
   
   foreach($votants_array as $votant){
     echo "<mark><b>".$votant->votant->nom. "</b> a voté<br/></mark>";
@@ -73,9 +73,9 @@ function printNextproposeurs($id_semaine){
 function printChoixvote($id_semaine){
   global $json_current_semaine;
 
-  $proposeur_prenom = $json_current_semaine[0]->proposeur->Prenom;
+  $proposeur_prenom = $json_current_semaine->proposeur->Prenom;
 
-  $propositions_array = $json_current_semaine[0]->propositions;
+  $propositions_array = $json_current_semaine->propositions;
 
   if(count($propositions_array)==0){
     echo "<p><b>Pas de proposition pour cette semaine</b> </p><br/>";

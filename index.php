@@ -278,17 +278,17 @@ $vote_period=($curdate>=$deb && $curdate <= $fin);
 
 include('calcul_etat.php');
 
-if ($json_current_semaine[0]->type == "PSSansFilm") {
+if ($json_current_semaine->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";
 }
-if ($json_current_semaine[0]->type == "PasDePS") {
+if ($json_current_semaine->type == "PasDePS") {
   echo "<mark>Il n'y a pas de PS cette semaine</mark>";
 }
-if ($json_current_semaine[0]->type == "PSAvecFilm") {
+if ($json_current_semaine->type == "PSAvecFilm") {
   // Affichage de la liste des utilisateurs ayant déjà voté
   printUserAyantVote($id_current_semaine);
 
-  if ($json_current_semaine[0]->proposition_termine){
+  if ($json_current_semaine->proposition_termine){
     echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
   } else {
     echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
@@ -348,7 +348,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
                 // l'utilisateur connecté est actif
                 // l'utilisateur connecté n'est pas le proposeur de la semaine
                 // l'utilisateur connecté n'a pas encore voté
-                $proposeur_cette_semaine = $json_current_semaine[0]->proposeur->nom;
+                $proposeur_cette_semaine = $json_current_semaine->proposeur->nom;
 
                 echo'<h2 class="text-warning">Vous devez voter </h2>';
                 echo "<br />";
@@ -356,14 +356,14 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
                 echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
                 echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont :</h2>';
                 
-                $nombre_proposition = count($json_current_semaine[0]->propositions);
+                $nombre_proposition = count($json_current_semaine->propositions);
                 ?>
 
                 <form method="POST" action="save_vote.php">
                 <?php
 
                 echo "<table>";
-                foreach($json_current_semaine[0]->propositions as $proposition){
+                foreach($json_current_semaine->propositions as $proposition){
                   echo '<tr><td><mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a></td><td><input class="text-dark" type="number" name="'.$proposition->id.'" value="1" min="1" max="'.$nombre_proposition.'">'.'</mark> </td></tr>';                }
                 echo "</table>";
                 ?>
@@ -417,7 +417,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
                 <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
                 <input type="text" id="theme" name="theme" value="<?= $json_current_semaine[0]->theme; ?>" class="text-dark">
 
-                <?php if (empty($json_current_semaine[0]->theme)): ?>
+                <?php if (empty($json_current_semaine->theme)): ?>
                     <br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />
                 <?php else: ?>
                     <br />Tu as déjà défini un thème mais tu peux encore le changer<br />
@@ -439,7 +439,7 @@ if ($json_current_semaine[0]->type == "PSAvecFilm") {
             // la proposition n'est pas encore faite
             // l'utilisateur connecté n'est pas le proposeur de la semaine
             // Il y a un proposeur défini pour cette semaine
-            echo"<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " .$json_current_semaine[0]->proposeur->nom."</mark>";
+            echo"<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " .$json_current_semaine->proposeur->nom."</mark>";
           }else{
             // L'utilisateur est connecté
             // nous sommes en période de vote
