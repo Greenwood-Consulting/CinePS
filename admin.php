@@ -69,13 +69,12 @@ if(isset($_POST['new_proposeur'])){
 }
 
 //Formulaire de création de semaine
-$decode_membre = call_API("/api/membres", "GET");
 echo '<form method="post" action="">';
 
 // Membre proposeur
 echo '  <label>Membres</label>
         <select class="text-dark" name="user">';
-            foreach($decode_membre as $membre){ //Afficher un utlisateur dans le dropdown
+            foreach($membres as $membre){ //Afficher un utlisateur dans le dropdown
                 echo"<option class='text-dark' value=".$membre->id.">". $membre->nom." ".$membre->prenom."</option>";
             }
 echo "  </select>";
@@ -104,7 +103,6 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
-$membres = call_API("/api/membres", "GET");
 
 foreach($membres as $membre) {
     echo $membre->nom;

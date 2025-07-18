@@ -8,7 +8,8 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
-    $json_user = call_API("/api/membres/".$id_membre, "GET");
+    // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
+    $json_user = array_values(array_filter($membres, fn($m) => $m->id == $id_membre))[0] ?? null;
 
     if(! empty($json_user)){//On vérifie qui'il y ait un mdp pour l'utilisateur connecté
         //$password = hash('sha256', $password);
@@ -25,7 +26,8 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
-    $json_user = call_API("/api/membres/".$_SESSION['user'], "GET");
+    // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
+    $json_user = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
 
     ?>
     <div class="login-form">
@@ -48,8 +50,6 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     <?php
 }
 else{ //Sinon on propose la connexion
-    $json_users = call_API("/api/membres", "GET");
-
     echo "";
     echo'<form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" class="login-form">';
     echo '<div class="form-group">
@@ -57,7 +57,7 @@ else{ //Sinon on propose la connexion
     echo '      <div class="field-group">
                     <label for="user">Membres</label>
                     <select class="text-dark" name="user" id="user">';
-                    foreach($json_users as $user){ //Afficher un utlisateur
+                    foreach($membres as $user){ //Afficher un utlisateur
                         echo"<option class='text-dark' value=".$user->id.">". $user->nom." ".$user->prenom."</option>";
                     }
     echo "           </select>

@@ -9,4 +9,11 @@ if ($json_current_semaine === null || isset($json_current_semaine->error)) {
 } else {
   $id_current_semaine = $json_current_semaine->id;
 }
+
+$membres = call_API("/api/membres", "GET");
+if(!isset($membres) || !is_array($membres)) {
+  echo "app init failed: cannot get members";
+  exit;
+}
+
 ?>

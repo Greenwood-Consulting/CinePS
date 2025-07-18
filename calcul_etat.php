@@ -34,11 +34,10 @@ if(isset($_SESSION['user'])){//si l'utilisateur est connecté
 $etat_theme_non_propose = $json_current_semaine->theme == "";
 
 $is_actif = true;
-// Récupérer les membres depuis l'API
 if(isset($_SESSION['user'])){//si l'utilisateur est connecté
-  // @TODO : changer le nom du endpoint /api/membres/{id} pour /api/membre/{id} ?
-  $json_membres = call_API("/api/membres/" . $_SESSION['user'], "GET");
+  // @TODO : ne pas utiliser $membres, pour gérer l'état de l'utilisateur connecté, à refactoriser quand on refactorisera l'Authentification
+  $json_membre = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
   //indique si le membre est actif ou non
-  $is_actif = $json_membres->actif;
+  $is_actif = $json_membre->actif;
 }
 ?>
