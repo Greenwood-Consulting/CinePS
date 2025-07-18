@@ -8,6 +8,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
     $id_membre = $_POST['user'];
     $password = $_POST['password'];
 
+    // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
     $json_user = array_values(array_filter($membres, fn($m) => $m->id == $id_membre))[0] ?? null;
 
     if(! empty($json_user)){//On vérifie qui'il y ait un mdp pour l'utilisateur connecté
@@ -25,6 +26,7 @@ if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
 }
 
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
+    // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
     $json_user = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
 
     ?>
