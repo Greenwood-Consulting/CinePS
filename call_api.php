@@ -25,20 +25,19 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
   $_SESSION['token'] = recupererToken();
 }
 
-function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
-  $curl = curl_init(API_URL.$entry_point);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
+function call_API_de_base(&$curl, $verbe, $body, $result_as_array = false){
   // Paramétrage des headers
   $headers = [
     'Authorization: bearer '. $_SESSION['token'],
     'Content-Type: application/json'
   ];
   if ($verbe == 'POST' || $verbe == 'PATCH') {
+    // $body ne doit pas pouvoir être null pour strlen et CURLOPT_POSTFIELDS
+    $body = $body ?? '';
     $headers[] = 'Content-Length: ' . strlen($body);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
   }
-  if ($verbe == 'PATCH') {
+  if ($verbe == 'PATCH') { // paramétrage spécifique à PATCH
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
   }
   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -59,28 +58,23 @@ function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
   } else {
     $decoded_response = json_decode($api_response);
   }
+
+  return $decoded_response;
+}
+
+function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
+  $curl = curl_init(API_URL.$entry_point);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+  $decoded_response = call_API_de_base($curl, $verbe, $body, $result_as_array);
   
+  $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
   // Si le token est expiré, on génère un nouveau token
-  if (is_object($decoded_response) && isset($decoded_response->code) && $decoded_response->code == "401") {
+  if ($httpCode == "401") {
     $_SESSION['token'] = recupererToken();
     // On refait la requête avec le nouveau token
-    $headers = [
-      'Authorization: bearer '. $_SESSION['token'],
-      'Content-Type: application/json'
-    ];
-    if ($verbe == 'POST' || $verbe == 'PATCH') {
-      $headers[] = 'Content-Length: ' . strlen($body);
-    }
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-    // ré-exécution de la requête
-    $api_response = curl_exec($curl);
-
-    if ($result_as_array) {
-      $decoded_response = json_decode($api_response, true);
-    } else {
-      $decoded_response = json_decode($api_response);
-    }
+    $decoded_response = call_API_de_base($curl, $verbe, $body, $result_as_array);
   }
 
   curl_close($curl);
