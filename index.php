@@ -290,8 +290,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
 
   if ($json_current_semaine->proposition_termine){
     echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
-  } else {
-    echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   }
   echo '<br/>';
 
