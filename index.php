@@ -390,7 +390,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           <form method="POST" action="index.php">
 
             <label>Thème:</label>
-            <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine[0]->theme ?>" />
+            <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine->theme ?>" />
             <button type="submit" name="update_theme" class="btn btn-warning"><?= $etat_theme_non_propose? "Choisissez un thème" : "Modifiez le thème" ?></button><br/><br/>
             
             <label>Proposition:</label>
