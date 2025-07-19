@@ -380,7 +380,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           // l'utilisateur connecté est le proposeur de la semaine
 
           //on affiche la liste des films pour le proposeurs tant qu'il n'a pas terminé la proposition
-          echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
+          echo '<mark>Les propositions ne sont pas terminées </mark> <br/><br/>';
           printFilmsProposes();
           echo '<br/><br />';
           ?>
