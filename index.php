@@ -410,33 +410,35 @@ if ($json_current_semaine->type == "PSAvecFilm") {
             <button type="submit" name="new_proposition" class="btn btn-warning">Proposer un film</button><br/>
             <button type="submit" name="end_proposition"  class="btn btn-warning">Valider les Propositions</button><br/><br/>
 
-            <!-- Proposition seconde chance -->
-            <button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button><br /><br />
+            <?php if ($no_propositions): ?>
+              <!-- Proposition seconde chance -->
+              <button type="submit" name="seconde_chance" class="btn btn-warning">Seconde Chance</button><br /><br />
 
-            <!-- Proposition ChatGPT -->
-            <button type="button" onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
+              <!-- Proposition ChatGPT -->
+              <button type="button" onclick="openPopup()" class="btn btn-warning">ChatGPT</button>
 
-            <!-- Overlay et contenu du pop-up pour Proposition ChatGPT-->
-            <div class="overlay" id="popup-overlay">
-              <div class="popup" onclick="event.stopPropagation();">
-                <!-- Bouton de fermeture en tant que span -->
-                <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
-                <h2 class="text-warning">Proposition ChatGPT</h2>
+              <!-- Overlay et contenu du pop-up pour Proposition ChatGPT-->
+              <div class="overlay" id="popup-overlay">
+                <div class="popup" onclick="event.stopPropagation();">
+                  <!-- Bouton de fermeture en tant que span -->
+                  <button class="btn btn-warning close-btn" onclick="closePopup()">&times;</button>
+                  <h2 class="text-warning">Proposition ChatGPT</h2>
 
-                <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
-                <input type="text" id="theme" name="theme" value="<?= $json_current_semaine[0]->theme; ?>" class="text-dark">
+                  <label for="theme">Saisissez un thème et ChatGPT choisira 5 films sur ce thème :</label>
+                  <input type="text" id="theme" name="theme" value="<?= $json_current_semaine->theme; ?>" class="text-dark">
 
-                <?php if (empty($json_current_semaine->theme)): ?>
-                    <br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />
-                <?php else: ?>
-                    <br />Tu as déjà défini un thème mais tu peux encore le changer<br />
-                <?php endif; ?>
+                  <?php if (empty($json_current_semaine->theme)): ?>
+                      <br />Pour l'instant aucun thème n'est défini. Dans ce cas ChatGPT choisira des films au hasard. Il y a de bonnes chances qu'on regarde Mulloland Drive cette fois-ci !<br />
+                  <?php else: ?>
+                      <br />Tu as déjà défini un thème mais tu peux encore le changer<br />
+                  <?php endif; ?>
 
-                <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
+                  <button type="submit" name="chatGPT" onclick="startAnimation()" class="btn btn-warning">Générer des propositions</button>
+                </div>
               </div>
-            </div>
-            <!-- Overlay etoilé affiché lors de l'appel a chatGPT -->
-            <div id="animationOverlay"></div>
+              <!-- Overlay etoilé affiché lors de l'appel a chatGPT -->
+              <div id="animationOverlay"></div>
+            <?php endif; ?>
 
           </form>
 

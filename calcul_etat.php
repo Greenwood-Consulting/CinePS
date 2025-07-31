@@ -11,6 +11,9 @@ if(isset($_SESSION['user'])){//utilisateur connecté
 // TODO : renommer proposition_semaine en is_proposition_terminée
 $proposition_semaine = $json_current_semaine->proposition_termine;
 
+// indique si aucune proposition n'a été faite cette semaine
+$no_propositions = empty($json_current_semaine->propositions);
+
 // get état vote_termine_cette_semaine
 // @TODO : remplacer par currentSemaine ?
 $vote_termine_cette_semaine = call_API("/api/isVoteTermine/".$id_current_semaine, "GET");
