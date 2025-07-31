@@ -25,7 +25,9 @@ if (! isset($_SESSION['token']) || empty($_SESSION['token'])){
   $_SESSION['token'] = recupererToken();
 }
 
-function call_API_de_base(&$curl, $verbe, $body, $result_as_array = false){
+function call_API_de_base($curl, $verbe, $body, $result_as_array = false){
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
   // Paramétrage des headers
   $headers = [
     'Authorization: bearer '. $_SESSION['token'],
@@ -66,21 +68,26 @@ function call_API_de_base(&$curl, $verbe, $body, $result_as_array = false){
 }
 
 function call_API($entry_point, $verbe, $body = null, $result_as_array = false){
+  // $curl est une variable spéciale en php: une ressource, on peut la considérer comme une référence
+  // https://www.php.net/manual/fr/language.types.resource.php
   $curl = curl_init(API_URL.$entry_point);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
   $decoded_response = call_API_de_base($curl, $verbe, $body, $result_as_array);
   
   $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+  curl_close($curl);
 
   // Si le token est expiré, on génère un nouveau token
   if ($httpCode == "401") {
     $_SESSION['token'] = recupererToken();
     // On refait la requête avec le nouveau token
+    $curl = curl_init(API_URL.$entry_point);
     $decoded_response = call_API_de_base($curl, $verbe, $body, $result_as_array);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
   }
 
-  curl_close($curl);
+  // TODO: gérer les autres codes HTTP
 
   return $decoded_response;
 }
