@@ -301,8 +301,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
 
   if ($json_current_semaine->proposition_termine){
     echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
-  } else {
-    echo '<mark>Les propositions ont été faites pour cette semaine</mark>';
   }
   echo '<br/>';
 
@@ -393,7 +391,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           // l'utilisateur connecté est le proposeur de la semaine
 
           //on affiche la liste des films pour le proposeurs tant qu'il n'a pas terminé la proposition
-          echo '<mark>Les propositions de ne sont pas terminés </mark> <br/><br/>';
+          echo '<mark>Les propositions ne sont pas terminées </mark> <br/><br/>';
           printFilmsProposes();
           echo '<br/><br />';
           ?>
