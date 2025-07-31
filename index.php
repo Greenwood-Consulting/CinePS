@@ -5,6 +5,17 @@ include('common.php');
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
 
+// Suppression d'une proposition
+if(isset($_POST['delete_proposition'])){//si un nouveau film est proposé
+  $proposition_id = $_POST['delete_proposition'];
+
+  // Supprimer une proposition
+  call_API("/api/proposition/".$proposition_id, "DELETE");
+
+  // Redirection après mise à jour
+  header("Location: index.php");
+  exit;
+}
 
 // Proposition comportement 2 : on vient du bouton new_proposition
 if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
@@ -390,7 +401,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           <form method="POST" action="index.php">
 
             <label>Thème:</label>
-            <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine[0]->theme ?>" />
+            <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine->theme ?>" />
             <button type="submit" name="update_theme" class="btn btn-warning"><?= $etat_theme_non_propose? "Choisissez un thème" : "Modifiez le thème" ?></button><br/><br/>
             
             <label>Proposition:</label>

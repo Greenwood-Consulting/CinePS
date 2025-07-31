@@ -5,15 +5,25 @@
 //Fonction d'affichage
 function printFilmsProposes(){
   global $json_current_semaine;
-  echo '<h2 class="text-warning">Liste des films proposés par '.$json_current_semaine->proposeur->nom.'</h2><br/>';
+  global $proposition_semaine;
+  global $is_proposeur;
+  echo '<h2 class="text-warning">Liste des films proposés par ' . $json_current_semaine->proposeur->nom . '</h2><br/>';
 
   if (empty($json_current_semaine->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
-    foreach($json_current_semaine->propositions as $proposition){
-      echo '<mark><a class="text-dark" href = '.$proposition->film->imdb.'>' .$proposition->film->titre.' </a>';
-      echo $proposition->film->sortie_film.'</mark></br>'; 
+    echo '<form method="POST" action="index.php" onsubmit="return confirm(\'Supprimer la proposition?\')">';
+    foreach ($json_current_semaine->propositions as $proposition) {
+      echo '<div>';
+      echo '<mark><a class="text-dark" href="' . $proposition->film->imdb . '">' . $proposition->film->titre . ' </a>';
+      echo $proposition->film->sortie_film;
+      echo '</mark>';
+      if ($is_proposeur && !$proposition_semaine) {
+        echo '<button type="submit" name="delete_proposition" value="' . $proposition->id . '" class="btn" >🗑️</button>';
     }
+      echo '</div>';
+    }
+    echo '</form>';
   }
 }
 
