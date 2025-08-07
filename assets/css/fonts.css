@@ -1,0 +1,46 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../fonts/RobotoMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Exemple d'utilisation */
+.font__std {
+  font-family: "Roboto Mono", monospace;
+}
+
+@font-face {
+  font-family: "Roboto Black";
+  src: url("../fonts/Roboto-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Exemple d'utilisation */
+.font__bold {
+  font-family: "Roboto Black", sans-serif;
+}
+
+@font-face {
+  font-family: "Impact Label";
+  src: url("../fonts/ImpactLabel.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+/* Exemple d'utilisation */
+.font__dymo {
+  font-family: "Impact Label", sans-serif;
+  font-weight: 100;
+  background-color: white;
+  color: black;
+  display: inline-block;
+  /* ici les valeurs sz box shadow sont spécifiques à la font-size utilisée */
+  box-shadow: 0 5px 2px 0px #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+}

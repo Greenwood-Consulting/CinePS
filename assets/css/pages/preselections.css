@@ -1,0 +1,43 @@
+.header__title {
+  font-size: 1.5rem;
+  font-family: "Roboto Black", sans-serif;
+}
+
+.header__title img {
+  height: 2rem;
+}
+
+.preselections__add {
+  /* margin-bottom: 4em; */
+  position: relative;
+  padding: 1em;
+}
+
+.preselection {
+  margin-top: 4em;
+  position: relative;
+  padding: 1em;
+}
+
+.preselection__theme {
+  position: absolute;
+  top: -1em;
+  left: -0.5em;
+  transform-origin: left;
+  transform: rotate(-1deg);
+}
+
+.preselection__add-annee {
+  width: 10ch;
+}
+
+.preselection__add-titre,
+.preselection__add-imdb {
+  flex-grow: 1;
+}
+
+.page__title {
+  text-align: center;
+  font-size: 60px;
+  font-family: "Roboto Black", sans-serif;
+}

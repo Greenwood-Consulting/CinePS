@@ -1,0 +1,43 @@
+/* Styles de base (typographie, couleurs de fond, liens, elements natifs, etc.). */
+
+html {
+  /* font size de référence (pour l'unité rem) variable entre 12px et 16px selon la taille de l'écran */
+  font-size: clamp(12px, calc(0.42vw + 10.7px), 16px);
+}
+
+body {
+  /* Fonts */
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1rem;
+  letter-spacing: -0.05em;
+  line-height: normal;
+  color: var(--color-text);
+
+  /* Background */
+  background-image: url("../images/space.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: var(--color-bg);
+}
+
+li {
+  list-style-type: none;
+}
+
+input {
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  line-height: 1.6;
+  color: #212529;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+}
+
+input[type="number"] {
+  padding-right: 0.2em;
+}

@@ -1,0 +1,124 @@
+/* Composants réutilisables (boutons, cartes, modales, etc.) */
+
+/* ---------------------------------------------------------------- */
+
+/* rend lisible un texte quel que soit le background */
+.bg-shadow {
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  box-shadow: 0 0 2px 2px color-mix(in srgb, var(--color-bg) 80%, transparent);
+  border-radius: 5px;
+}
+
+/* ---------------------------------------------------------------- */
+
+/* TODO: menu-button correspond uniquement au bouton dropdown utilisateur. 
+on ne peut pas affecter la classe a ce bouton sans interférer avec les différents styles de la page index.
+Lors du refacto global css, supprimer la classe .menu-button
+".submenu a" correspond aux boutons du sous menu, a virer aussi
+*/
+.btn,
+.menu-button,
+.submenu a {
+  background-color: transparent;
+  border: 1px solid var(--color-button);
+  border-radius: 0;
+  color: var(--color-button);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s linear;
+  white-space: nowrap;
+}
+
+/* TODO: idem btn, supprimer ".menu-button", ".submenu a"*/
+.btn:hover,
+.menu-button:hover,
+.submenu a:hover {
+  background-color: var(--color-button);
+  color: white;
+}
+
+.btn__light {
+  border: none;
+}
+
+/* ---------------------------------------------------------------- */
+
+/* Desktop only, inadapté pour les appareils taciles */
+@media (hover: hover) and (pointer: fine) {
+  .hover_target .show_on_hover {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .hover_target:hover .show_on_hover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+
+/* TODO: a simplifier lors du refacto global du css:
+les boutons du sous menu devraient avoir la class btn */
+
+/* Style de la barre de navigation */
+.menu {
+  display: flex;
+}
+
+.menu,
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Conteneur du menu déroulant */
+.has-submenu {
+  position: relative;
+}
+
+/* Correction pour coller le menu juste sous le bouton */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Colle le sous-menu juste sous le bouton */
+  right: 0px; /* Aligne le bord droit du menu avec le bouton qui a une margin de 10px à droite */
+
+  /* couleurs */
+  background-color: black;
+  border: 1px solid rgb(240, 173, 78);
+
+  white-space: nowrap;
+  width: auto;
+  border-radius: 0; /* Supprime tout arrondi */
+  z-index: 100;
+}
+
+/* Style des liens du sous-menu */
+.submenu li {
+  border-bottom: 1px solid rgb(240, 173, 78);
+}
+.submenu li:last-child {
+  border-bottom: none;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px;
+  color: rgb(240, 173, 78);
+  text-decoration: none;
+}
+
+/* Affichage du menu au survol */
+.has-submenu:hover .submenu {
+  display: block;
+}
+
+/* ---------------------------------------------------------------- */

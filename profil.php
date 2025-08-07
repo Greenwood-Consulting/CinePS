@@ -66,6 +66,7 @@ if (empty($json_user)) {
     <?php
     // Filtrer les films gagnants pour ne garder que ceux proposés par l'utilisateur connecté
     $mes_films_gagnants = array_filter($json_films_gagnants, function($film) use ($json_user) {
+        // TODO: on suppose ici que la premiere proposition a laquelle est associée un film est celle qui a gagnée
         return $film->propositions[0]->semaine->proposeur->nom === $json_user->nom;
     });
     ?>
