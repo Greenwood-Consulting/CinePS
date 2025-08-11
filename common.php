@@ -84,7 +84,7 @@ function printChoixvote($id_semaine){
   global $json_current_semaine;
   global $membres;
 
-  $proposeur_prenom = $json_current_semaine->proposeur->Prenom;
+  $proposeur_prenom = $json_current_semaine->proposeur->prenom;
 
   $propositions_array = $json_current_semaine->propositions;
 
