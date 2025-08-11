@@ -15,8 +15,7 @@ $proposition_semaine = $json_current_semaine->proposition_termine;
 $no_propositions = empty($json_current_semaine->propositions);
 
 // get état vote_termine_cette_semaine
-// @TODO : remplacer par currentSemaine ?
-$vote_termine_cette_semaine = call_API("/api/isVoteTermine/".$id_current_semaine, "GET");
+$vote_termine_cette_semaine = $json_current_semaine->is_vote_termine;
 
 // get état connecte
 $connecte = isset($_SESSION['user']);
