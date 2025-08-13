@@ -64,18 +64,32 @@ function printNextproposeurs($id_semaine){
   $json_next_proposeurs = call_API("/api/nextProposeurs/".$id_semaine, "GET");
 
   foreach($json_next_proposeurs as $semaine){
-    // création d'une DateTime afin de pouvoir formater
-    $dateSemaine = DateTime::createFromFormat('Y-m-d\TH:i:sP', $semaine->jour);
+    // création d'une DateTime afin de pouvoir formater (la timezone sera UTC si non precisée)
+    $dateSemaine = new DateTime($semaine->jour, new DateTimeZone('UTC'));
+    // Passage au fuseau horaire de Paris
+    $dateSemaine->setTimezone(new DateTimeZone('Europe/Paris'));
+
     echo "<mark>".$dateSemaine->format('Y-m-d');
-    if ($semaine->type == 'PSAvecFilm'){
-      echo " - ".$semaine->proposeur->nom."</mark>";
+
+    switch ($semaine->type) {
+      case 'PSAvecFilm':
+          echo " - " . $semaine->proposeur->nom . " 🎞️";
+          break;
+      case 'PSSansFilm':
+          echo " - Pas de Film 🥂";
+          break;
+      case 'PasDePS':
+          echo " - Pas de PS 😴";
+          break;
+      case 'PSDroitDivin':
+          echo " - PS de droit divin 👑";
+          break;
+      default:
+        echo " - PS de type inconnu ⁉️";
+        break;
     }
-    if ($semaine->type == 'PSSansFilm'){
-      echo " - Pas de Film 🥂</mark>";
-    }
-    if ($semaine->type == 'PasDePS'){
-      echo " - Pas de PS 😴</mark>";
-    }
+
+    echo "</mark>";
     echo "<br/>";
   }
 }
