@@ -5,17 +5,15 @@ include('common.php');
 
 // ------------- reactions au formulaires ----------------------------
 
-if(isset($_POST['enable']) || isset($_POST['disable'])){
+if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
-    if(isset($_POST['enable'])) {
-        $membreId = $_POST['enable'];
-        $actif = true;
+    if(isset($_POST['enable_membre'])) {
+        $membreId = $_POST['enable_membre'];
+        $body = json_encode(array("actif" => true));
     } else {
-        $membreId = $_POST['disable'];
-        $actif = false;
+        $membreId = $_POST['disable_membre'];
+        $body = json_encode(array("actif" => false));
     }
-
-    $body = json_encode(array("actif" => $actif));
 
     call_API("/api/actifMembre/".$membreId, "PATCH", $body);
 
@@ -138,9 +136,9 @@ echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br
                 </td>
                 <td>
                     <?php if($membre->actif): ?>
-                        <button type="submit" class="actif" name="disable" value="<?= $membre->id ?>" >Désactiver</button>
+                        <button type="submit" class="actif" name="disable_membre" value="<?= $membre->id ?>" >Désactiver</button>
                     <?php else: ?>
-                        <button type="submit" class="inactif" name="enable" value="<?= $membre->id ?>" >Activer</button>
+                        <button type="submit" class="inactif" name="enable_membre" value="<?= $membre->id ?>" >Activer</button>
                     <?php endif; ?>
                 </td>
             </tr>     
