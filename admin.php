@@ -53,20 +53,20 @@ include 'header.php';
 
 <body>
     <h2>Inscription</h2>
-        <form method="POST" id="signup-form" class="" action="">
-            <div class="col">
-                <input type="text" class="" name="name"  placeholder="Nom de famille"/>
-            </div>
-            <div class="col">
-                <input type="text" class="" name="prenom" placeholder="Prenom"/>
-            </div>
-            <div class="col">
-                <input type="email" class="" name="email" placeholder="email"/>
-            </div>
-            <div class="">
-                <input type="submit" name="new_membre" class="form-submit submit" value="Inscription">
-            </div>
-        </form>
+    <form method="POST" id="signup-form" class="" action="">
+        <div class="col">
+            <input type="text" class="" name="name"  placeholder="Nom de famille"/>
+        </div>
+        <div class="col">
+            <input type="text" class="" name="prenom" placeholder="Prenom"/>
+        </div>
+        <div class="col">
+            <input type="email" class="" name="email" placeholder="email"/>
+        </div>
+        <div class="">
+            <input type="submit" name="new_membre" class="form-submit submit" value="Inscription">
+        </div>
+    </form>
 </br>
     
 </br>
