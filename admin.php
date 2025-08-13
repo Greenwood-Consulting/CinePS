@@ -2,9 +2,31 @@
 include('includes/init.php');
 include('common.php');
 
-
 // ------------- reactions au formulaires ----------------------------
 
+//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
+if(isset($_POST['new_membre'])){
+    $nom_de_famille = addslashes($_POST['name']);
+    $prenom = addslashes($_POST['prenom']);
+    $mail = addslashes($_POST['email']);
+
+    $array_membre = array(
+        "nom" => $nom_de_famille,
+        "prenom" => $prenom,
+        "mail" => $mail,
+        // TODO  le front ne devrait pas connaitre le mdp par defaut
+        // Ca devrait être a la charge de l'api de gerer les propriétés par defaut.
+        "mdp" => "Toto",
+        "actif" => true
+    );
+    $json_membre = json_encode($array_membre);
+    call_API("/api/newmembre", "POST", $json_membre);
+
+    header("Location: admin.php");
+    exit;
+}
+
+// Active ou desactive un membre
 if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
     if(isset($_POST['enable_membre'])) {
@@ -22,35 +44,15 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 }
 
 // ------------- fin des reactions au formulaires ----------------------------
-
-
+    
 include 'header.php';
 ?>
-
     <link rel="stylesheet" href="admin.css">
     <title>Administration</title>
 </head>
 
 <body>
     <h2>Inscription</h2>
-    <?php
-    if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
-        $nom_de_famille = addslashes($_POST['name']);
-        $prenom = addslashes($_POST['prenom']);
-        $mail = addslashes($_POST['email']);
-
-        $array_membre = array(
-            "nom" => $nom_de_famille,
-            "prenom" => $prenom,
-            "mail" => $mail,
-            "mdp" => "Toto"
-        );
-        $json_membre = json_encode($array_membre);
-        call_API("/api/newmembre", "POST", $json_membre);
-    }
-?>
-
-    
         <form method="POST" id="signup-form" class="" action="">
             <div class="col">
                 <input type="text" class="" name="name"  placeholder="Nom de famille"/>
