@@ -47,7 +47,7 @@ Lors du refacto global css, supprimer la classe .menu-button
 /* ---------------------------------------------------------------- */
 
 /* Desktop only, inadapté pour les appareils taciles */
-@media (hover: hover) and (pointer: fine) {
+@media (any-hover: hover) and (any-pointer: fine) {
   .hover_target .show_on_hover {
     opacity: 0;
     visibility: hidden;
