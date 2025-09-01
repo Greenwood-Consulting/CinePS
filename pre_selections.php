@@ -87,7 +87,7 @@ include('header.php'); ?>
   <main class="main">
     <h2 class="page__title"><span class="bg-shadow">Pré-Sélections</span></h2>
 
-    <form action="/pre_selections.php" method="POST">
+    <form action="pre_selections.php" method="POST">
       <div class="preselections__add lt__inline bg-shadow">
         <input type="text" placeholder="thème" name="theme">
         <button class="btn" type="submit" name="create_preselection">Créer une nouvelle liste</button>
@@ -97,10 +97,10 @@ include('header.php'); ?>
     <ul>
       <?php foreach ($preselections as $preselection): ?>
         <li class="preselection bg-shadow">
-          <form action="/pre_selections.php" method="POST">
+          <form action="pre_selections.php" method="POST">
             <h3 class="preselection__theme lt__inline hover_target">
               <span class="font__dymo"><?= htmlspecialchars($preselection->theme) ?></span>
-              <button class="btn btn__light show_on_hover" type="submit" name="delete_preselection" value="<?= htmlspecialchars($preselection->id) ?>" onclick="return confirm('Confirmez-vous la suppression de cette liste ?')">❌</button>
+              <button class="btn btn__light show_on_hover" type="submit" name="delete_preselection" value="<?= htmlspecialchars($preselection->id) ?>" onclick="return confirm('Confirmez-vous la suppression de cette liste ? La suppression entraine la suppresion de tous les films de la liste')">❌</button>
             </h3>
             <ul>
               <?php foreach ($preselection->films as $film): ?>
