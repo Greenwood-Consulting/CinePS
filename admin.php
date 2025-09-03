@@ -1,17 +1,10 @@
 <?php
 include('includes/init.php');
 include('common.php');
-include 'header.php';
-?>
 
-    <link rel="stylesheet" href="admin.css">
-    <title>Administration</title>
-</head>
+// ------------- reactions au formulaires ----------------------------
 
-<body>
-    <h2>Inscription</h2>
-    <?php
-    if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
+if(isset($_POST['new_membre'])){//Ajout nouveau membre si on a cliqué sur le bouton d'inscription
         $nom_de_famille = addslashes($_POST['name']);
         $prenom = addslashes($_POST['prenom']);
         $mail = addslashes($_POST['email']);
@@ -20,28 +13,43 @@ include 'header.php';
             "nom" => $nom_de_famille,
             "prenom" => $prenom,
             "mail" => $mail,
-            "mdp" => "Toto"
+            // TODO  le front ne devrait pas connaitre le mdp par defaut
+            // Ca devrait être a la charge de l'api de gerer les propriétés par defaut.
+            "mdp" => "Toto",
+            "actif" => true
         );
         $json_membre = json_encode($array_membre);
         call_API("/api/newmembre", "POST", $json_membre);
-    }
-?>
 
+        // Redirection pour refresh
+        header("Location: admin.php");
+        exit;
+    }
+
+// ------------- fin des reactions au formulaires ----------------------------
     
-        <form method="POST" id="signup-form" class="" action="">
-            <div class="col">
-                <input type="text" class="" name="name"  placeholder="Nom de famille"/>
-            </div>
-            <div class="col">
-                <input type="text" class="" name="prenom" placeholder="Prenom"/>
-            </div>
-            <div class="col">
-                <input type="email" class="" name="email" placeholder="email"/>
-            </div>
-            <div class="">
-                <input type="submit" name="new_membre" class="form-submit submit" value="Inscription">
-            </div>
-        </form>
+include 'header.php';
+?>
+    <link rel="stylesheet" href="admin.css">
+    <title>Administration</title>
+</head>
+
+<body>
+    <h2>Inscription</h2>
+    <form method="POST" id="signup-form" class="" action="">
+        <div class="col">
+            <input type="text" class="" name="name"  placeholder="Nom de famille"/>
+        </div>
+        <div class="col">
+            <input type="text" class="" name="prenom" placeholder="Prenom"/>
+        </div>
+        <div class="col">
+            <input type="email" class="" name="email" placeholder="email"/>
+        </div>
+        <div class="">
+            <input type="submit" name="new_membre" class="form-submit submit" value="Inscription">
+        </div>
+    </form>
 </br>
     
 </br>
