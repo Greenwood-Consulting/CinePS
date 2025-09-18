@@ -17,7 +17,7 @@ echo "<a href=index.php><button type='button' class='btn btn-warning'>Revenir</b
   $curdate=new DateTime();
   $watch_period=($curdate>=$deb && $curdate <= $fin);
 
-  if($watch_period || $vote_termine_cette_semaine){//Si le vote est terminé on affiche les résultats des votes de chaque users sous forme de tableau
+  if($watch_period || $vote_termine_cette_semaine){// On affiche le résultat du vote Si le vote est terminé (car tout le monde a votéo) ou si la période de vote est terminée
     echo "<div id = 'tableau'>";
     printChoixvote($id_current_semaine);
     echo "</div>";
