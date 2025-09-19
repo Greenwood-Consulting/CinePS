@@ -48,11 +48,27 @@ form input[type="submit"]:hover, form button:hover {
 
 
 button.actif {
-    background-color: #0000FF;
+    background-color: #FF0000B0;
     color: white;
+    width: 100%;
+    opacity: 0.2;
+}
+
+button.actif:hover {
+    background-color: #FF0000B0;
+    color: white;
+    opacity: 1;
 }
 
 button.inactif {
-    background-color: #FF0000;
+    background-color: #14FF008F;
     color: white;
+    width: 100%;
+    opacity: 0.2;
+}
+
+button.inactif:hover {
+    background-color: #14FF008F;
+    color: white;
+    opacity: 1;
 }

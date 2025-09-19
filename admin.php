@@ -1,6 +1,29 @@
 <?php
 include('includes/init.php');
 include('common.php');
+
+
+// ------------- reactions au formulaires ----------------------------
+
+if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
+
+    if(isset($_POST['enable_membre'])) {
+        $membreId = $_POST['enable_membre'];
+        $body = json_encode(array("actif" => true));
+    } else {
+        $membreId = $_POST['disable_membre'];
+        $body = json_encode(array("actif" => false));
+    }
+
+    call_API("/api/actifMembre/".$membreId, "PATCH", $body);
+
+    header("Location: admin.php");
+    exit;
+}
+
+// ------------- fin des reactions au formulaires ----------------------------
+
+
 include 'header.php';
 ?>
 
@@ -103,27 +126,25 @@ echo "<h2>Prochaines Semaine</h2>";
 printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
-
-foreach($membres as $membre) {
-    echo $membre->nom;
-    echo "<form method='post' action='admin.php'>";
-    echo "<input type='hidden' name='id' value='$membre->id'>";
-    echo "<button type='submit' name='actif' value='1' class='actif'>Activer</button>";
-    echo "<button type='submit' name='actif' value='0' class='inactif'>Désactiver</button>";
-    echo "</form>";
-    echo "<br/><br/>";
-}
-
-if(isset($_POST['id']) && isset($_POST['actif'])){
-    $id = $_POST['id'];
-    $actif = $_POST['actif'];
-
-    $statut_activation = array("actif" => $actif);
-    $json_statut_activation = json_encode($statut_activation);
-
-    call_API("/api/actifMembre/".$id, "PATCH", $json_statut_activation);
-}
 ?>
+<form method="POST" action="admin.php">
+    <table>
+        <?php foreach($membres as $membre): ?>
+            <tr>
+                <td>
+                    <span class="actif-name"><?= $membre->actif ? "✅" : "❌" ?> <?= $membre->nom ?></span>
+                </td>
+                <td>
+                    <?php if($membre->actif): ?>
+                        <button type="submit" class="actif" name="disable_membre" value="<?= $membre->id ?>" >Désactiver</button>
+                    <?php else: ?>
+                        <button type="submit" class="inactif" name="enable_membre" value="<?= $membre->id ?>" >Activer</button>
+                    <?php endif; ?>
+                </td>
+            </tr>     
+        <?php endforeach; ?>
+    </table>
+</form>
 
 <?php include('footer.php'); ?>
 
