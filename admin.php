@@ -114,6 +114,7 @@ echo '  <select class="text-dark" name="typeSemaine">';
 echo "       <option class='text-dark' value='PSAvecFilm'>PS avec film</option>";
 echo "       <option class='text-dark' value='PSSansFilm'>PS sans film</option>";
 echo "       <option class='text-dark' value='PasDePS'>Pas de PS</option>";
+echo "       <option class='text-dark' value='PSDroitDivin'>PS de droit divin</option>";
 echo "  </select>";
 echo "  <br/>";
 
