@@ -5,6 +5,16 @@ include('common.php');
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
 
+// Mise a jour du lien de téléchargement du film
+if(isset($_POST['update_dlink'])){//si un nouveau film est proposé
+  $value = $_POST['update_dlink'];
+  $body = json_encode(['value' => $value]);
+  call_API("/api/dlink", "PUT", $body);
+
+  header("Location: index.php");
+  exit;
+}
+
 // Suppression d'une proposition
 if(isset($_POST['delete_proposition'])){//si un nouveau film est proposé
   $proposition_id = $_POST['delete_proposition'];
@@ -318,6 +328,51 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           echo "<a href='resultat_vote.php'><button type='button' class='btn btn-warning'>Résultat vote</button></a>";
           /*printChoixvote($id_current_semaine);*/
 
+          ?>
+          <!-- TODO this styling should be moved into a dedicated css file -->
+          <style>
+            .dlink {
+              margin-top: 2rem;
+            }
+
+            .dlink__a{
+              text-decoration: underline black;
+            }
+
+            #dlink__update-form {
+              display: none;
+            }
+
+            .dlink__update-form--input {
+              width: 70ch;
+            }
+          </style>
+          <script>
+            function toggleUpdateDlinkButton() {
+              const el = document.getElementById('dlink__update-form');
+              el.style.display = (el.style.display === 'none' || el.style.display === '') 
+                ? 'block' 
+                : 'none';
+            }
+          </script>
+          <?php if (isset($dLink)): ?>
+            <div class="dlink">
+              <div>
+                <?php if ($dLink !== ''): ?>
+                  <a href="<?= htmlspecialchars($dLink) ?>" class="dlink__a"><mark>📥 Lien de telechargement</mark></a>
+                <?php else: ?>
+                  <mark>Pas de lien de telechargement disponible</mark>
+                <?php endif; ?>
+                <button onclick="toggleUpdateDlinkButton()"> ✏️</button>
+              </div>
+              <div id="dlink__update-form">
+                <form method="POST" action="index.php">
+                    <input type="text" name="update_dlink" class="dlink__update-form--input text-dark" placeholder="https://" value="<?= htmlspecialchars($dLink) ?>" />
+                    <button type="submit"> 💾</button>
+                </form>
+              </div>
+            </div>
+          <?php endif; 
         }else{
           if(!$is_actif){
             // L'utilisateur est connecté

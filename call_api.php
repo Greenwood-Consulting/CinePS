@@ -33,11 +33,14 @@ function call_API_de_base($curl, $verbe, $body, $result_as_array = false){
     'Authorization: bearer '. $_SESSION['token'],
     'Content-Type: application/json'
   ];
-  if ($verbe == 'POST' || $verbe == 'PATCH') {
+  if ($verbe == 'POST' || $verbe == 'PATCH' || $verbe == 'PUT') {
     // $body ne doit pas pouvoir être null pour strlen et CURLOPT_POSTFIELDS
     $body = $body ?? '';
     $headers[] = 'Content-Length: ' . strlen($body);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+  }
+  if ($verbe == 'PUT') { // paramétrage spécifique à PUT
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
   }
   if ($verbe == 'PATCH') { // paramétrage spécifique à PATCH
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
