@@ -39,7 +39,7 @@ function call_API_de_base($curl, $verbe, $body, $result_as_array = false){
     $headers[] = 'Content-Length: ' . strlen($body);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
   }
-  if ($verbe == 'PUT') { // paramétrage spécifique à PATCH
+  if ($verbe == 'PUT') { // paramétrage spécifique à PUT
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
   }
   if ($verbe == 'PATCH') { // paramétrage spécifique à PATCH
