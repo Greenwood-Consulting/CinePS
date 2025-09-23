@@ -1,6 +1,6 @@
 <?php
 include('includes/init.php');
-include('header.php');
+require_once('includes/header.php');
 ?>
 
     <title>A Propos de CinePS</title>

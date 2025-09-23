@@ -45,7 +45,7 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
 // ------------- fin des reactions au formulaires ----------------------------
     
-include 'header.php';
+require_once('includes/header.php');
 ?>
     <link rel="stylesheet" href="admin.css">
     <title>Administration</title>

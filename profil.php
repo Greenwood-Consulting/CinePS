@@ -13,7 +13,7 @@ $user_id = $_SESSION['user'];
 // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
 $json_user = array_values(array_filter($membres, fn($m) => $m->id == $user_id))[0] ?? null;
 
-include('header.php');
+require_once('includes/header.php');
 
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
 if (empty($json_user)) {

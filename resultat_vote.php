@@ -2,7 +2,7 @@
 include('includes/init.php');
 include('common.php');
 require_once('includes/calcul_etat.php');
-include('header.php');
+require_once('includes/header.php');
 ?>
 
     <link href="resultat_vote.css" rel="stylesheet">

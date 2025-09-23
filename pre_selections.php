@@ -63,7 +63,7 @@ $preselections = call_API('/api/preselections/membres/' . $user_id, 'GET');
 // les pré sélections les plus récentes en premier
 $preselections = array_reverse($preselections);
 
-include('header.php'); ?>
+require_once('includes/header.php'); ?>
 <title>Pré-Sélections</title>
 <link rel="stylesheet" href="assets/css/main.css">
 <link rel="stylesheet" href="assets/css/pages/preselections.css">

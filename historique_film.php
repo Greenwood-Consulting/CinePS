@@ -1,7 +1,7 @@
 <?php
 include('includes/init.php');
 include('common.php');
-include 'header.php';
+require_once( 'includes/header.php');
 ?>
 
   <link href="historique_film.css" rel="stylesheet">

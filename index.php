@@ -122,7 +122,7 @@ $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 $deadline_vote = strtotime($fin_periode_vote);
 $deadline_vote = $deadline_vote*1000;
 
-include('header.php');
+require_once('includes/header.php');
 ?>
 
 
