@@ -297,7 +297,7 @@ $vote_period=($curdate>=$deb && $curdate <= $fin);
 
 
 
-include('calcul_etat.php');
+require_once('includes/calcul_etat.php');
 
 if ($json_current_semaine->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";

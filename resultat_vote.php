@@ -1,7 +1,7 @@
 <?php
 include('includes/init.php');
 include('common.php');
-include('calcul_etat.php');
+require_once('includes/calcul_etat.php');
 include('header.php');
 ?>
 
