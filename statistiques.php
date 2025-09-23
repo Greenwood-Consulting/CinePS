@@ -1,6 +1,6 @@
 <?php
 include('includes/init.php');
-include('common.php');
+require_once('includes/common.php');
 require_once('includes/calcul_etat.php');
 
 function renomme_et_permute_films(array $propositions): array {

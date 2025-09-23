@@ -1,6 +1,6 @@
 <?php
 include('includes/init.php');
-include('common.php');
+require_once('includes/common.php');
 
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.

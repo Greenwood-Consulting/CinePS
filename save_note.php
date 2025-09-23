@@ -1,6 +1,6 @@
 <?php
 include('includes/init.php');
-include('common.php');
+require_once('includes/common.php');
 
 // @TODO: simplifier les if
 
