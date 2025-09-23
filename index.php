@@ -258,7 +258,7 @@ var x = setInterval(function() {
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-    include('auth_form.php');
+    require_once('includes/auth_form.php');
     include('nav.php');
   ?>
     </div>

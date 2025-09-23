@@ -37,7 +37,7 @@ include 'header.php';
   </div>
   <div class="right-form">
     <?php
-    include('auth_form.php');
+    require_once('includes/auth_form.php');
     ?>
   </div>
 </div>

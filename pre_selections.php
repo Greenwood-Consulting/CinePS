@@ -80,7 +80,7 @@ include('header.php'); ?>
       <nav class="nav">
         <?php include('nav.php'); ?>
       </nav>
-      <?php include('auth_form.php'); ?>
+      <?php require_once('includes/auth_form.php'); ?>
     </div>
   </header>
 
