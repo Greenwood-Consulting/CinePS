@@ -78,7 +78,7 @@ require_once('includes/header.php'); ?>
         CinePS
       </h1>
       <nav class="nav">
-        <?php include('nav.php'); ?>
+        <?php require_once('includes/nav.php'); ?>
       </nav>
       <?php require_once('includes/auth_form.php'); ?>
     </div>

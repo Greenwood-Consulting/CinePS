@@ -32,7 +32,7 @@ require_once( 'includes/header.php');
 <div class="fixed-header">
   <div class="centered-buttons">
     <?php
-    include('nav.php'); 
+    require_once('includes/nav.php'); 
     ?>
   </div>
   <div class="right-form">

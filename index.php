@@ -259,7 +259,7 @@ var x = setInterval(function() {
     <div class="container">
     <?php
     require_once('includes/auth_form.php');
-    include('nav.php');
+    require_once('includes/nav.php');
   ?>
     </div>
   </nav>
