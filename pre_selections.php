@@ -126,7 +126,7 @@ include('header.php'); ?>
     </ul>
   </main>
 
-  <?php include('footer.php'); ?>
+  <?php require_once('includes/footer.php'); ?>
 
 </body>
 

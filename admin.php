@@ -149,7 +149,7 @@ echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br
     </table>
 </form>
 
-<?php include('footer.php'); ?>
+<?php require_once('includes/footer.php'); ?>
 
 </body>
 </html>

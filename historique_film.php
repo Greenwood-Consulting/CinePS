@@ -262,7 +262,7 @@ foreach($array_historique_semaines as $semaine){
     
   </div>
   
-  <?php include('footer.php'); ?>
+  <?php require_once('includes/footer.php'); ?>
 
   <!-- Script JavaScript intégré -->
   <script>

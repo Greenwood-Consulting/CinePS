@@ -56,6 +56,6 @@ include('header.php');
 
 </div>
 
-<?php include('footer.php'); ?>
+<?php require_once('includes/footer.php'); ?>
 </body>
 </html>
