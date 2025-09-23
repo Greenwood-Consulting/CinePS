@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'config/env.php'; // constantes de l'application
-include "call_api.php";
+require_once './includes/call_api.php';
 
 // TODO: prend 200ms. Les pages n'en ont pas toutes besoin. A séparer
 $json_current_semaine = call_API("/api/currentSemaine", "GET");
