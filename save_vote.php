@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+require_once('includes/init.php');
 require_once('includes/common.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté

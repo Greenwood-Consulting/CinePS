@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+require_once('includes/init.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {

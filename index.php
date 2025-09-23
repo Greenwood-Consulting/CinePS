@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+require_once('includes/init.php');
 require_once('includes/common.php');
 
 // ------------- reactions au formulaires ----------------------------

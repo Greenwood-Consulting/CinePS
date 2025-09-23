@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+require_once('includes/init.php');
 require_once('includes/common.php');
 require_once('includes/calcul_etat.php');
 require_once('includes/header.php');
