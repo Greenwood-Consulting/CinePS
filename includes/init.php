@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config/env.php'; // constantes de l'application
+require_once './config/env.php'; // constantes de l'application
 require_once './includes/call_api.php';
 
 // TODO: prend 200ms. Les pages n'en ont pas toutes besoin. A séparer
