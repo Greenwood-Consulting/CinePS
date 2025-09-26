@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+require_once('includes/init.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -13,7 +13,7 @@ $user_id = $_SESSION['user'];
 // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
 $json_user = array_values(array_filter($membres, fn($m) => $m->id == $user_id))[0] ?? null;
 
-include('header.php');
+require_once('includes/header.php');
 
 // Vérifier si les informations de l'utilisateur ont été récupérées avec succès
 if (empty($json_user)) {
@@ -33,12 +33,12 @@ if (empty($json_user)) {
 <div class="fixed-header">
   <div class="centered-buttons">
     <?php
-    include('nav.php'); 
+    require_once('includes/nav.php'); 
     ?>
   </div>
   <div class="right-form">
     <?php
-    include('auth_form.php');
+    require_once('includes/auth_form.php');
     ?>
   </div>
 </div>
@@ -164,6 +164,6 @@ if (empty($json_user)) {
 
 </div>
 
-<?php include('footer.php'); ?>
+<?php require_once('includes/footer.php'); ?>
 </body>
 </html>

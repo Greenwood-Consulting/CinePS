@@ -63,7 +63,7 @@ $preselections = call_API('/api/preselections/membres/' . $user_id, 'GET');
 // les pré sélections les plus récentes en premier
 $preselections = array_reverse($preselections);
 
-include('header.php'); ?>
+require_once('includes/header.php'); ?>
 <title>Pré-Sélections</title>
 <link rel="stylesheet" href="assets/css/main.css">
 <link rel="stylesheet" href="assets/css/pages/preselections.css">
@@ -78,9 +78,9 @@ include('header.php'); ?>
         CinePS
       </h1>
       <nav class="nav">
-        <?php include('nav.php'); ?>
+        <?php require_once('includes/nav.php'); ?>
       </nav>
-      <?php include('auth_form.php'); ?>
+      <?php require_once('includes/auth_form.php'); ?>
     </div>
   </header>
 
@@ -126,7 +126,7 @@ include('header.php'); ?>
     </ul>
   </main>
 
-  <?php include('footer.php'); ?>
+  <?php require_once('includes/footer.php'); ?>
 
 </body>
 

@@ -1,6 +1,6 @@
 <?php
-include('includes/init.php');
-include('common.php');
+require_once('includes/init.php');
+require_once('includes/common.php');
 
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
@@ -122,7 +122,7 @@ $fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
 $deadline_vote = strtotime($fin_periode_vote);
 $deadline_vote = $deadline_vote*1000;
 
-include('header.php');
+require_once('includes/header.php');
 ?>
 
 
@@ -258,8 +258,8 @@ var x = setInterval(function() {
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-    include('auth_form.php');
-    include('nav.php');
+    require_once('includes/auth_form.php');
+    require_once('includes/nav.php');
   ?>
     </div>
   </nav>
@@ -297,7 +297,7 @@ $vote_period=($curdate>=$deb && $curdate <= $fin);
 
 
 
-include('calcul_etat.php');
+require_once('includes/calcul_etat.php');
 
 if ($json_current_semaine->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";

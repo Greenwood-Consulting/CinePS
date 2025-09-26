@@ -1,6 +1,6 @@
 <?php
-include('includes/init.php');
-include('common.php');
+require_once('includes/init.php');
+require_once('includes/common.php');
 
 // ------------- reactions au formulaires ----------------------------
 
@@ -45,7 +45,7 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
 // ------------- fin des reactions au formulaires ----------------------------
     
-include 'header.php';
+require_once('includes/header.php');
 ?>
     <link rel="stylesheet" href="admin.css">
     <title>Administration</title>
@@ -149,7 +149,7 @@ echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br
     </table>
 </form>
 
-<?php include('footer.php'); ?>
+<?php require_once('includes/footer.php'); ?>
 
 </body>
 </html>
