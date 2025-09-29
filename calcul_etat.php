@@ -17,6 +17,9 @@ $no_propositions = empty($json_current_semaine->propositions);
 // get état vote_termine_cette_semaine
 $vote_termine_cette_semaine = $json_current_semaine->is_vote_termine;
 
+// vote_deadline: Ex. 2025-10-03T18:00:00+02:00
+$vote_deadline = $json_current_semaine->vote_deadline;
+
 // Recuperation du lien de téléchargement
 if ($vote_termine_cette_semaine) {
   $dLinkResponse = call_API("/api/dlink", "GET");
