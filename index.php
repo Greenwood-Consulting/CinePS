@@ -490,7 +490,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           // la proposition n'est pas encore faite
           // l'utilisateur connecté n'est pas le proposeur de la semaine
           // Il y a un proposeur défini pour cette semaine
-          echo"<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " .$json_current_semaine->proposeur->nom."</mark>";
+          echo "<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " . $json_current_semaine->proposeur->nom . '</mark>';
         }else{
           // L'utilisateur est connecté
           // nous sommes en période de vote
@@ -520,7 +520,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
       // l'utilisateur n'est pas connecté
       // nous sommes en période de vote
       // la proposition n'est pas encore faite
-      echo '<mark>la proposition n\'a pas encore été faite</mark>';
+      echo "<mark>Les films n'ont pas encore été proposés. Cette semaine c'est le tour de " . $json_current_semaine->proposeur->nom . '</mark>';
     }
   }
 }
