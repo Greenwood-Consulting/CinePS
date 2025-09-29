@@ -1,6 +1,7 @@
 <?php
 require_once('includes/init.php');
 require_once('includes/common.php');
+require_once('includes/calcul_etat.php');
 
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
@@ -115,8 +116,8 @@ if(isset($_POST['chatGPT'])){
 
 
 // calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime(FIN_PERIODE_VOTE, new DateTimeZone('Europe/Paris'));
-$fin_periode_vote = $fin_periode_vote->format('Y-m-d H:i:s');
+$fin_periode_vote = new DateTime($vote_deadline, new DateTimeZone('Europe/Paris'));
+$fin_periode_vote = $fin_periode_vote->format('c'); // Date au format ISO 8601 	2004-02-12T15:19:21+00:00
 
 // conversion de la date de fin en timestamp JavaScript
 $deadline_vote = strtotime($fin_periode_vote);
@@ -281,23 +282,8 @@ var x = setInterval(function() {
                   </span>
                 </sup>
               </h1>
-
-<?php
-
-$jour_aujourdhui = date("D");
- 
-$deb= new DateTime ("Mon 12:00");
-$deb = $deb->modify('-1 week');
-$fin = new DateTime(FIN_PERIODE_VOTE);
-$curdate=new DateTime();
-$vote_period=($curdate>=$deb && $curdate <= $fin);
-?>
 <div class="container-fluid mt-9">
 <?php
-
-
-
-require_once('includes/calcul_etat.php');
 
 if ($json_current_semaine->type == "PSSansFilm") {
   echo "<mark>Il n'y a pas de film cette semaine</mark>";
@@ -315,7 +301,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
   echo '<br/>';
 
   if($connecte){//l'utilisateur est connecté
-    if($vote_period){//nous sommes en période de vote
       if($proposition_semaine){//les propositions ont été faite
         if($vote_termine_cette_semaine){
           //le vote est terminé
@@ -515,14 +500,8 @@ if ($json_current_semaine->type == "PSAvecFilm") {
             echo "<mark>Aucun proposeur n'a encore été défini pour cette semaine.</mark>";
           }
         }
-      }
-    }else{
-      // L'utilisateur est connecté
-      // nous ne sommes pas en période de vote, nous sommes en période de visionnage du film
-      printResultatVote($id_current_semaine);
     }
   }else{// l'utilisateur n'est pas connecté
-    if($vote_period){//nous sommes en période de vote
       if($proposition_semaine){//les propositions ont été faites
         if($vote_termine_cette_semaine){
           // L'utilisateur n'est pas connecté
@@ -542,11 +521,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
         // nous sommes en période de vote
         // la proposition n'est pas encore faite
         echo '<mark>la proposition n\'a pas encore été faite</mark>';
-      }
-    }else{
-      // l'utilisateur n'est pas connecté
-      // nous ne sommes pas en période de vote
-      printResultatVote($id_current_semaine);
     }
   }
 }
