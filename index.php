@@ -114,16 +114,6 @@ if(isset($_POST['chatGPT'])){
 
 // ------------- fin des reactions au formulaires ----------------------------
 
-
-// calcul de la date de fin de la période de vote
-$fin_periode_vote = new DateTime($vote_deadline, new DateTimeZone('Europe/Paris'));
-$fin_periode_vote = $fin_periode_vote->format('c'); // Date au format ISO 8601 	2004-02-12T15:19:21+00:00
-
-// conversion de la date de fin en timestamp JavaScript
-$deadline_vote = strtotime($fin_periode_vote);
-$deadline_vote = $deadline_vote*1000;
-
-require_once('includes/header.php');
 ?>
 
 
@@ -131,27 +121,35 @@ require_once('includes/header.php');
   <link href=nav_temp.css rel="stylesheet">
 
 
-  <!--Gestion du compte à rebours de la période de vote -->
-<script>
-// Injection de la date de fin PHP dans une variable Javascript
-var deadline_vote = <?php echo $deadline_vote; ?>;
+<?php 
+// Gestion du compte à rebours de la période de vote
+$displayCountdown = $proposition_semaine && !$vote_termine_cette_semaine;
 
-var x = setInterval(function() {
-    var now = new Date().getTime();
-        var t = deadline_vote - now;
-    var days = Math.floor(t / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
-    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((t % (1000 * 60)) / 1000);
-    document.getElementById("demo").innerHTML = days + "d " 
-        + hours + "h " + minutes + "m " + seconds + "s ";
-    if (t < 0) {
-        clearInterval(x);
-        document.getElementById("demo").innerHTML = "";
+if($displayCountdown): ?>
+  <script>
+    // Injection de la deadline (variable PHP) dans une variable Javascript
+    const deadline = new Date(<?= json_encode($vote_deadline) ?>);
+
+    // if deadline is a valid date
+    if (!isNaN(deadline) && deadline.getMilliseconds() > 0) {
+      const intervalTimerId = setInterval(function() {
+        const now = new Date();
+        const remaining = Math.floor((deadline - now) / 1000); // in seconds
+        if (remaining < 0) {
+          clearInterval(intervalTimerId);
+          // Rafraichissement de la page
+          window.location.replace(window.location.href);
+        } else {
+          const days = Math.floor(remaining / (60 * 60 * 24));
+          const hours = Math.floor((remaining % (60 * 60 * 24)) / (60 * 60));
+          const minutes = Math.floor((remaining % (60 * 60)) / 60);
+          const seconds = remaining % 60;
+          document.getElementById("countdown").textContent = `${days} d ${hours} h ${minutes} m ${seconds} s`;
+        }
+      }, 1000); // execution à chaque seconde
     }
-}, 1000);
-
-</script>
+  </script>
+<?php endif; ?>
 
   <title>CinePS</title>
   
@@ -295,8 +293,8 @@ if ($json_current_semaine->type == "PSAvecFilm") {
   // Affichage de la liste des utilisateurs ayant déjà voté
   printUserAyantVote($id_current_semaine);
 
-  if ($json_current_semaine->proposition_termine){
-    echo '<span class="text-warning">Il reste <div id="demo"></div> avant la fin du vote</span>';
+  if ($displayCountdown){
+    echo '<span class="text-warning">Il reste <div id="countdown"></div> avant la fin du vote</span>';
   }
   echo '<br/>';
 
@@ -368,7 +366,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
           echo "<mark>Votre compte a été desactivé donc vous ne pouvez pas voter</mark><br />";
           printFilmsProposes();
         }else{
-            //echo '<mark>Compte a rebours avant la fin du vote : <b><div class = "text-warning" id  = "demo"></div></mark></b>';
           if($is_proposeur){
             // L'utilisateur est connecté
             // nous sommes en période de vote
@@ -401,7 +398,6 @@ if ($json_current_semaine->type == "PSAvecFilm") {
 
               echo'<h2 class="text-warning">Vous devez voter </h2>';
               echo "<br />";         
-                echo '<h2 class="text-warning">Il vous reste <div id="demo"></div> avant la fin du vote</h2>';           
               echo '<p class = "text-warning"><b>*Le vote se fait sous forme de classement, par exemple le film que vous préférez voir devra avoir "1" comme vote</b></p>';
               echo '<h2 class="text-warning">Les films proposés par '.$proposeur_cette_semaine.' pour cette semaine sont :</h2>';
               
