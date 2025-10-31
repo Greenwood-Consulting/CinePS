@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site en maintenance</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --primary: #0078d4;
+      --bg: #f8f9fb;
+      --text: #2d2d2d;
+      --card-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1a1a;
+        --text: #e0e0e0;
+        --card-bg: #242424;
+        --shadow: rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      max-width: 480px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .loader {
+      border: 4px solid #ccc;
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: 1rem auto 0;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🛠️ Site en maintenance</h1>
+    <p>
+      CinePS est temporairement indisponible pendant une mise à jour.<br>
+      Nous faisons le nécessaire pour revenir en ligne très bientôt.
+    </p>
+    <div class="loader"></div>
+    <footer>Merci de votre compréhension<br>– L’équipe technique</footer>
+  </div>
+</body>
+</html>
