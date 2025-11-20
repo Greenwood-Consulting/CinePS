@@ -1,7 +1,7 @@
 <?php
-include('includes/init.php');
-include('common.php');
-include('calcul_etat.php');
+require_once('includes/init.php');
+require_once('includes/common.php');
+require_once('includes/calcul_etat.php');
 
 function renomme_et_permute_films(array $propositions): array {
 
@@ -63,7 +63,7 @@ foreach($films_par_decennie as $decennie => $nb_films){
 
 $count_data_annee = count($data_annee);
 
-include('header.php');
+require_once('includes/header.php');
 ?>
 
 
@@ -184,12 +184,12 @@ include('header.php');
   <div class="fixed-header">
     <div class="centered-buttons">
       <?php
-      include('nav.php'); 
+      require_once('includes/nav.php'); 
       ?>
     </div>
     <div class="right-form">
       <?php
-      include('auth_form.php');
+      require_once('includes/auth_form.php');
       ?>
     </div>
   </div>
@@ -511,6 +511,6 @@ include('header.php');
   </table>
 
   </div>
-<?php include('footer.php'); ?>
+<?php require_once('includes/footer.php'); ?>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
-include('includes/init.php');
-include('common.php');
+require_once('includes/init.php');
+require_once('includes/common.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté
 $array_body_avote = array();
