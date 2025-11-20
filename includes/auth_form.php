@@ -1,27 +1,20 @@
 <?php 
 
-//Si on vient du formulaire de connexion on sauvegrade l'utilisateur en session
+//Si on vient du formulaire de connexion on sauvegarde l'utilisateur en session
 // si l'utilisateur se présente
 
 if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
+    $body = json_encode([
+        'email' => $_POST['user'],
+        'password' => $_POST['password']
+    ]);
 
-    $id_membre = $_POST['user'];
-    $password = $_POST['password'];
+    $response = call_API('/api/membre_login_check', 'POST', $body);
 
-    // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
-    $json_user = array_values(array_filter($membres, fn($m) => $m->id == $id_membre))[0] ?? null;
-
-    if(! empty($json_user)){//On vérifie qui'il y ait un mdp pour l'utilisateur connecté
-        //$password = hash('sha256', $password);
-        // @TODO : à revoir, je comprends pas tout
-
-        if($json_user->mdp == $password){//Le mot de passe correspond on autorise la connection
-            $_SESSION['user'] = $json_user->id;     
-        }else{//sinon on refuse la connection
-            echo 'Le mdp n\'est pas valide';
-        } 
-    }else{//on refuse la connection
-        echo 'Cet utilisateur n\'existe pas dans la base de données';
+    if(isset($response) && !isset($response->error)){//Le mot de passe correspond on autorise la connection
+        $_SESSION['user'] = $response->membre_id;     
+    }else{//sinon on refuse la connection
+        echo 'Le mdp n\'est pas valide';
     } 
 }
 
@@ -59,7 +52,7 @@ else{ //Sinon on propose la connexion
                     <label for="user">Membres</label>
                     <select class="text-dark" name="user" id="user">';
                     foreach($membres as $user){ //Afficher un utlisateur
-                        echo"<option class='text-dark' value=".$user->id.">". $user->nom." ".$user->prenom."</option>";
+                        echo"<option class='text-dark' value=".$user->mail.">". $user->nom." ".$user->prenom."</option>";
                     }
     echo "           </select>
                 </div>
