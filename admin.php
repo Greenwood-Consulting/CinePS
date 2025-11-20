@@ -52,6 +52,13 @@ require_once('includes/header.php');
 </head>
 
 <body>
+
+    <h1 class="page__title">
+        <img src="./assets/images/no_mojito.png" />
+        No Mojito Zone
+        <img src="./assets/images/no_mojito.png" />
+    </h1>
+
     <h2>Inscription</h2>
     <form method="POST" id="signup-form" class="" action="">
         <div class="col">
