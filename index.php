@@ -131,15 +131,22 @@ if($displayCountdown): ?>
     const deadline = new Date(<?= json_encode($vote_deadline) ?>);
 
     // if deadline is a valid date
-    if (!isNaN(deadline) && deadline.getMilliseconds() > 0) {
+    if (!Number.isNaN(deadline.getTime())) {
+
+      // chaque seconde execute le code suivant
       const intervalTimerId = setInterval(function() {
         const now = new Date();
         const remaining = Math.floor((deadline - now) / 1000); // in seconds
+
+        // si la deadline est dépassée
         if (remaining < 0) {
+          // stoppe l'execution chaque seconde
           clearInterval(intervalTimerId);
           // Rafraichissement de la page
           window.location.replace(window.location.href);
-        } else {
+        } 
+        // si la deadline n'est pas dépassée
+        else {
           const days = Math.floor(remaining / (60 * 60 * 24));
           const hours = Math.floor((remaining % (60 * 60 * 24)) / (60 * 60));
           const minutes = Math.floor((remaining % (60 * 60)) / 60);
