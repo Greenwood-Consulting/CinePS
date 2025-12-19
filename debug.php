@@ -1,8 +1,7 @@
 <?php
 require_once('includes/init.php');
-require_once('calcul_etat.php');
-
-require_once('header.php');
+require_once('includes/calcul_etat.php');
+require_once('includes/header.php');
 ?>
 
 <title>CinePs Debug</title>
@@ -26,6 +25,8 @@ require_once('header.php');
     text-overflow: ellipsis;
     /* Remplace la fin par "..." */
     display: inline-block;
+    /* fix ellipsis height */
+    line-height: 1;
   }
 </style>
 </head>
@@ -49,7 +50,7 @@ require_once('header.php');
         "/profil.php",
         "/resultat_vote.php",
         "/save_vote.php",
-        "/stat_barre.php"
+        "/statistiques.php"
       );
       ?>
 
@@ -60,10 +61,10 @@ require_once('header.php');
   </article>
 
   <article>
-    <h3>Constantes</h3>
+    <h3>Constantes d'initialisation requises</h3>
     <ul>
-      <li><code>$_SESSION['token']</code> : <span class="truncate" style="width: 300px;"><?= isset($_SESSION['token']) ? $_SESSION['token'] : "aucun" ?></span></li>
-      <li><code>sizeof($membres)</code> : <?= sizeof($membres) ?></li>
+      <li>[token JWT API] <code>$_SESSION['token']</code> : <span class="truncate" style="width: 300px;"><?= isset($_SESSION['token']) ? $_SESSION['token'] : "aucun" ?></span></li>
+      <li>[member list] <code>sizeof($membres)</code> : <?= sizeof($membres) ?></li>
     </ul>
   </article>
 
@@ -86,8 +87,8 @@ require_once('header.php');
           <li class="<?= isset($json_current_semaine) ? "true" : "false" ?>"><code>$json_current_semaine</code></li>
           <li class="<?= $id_current_semaine ? "true" : "false" ?>"><code>$id_current_semaine</code> : <?= isset($json_current_semaine) ? $id_current_semaine : "none" ?></li>
           <li class="<?= $proposeur_cette_semaine ? "true" : "false" ?>"><code>$proposeur_cette_semaine</code> : un proposeur est-il défini cette semaine? <?= json_encode($json_current_semaine->proposeur) ?></li>
-          <li class="<?= $no_propositions ? "true" : "false" ?>"><code>$no_propositions</code> : aucune proposition n'a été faite cette semaine?</li>
-          <li class="<?= $proposition_semaine ? "true" : "false" ?>"><code>$proposition_semaine</code> : les propositions ont elles été faites?</li>
+          <li class="<?= $no_propositions ? "true" : "false" ?>"><code>$no_propositions</code> : <u>aucune</u> proposition n'a été faite cette semaine?</li>
+          <li class="<?= $proposition_semaine ? "true" : "false" ?>"><code>$proposition_semaine</code> : les propositions ont elles été faites (<u>toutes</u> les propositions ont été validées) ?</li>
           <li class="<?= $etat_theme_non_propose ? "true" : "false" ?>"><code>$etat_theme_non_propose</code> : le thème n'est il PAS proposé?</li>
           <li class="<?= $vote_termine_cette_semaine ? "true" : "false" ?>"><code>$vote_termine_cette_semaine</code> : le vote est il terminé?</li>
           <li class="<?= isset($dLink) ? "true" : "false" ?>"><code>$dLink</code> : y a t-il un lien de telechargement?</li>
