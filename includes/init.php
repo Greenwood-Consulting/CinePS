@@ -17,4 +17,27 @@ if(!isset($membres) || !is_array($membres)) {
   exit;
 }
 
+
+// Si on vient du formulaire de d'authentification
+if(($_POST['form_name'] ?? '') === 'login'){
+
+  // si les credentials sont présents
+  if(isset($_POST['user']) && isset($_POST['password'])){
+    $body = json_encode([
+          'email' => $_POST['user'],
+          'password' => $_POST['password']
+      ]);
+  
+    // verifie les credentials de l'utilisateur
+    $response = call_API('/api/membre_login_check', 'POST', $body);
+
+    //Le mot de passe correspond
+    if(is_object($response) && !isset($response->error)){
+      
+        // enregistre l'id de l'utilisateur dans la  session
+        $_SESSION['user'] = $response->membre_id;     
+    }
+  }
+}
+
 ?>
