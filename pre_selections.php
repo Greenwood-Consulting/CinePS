@@ -32,15 +32,16 @@ if (isset($_POST['delete_preselection'])) {
 }
 
 // ➕ Creer un nouveau film pour une pré-sélection de l'user
-if (isset($_POST['create_film']) && is_numeric($_POST['create_film'])) {
+// preselection_id doit être un entier et interdire la valeur par défaut ""
+if (isset($_POST['create_film']) && isset($_POST['preselection_id']) && ctype_digit($_POST['preselection_id'])) {
   $body = json_encode([
-    'pre_selection_id' => (int) $_POST['create_film'],
+    'pre_selection_id' => (int) $_POST['preselection_id'],
     'titre' => $_POST['titre'],
     'sortie_film' => (int) $_POST['annee'],
     'imdb' => $_POST['imdb']
   ]);
   call_API('/api/films', 'POST', $body);
-
+  
   header('Location: pre_selections.php');
   exit;
 }
@@ -96,28 +97,51 @@ require_once('includes/header.php'); ?>
     <ul>
       <?php foreach ($preselections as $preselection): ?>
         <li class="preselection bg-shadow">
-          <form action="pre_selections.php" method="POST">
-            <h3 class="preselection__theme lt__inline hover_target">
-              <span class="font__dymo"><?= htmlspecialchars($preselection->theme) ?></span>
+          <h3 class="preselection__theme lt__inline hover_target">
+            <span class="font__dymo"><?= htmlspecialchars($preselection->theme) ?></span>
+            <form action="pre_selections.php" method="POST">
               <button class="btn btn__light show_on_hover" type="submit" name="delete_preselection" value="<?= htmlspecialchars($preselection->id) ?>" onclick="return confirm('Confirmez-vous la suppression de cette liste ? La suppression entraine la suppresion de tous les films de la liste')">❌</button>
-            </h3>
-            <ul>
-              <?php foreach ($preselection->films as $film): ?>
-                <li>
+            </form>    
+          </h3>
+          <ul>
+            <?php foreach ($preselection->films as $film): ?>
+              <li>
+                <form action="pre_selections.php" method="POST">
                   <span class="lt__in-line hover_target">
                     <a href="<?= htmlspecialchars($film->imdb) ?>"><?= htmlspecialchars($film->titre) ?>
                       (<?= htmlspecialchars($film->sortie_film) ?>)
                     </a>
-                    <button class="btn btn__light show_on_hover" type="submit" name="delete_film" value="<?= htmlspecialchars($film->id) ?>">❌</button>
+
+                    <span class="show_on_hover">
+
+                      <input type="hidden" name="titre" value="<?= htmlspecialchars($film->titre) ?>" />
+                      <input type="hidden" name="annee" value="<?= htmlspecialchars($film->sortie_film) ?>" />
+                      <input type="hidden" name="imdb" value="<?= htmlspecialchars($film->imdb) ?>" />
+  
+                      <button type="submit" name="create_film" value="1">dupliquer →&nbsp;</button>
+
+                      <select name="preselection_id">
+                        <option value="" disabled selected>-- choisir une pré-sélection --</option>
+                        <?php foreach ($preselections as $p): ?>
+                          <option value="<?= $p->id ?>"><?= $p->theme ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                        
+                      <button class="btn btn__light" type="submit" name="delete_film" value="<?= htmlspecialchars($film->id) ?>">❌</button>
+
+                    </span>
                   </span>
-                </li>
-              <?php endforeach; ?>
-            </ul>
+                </form>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+          <form action="pre_selections.php" method="POST">
             <div class="lt__inline">
               <input class="preselection__add-titre" type="text" placeholder="titre" name="titre" />
               <input class="preselection__add-imdb" type="text" placeholder="https://www.imdb.com" name="imdb" />
               <input class="preselection__add-annee" type="number" placeholder="année" name="annee" />
-              <button class="btn" type="submit" name="create_film" value="<?= htmlspecialchars($preselection->id) ?>">Ajouter un film</button>
+              <input type="hidden" name="preselection_id" value="<?= htmlspecialchars($preselection->id) ?>" />
+              <button class="btn" type="submit" name="create_film" value="1">Ajouter un film</button>
             </div>
           </form>
         </li>
