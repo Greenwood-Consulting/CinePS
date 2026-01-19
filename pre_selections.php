@@ -36,7 +36,6 @@ if (isset($_POST['create_film']) && is_numeric($_POST['create_film'])) {
   $body = json_encode([
     'pre_selection_id' => (int) $_POST['create_film'],
     'titre' => $_POST['titre'],
-    'date' => '2025-07-07T20:30:00-10:00', // a virer
     'sortie_film' => (int) $_POST['annee'],
     'imdb' => $_POST['imdb']
   ]);
