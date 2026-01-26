@@ -1,23 +1,5 @@
 <?php 
 
-//Si on vient du formulaire de connexion on sauvegarde l'utilisateur en session
-// si l'utilisateur se présente
-
-if(isset($_POST['user'])){//si l'utilisateur vient du formulaire de connexion
-    $body = json_encode([
-        'email' => $_POST['user'],
-        'password' => $_POST['password']
-    ]);
-
-    $response = call_API('/api/membre_login_check', 'POST', $body);
-
-    if(isset($response) && !isset($response->error)){//Le mot de passe correspond on autorise la connection
-        $_SESSION['user'] = $response->membre_id;     
-    }else{//sinon on refuse la connection
-        echo 'Le mdp n\'est pas valide';
-    } 
-}
-
 if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
     // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
     $json_user = array_values(array_filter($membres, fn($m) => $m->id == $_SESSION['user']))[0] ?? null;
@@ -66,8 +48,12 @@ else{ //Sinon on propose la connexion
             </div>';
     
     // Bouton de connexion
-    echo "  <button class='btn btn-warning login-btn' name='connect'>Se connecter</button>
-        </div>
+    echo "  <button class='btn btn-warning login-btn' name='form_name' value='login'>Se connecter</button>";
+    // si l'user n'est pas defini malgré la demande de login 
+    if (($_POST['form_name'] ?? '') === 'login') {
+        echo "<span>Le mdp n'est pas valide</span>";
+    }
+    echo "</div>
     </form>";
 }
 
