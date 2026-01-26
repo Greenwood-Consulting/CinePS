@@ -70,7 +70,7 @@ Voici maintenant le texte du git log sur lequel tu dois travailler : ".$git_log;
         'input' => [
             ['role' => 'user', 'content' => $prompt]
         ],
-        'temperature' => 0.7
+        //'temperature' => 0.7
     ];
     $json_body = json_encode($body);
     $api_response = call_API_POST_ChatGPT($json_body, $apiKey);
