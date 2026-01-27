@@ -1,7 +1,7 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
-require_once('includes/calcul_etat.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
+require_once(__DIR__ . '/includes/calcul_etat.php');
 
 // ------------- reactions au formulaires ----------------------------
 // les en-têtes HTTP (ceci comprend les redirections) doivent être envoyés avant tout contenu HTML, c’est-à-dire avant le premier echo ou tout autre sortie.
@@ -12,7 +12,7 @@ if(isset($_POST['update_dlink'])){//si un nouveau film est proposé
   $body = json_encode(['value' => $value]);
   call_API("/api/dlink", "PUT", $body);
 
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -24,7 +24,7 @@ if(isset($_POST['delete_proposition'])){//si un nouveau film est proposé
   call_API("/api/proposition/".$proposition_id, "DELETE");
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -45,7 +45,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   call_API("/api/proposition", "POST", $json_proposition);
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -61,7 +61,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -77,7 +77,7 @@ if(isset($_POST['update_theme'])){
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -88,7 +88,7 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $array_proposition = call_API("/api/secondeChance/".$id_proposeur , "POST");
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -108,7 +108,7 @@ if(isset($_POST['chatGPT'])){
   call_API("/api/propositionOpenAI", "POST", $json_body);
 
   // Redirection après mise à jour
-  header("Location: index.php");
+   header("Location: /index.php");
   exit;
 }
 
@@ -118,7 +118,7 @@ if(isset($_POST['chatGPT'])){
 
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link href=nav_temp.css rel="stylesheet">
+  <link href=/nav_temp.css rel="stylesheet">
 
 
 <?php 
@@ -160,7 +160,7 @@ if($displayCountdown): ?>
 
   <title>CinePS</title>
   
-<link href="./main.3f6952e4.css" rel="stylesheet">
+<link href="/main.3f6952e4.css" rel="stylesheet">
 <style>
   /******************************************************** 
    *  Styles pour l'animation IA 
@@ -264,13 +264,13 @@ if($displayCountdown): ?>
   <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
     <?php
-    require_once('includes/auth_form.php');
-    require_once('includes/nav.php');
+    require_once(__DIR__ . '/includes/auth_form.php');
+    require_once(__DIR__ . '/includes/nav.php');
   ?>
     </div>
   </nav>
 
-<div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/space.jpg')">
+<div class="hero-full-container background-image-container white-text-container" style="background-image: url('/assets/images/space.jpg')">
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
@@ -278,11 +278,11 @@ if($displayCountdown): ?>
             <div class="text-content">
               <!-- Titre de la page -->
               <h1 class="text-warning">
-                <img src="assets/logo/logo.png" alt="CinePS" style="height: 1em; vertical-align: top; position: relative; top: -5px;" />
+                <img src="/assets/logo/logo.png" alt="CinePS" style="height: 1em; vertical-align: top; position: relative; top: -5px;" />
                 CinePS
                 <sup>
                   <span style="font-size: 50%; vertical-align: top;">
-                    <img src="./assets/icones/intelligence-artificielle8.png" alt="AI Icon" style="width: 50px; height: 50px; vertical-align: middle; filter: drop-shadow(0 0 10px white);">
+                    <img src="/assets/icones/intelligence-artificielle8.png" alt="AI Icon" style="width: 50px; height: 50px; vertical-align: middle; filter: drop-shadow(0 0 10px white);">
                     AI Enhanced™
                   </span>
                 </sup>
@@ -315,7 +315,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
         // le vote est terminé
         echo "<h2 class='text-warning'>Résultat du vote</h2><br/>";
         printResultatVote($id_current_semaine);
-        echo "<a href='resultat_vote.php'><button type='button' class='btn btn-warning'>Résultat vote</button></a>";
+        echo "<a href='/resultat_vote.php'><button type='button' class='btn btn-warning'>Résultat vote</button></a>";
         /*printChoixvote($id_current_semaine);*/
 
         ?>
@@ -356,7 +356,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
               <button onclick="toggleUpdateDlinkButton()"> ✏️</button>
             </div>
             <div id="dlink__update-form">
-              <form method="POST" action="index.php">
+              <form method="POST" action="/index.php">
                   <input type="text" name="update_dlink" class="dlink__update-form--input text-dark" placeholder="https://" value="<?= htmlspecialchars($dLink) ?>" />
                   <button type="submit"> 💾</button>
               </form>
@@ -411,7 +411,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
               $nombre_proposition = count($json_current_semaine->propositions);
               ?>
 
-              <form method="POST" action="save_vote.php">
+              <form method="POST" action="/save_vote.php">
               <?php
 
               echo "<table>";
@@ -439,7 +439,7 @@ if ($json_current_semaine->type == "PSAvecFilm") {
         echo '<br/><br />';
         ?>
 
-        <form method="POST" action="index.php">
+        <form method="POST" action="/index.php">
 
           <label>Thème:</label>
           <input type="text" name="theme_film" placeholder="Thème des films" class="text-dark" value="<?= $json_current_semaine->theme ?>" />
@@ -555,12 +555,12 @@ printNextproposeurs($id_current_semaine);
      movingBackgroundImage();
   });
 </script>
-<script type="text/javascript" src="./main.70a66962.js"></script>
+<script type="text/javascript" src="/main.70a66962.js"></script>
 
 
 
 </body>
-<script src="assets/js/animation-ia.js"></script>
-<script src="assets/js/popup.js"></script>
+<script src="/assets/js/animation-ia.js"></script>
+<script src="/assets/js/popup.js"></script>
 
 </html>

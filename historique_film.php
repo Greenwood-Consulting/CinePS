@@ -1,10 +1,10 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
-require_once( 'includes/header.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
+require_once(__DIR__ . '/includes/header.php');
 ?>
 
-  <link href="historique_film.css" rel="stylesheet">
+  <link href="/historique_film.css" rel="stylesheet">
 
   <title>Historique</title>  
 
@@ -32,12 +32,12 @@ require_once( 'includes/header.php');
 <div class="fixed-header">
   <div class="centered-buttons">
     <?php
-    require_once('includes/nav.php'); 
+    require_once(__DIR__ . '/includes/nav.php'); 
     ?>
   </div>
   <div class="right-form">
     <?php
-    require_once('includes/auth_form.php');
+    require_once(__DIR__ . '/includes/auth_form.php');
     ?>
   </div>
 </div>
@@ -86,7 +86,7 @@ foreach($array_historique_semaines as $semaine){
 
   $array_proposeurs[$semaine->proposeur->nom] = $semaine->proposeur;
 }
-echo'<form method="post" action="historique_film.php" class = "main-zone">
+echo'<form method="post" action="/historique_film.php" class = "main-zone">
     <label>Membres</label>
         <select class="text-dark" name="user_filter">';
 foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
@@ -142,7 +142,7 @@ function admin_semaine_edit(){
   // Formulaire pour désigner le film gagnant et le proposeur de la semaine
   if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
     echo "<details class = \"texte-historique\"><summary>Editer la semaine</summary>";
-    echo '<form method="post" action="historique_film.php">';
+    echo '<form method="post" action="/historique_film.php">';
 
     // Dropdown pour choisir le film gagnant
     echo '  <label>Spécifier le film gagnant</label>
@@ -262,7 +262,7 @@ foreach($array_historique_semaines as $semaine){
     
   </div>
   
-  <?php require_once('includes/footer.php'); ?>
+  <?php require_once(__DIR__ . '/includes/footer.php'); ?>
 
   <!-- Script JavaScript intégré -->
   <script>

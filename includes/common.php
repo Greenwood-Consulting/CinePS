@@ -12,7 +12,7 @@ function printFilmsProposes(){
   if (empty($json_current_semaine->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
-    echo '<form method="POST" action="index.php" onsubmit="return confirm(\'Supprimer la proposition?\')">';
+    echo '<form method="POST" action="/index.php" onsubmit="return confirm(\'Supprimer la proposition?\')">';
     foreach ($json_current_semaine->propositions as $proposition) {
       echo '<div>';
       echo '<mark><a class="text-dark" href="' . $proposition->film->imdb . '">' . $proposition->film->titre . ' </a>';
@@ -189,7 +189,7 @@ function printChoixvote($id_semaine){
 
 
           if(!$current_user_a_note){
-          echo "<form method='POST' action='save_note.php'>";
+          echo "<form method='POST' action='/save_note.php'>";
 
           echo '<select name="note" id="'.$id_film.'">';
           echo '<option value="1">1</option>';
@@ -326,7 +326,7 @@ echo "</TABLE>";
             }
     
             if(!$current_user_a_note_et_non_absention){
-              echo "<form method='POST' action='save_note.php'>";
+              echo "<form method='POST' action='/save_note.php'>";
     
               echo '  <select name="note" id="'.$id_film.'">';
               echo '    <option value="0">0 - Christophe Barbier</option>';
