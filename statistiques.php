@@ -1,7 +1,7 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
-require_once('includes/calcul_etat.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
+require_once(__DIR__ . '/includes/calcul_etat.php');
 
 function renomme_et_permute_films(array $propositions): array {
 
@@ -63,11 +63,11 @@ foreach($films_par_decennie as $decennie => $nb_films){
 
 $count_data_annee = count($data_annee);
 
-require_once('includes/header.php');
+require_once(__DIR__ . '/includes/header.php');
 ?>
 
 
-    <link href="historique_film.css" rel="stylesheet">
+    <link href="/historique_film.css" rel="stylesheet">
 
     <title>Statistiques</title>
     <!--Load the AJAX API-->
@@ -184,12 +184,12 @@ require_once('includes/header.php');
   <div class="fixed-header">
     <div class="centered-buttons">
       <?php
-      require_once('includes/nav.php'); 
+      require_once(__DIR__ . '/includes/nav.php'); 
       ?>
     </div>
     <div class="right-form">
       <?php
-      require_once('includes/auth_form.php');
+      require_once(__DIR__ . '/includes/auth_form.php');
       ?>
     </div>
   </div>
@@ -511,6 +511,6 @@ require_once('includes/header.php');
   </table>
 
   </div>
-<?php require_once('includes/footer.php'); ?>
+<?php require_once(__DIR__ . '/includes/footer.php'); ?>
 </body>
 </html>

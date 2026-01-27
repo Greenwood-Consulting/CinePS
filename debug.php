@@ -5,7 +5,6 @@ require_once('includes/header.php');
 ?>
 
 <title>CinePs Debug</title>
-<link rel="stylesheet" href="css/styles.css?v=1.0">
 <style>
   ul li.true:before {
     content: '✔ ';

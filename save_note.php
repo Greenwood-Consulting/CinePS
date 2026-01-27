@@ -1,6 +1,6 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
 
 // @TODO: simplifier les if
 
@@ -29,7 +29,7 @@ if(isset($_POST['notes'])){
             call_API("/api/note", "POST", $json_abstention);
         }
     }
-    header('Location: profil.php');
+    header('Location: /profil.php');
 }
 
 // Sauvegarde d'une note
@@ -54,7 +54,7 @@ if(isset($_POST['id_film'])){
         $json_note = json_encode($array_note);
         call_API("/api/note", "POST", $json_note);
     }
-    header('Location: historique_film.php');
+    header('Location: /historique_film.php');
 
 }
 

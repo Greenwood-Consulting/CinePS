@@ -1,6 +1,6 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
 
 // ------------- reactions au formulaires ----------------------------
 
@@ -22,7 +22,7 @@ if(isset($_POST['new_membre'])){
     $json_membre = json_encode($array_membre);
     call_API("/api/newmembre", "POST", $json_membre);
 
-    header("Location: admin.php");
+    header("Location: /admin.php");
     exit;
 }
 
@@ -39,28 +39,28 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
     call_API("/api/actifMembre/".$membreId, "PATCH", $body);
 
-    header("Location: admin.php");
+    header("Location: /admin.php");
     exit;
 }
 
 // ------------- fin des reactions au formulaires ----------------------------
     
-require_once('includes/header.php');
+require_once(__DIR__ . '/includes/header.php');
 ?>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="/admin.css">
     <title>Administration</title>
 </head>
 
 <body>
 
     <h1 class="page__title">
-        <img src="./assets/images/no_mojito.png" />
+        <img src="/assets/images/no_mojito.png" />
         No Mojito Zone
-        <img src="./assets/images/no_mojito.png" />
+        <img src="/assets/images/no_mojito.png" />
     </h1>
 
     <h2>Inscription</h2>
-    <form method="POST" id="signup-form" class="" action="">
+    <form method="POST" id="signup-form" class="" action="/admin.php">
         <div class="col">
             <input type="text" class="" name="name"  placeholder="Nom de famille"/>
         </div>
@@ -101,7 +101,7 @@ if(isset($_POST['new_proposeur'])){
 }
 
 //Formulaire de création de semaine
-echo '<form method="post" action="">';
+echo '<form method="post" action="/admin.php">';
 
 // Membre proposeur
 echo '  <label>Membres</label>
@@ -137,7 +137,7 @@ printNextproposeurs($id_current_semaine);
 echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
 
 ?>
-<form method="POST" action="admin.php">
+<form method="POST" action="/admin.php">
     <table>
         <?php foreach($membres as $membre): ?>
             <tr>
@@ -156,7 +156,7 @@ echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br
     </table>
 </form>
 
-<?php require_once('includes/footer.php'); ?>
+<?php require_once(__DIR__ . '/includes/footer.php'); ?>
 
 </body>
 </html>
