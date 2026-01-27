@@ -47,6 +47,7 @@ require_once('includes/header.php');
         "/deconnexion.php",
         "/historique_film.php",
         "/inscription.php",
+        "/pre_selections.php",
         "/profil.php",
         "/resultat_vote.php",
         "/save_vote.php",
