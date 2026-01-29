@@ -1,10 +1,10 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/header.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/header.php');
 ?>
 
     <title>A Propos de CinePS</title>
-    <link rel="stylesheet" href="historique_film.css">
+    <link rel="stylesheet" href="/historique_film.css">
 </head>
 <body>
 
@@ -12,12 +12,12 @@ require_once('includes/header.php');
 <div class="fixed-header">
   <div class="centered-buttons">
     <?php
-    require_once('includes/nav.php'); 
+    require_once(__DIR__ . '/includes/nav.php'); 
     ?>
   </div>
   <div class="right-form">
     <?php
-    require_once('includes/auth_form.php');
+    require_once(__DIR__ . '/includes/auth_form.php');
     ?>
   </div>
 </div>
@@ -56,6 +56,6 @@ require_once('includes/header.php');
 
 </div>
 
-<?php require_once('includes/footer.php'); ?>
+<?php require_once(__DIR__ . '/includes/footer.php'); ?>
 </body>
 </html>
