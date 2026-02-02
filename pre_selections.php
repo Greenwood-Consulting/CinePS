@@ -75,6 +75,20 @@ $preselections = call_API('/api/preselections/membres/' . $user_id, 'GET');
 // les pré sélections les plus récentes en premier
 $preselections = array_reverse($preselections);
 
+$preselections_count = count($preselections);
+$total_films_count = 0;
+foreach ($preselections as $preselection) {
+  $total_films_count += count($preselection?->films ?? []);
+}
+
+$preselections_label = $preselections_count === 0
+  ? 'aucune pré-sélection'
+  : $preselections_count . ' pré-sélection' . ($preselections_count > 1 ? 's' : '');
+
+$films_label = $total_films_count === 0
+  ? 'aucun film'
+  : $total_films_count . ' film' . ($total_films_count > 1 ? 's' : '');
+
 // TODO: a placer en fichier de conf? a aligner avec le backend?
 $MAX_FILMS_PER_PROPOSITION = 10;
 
@@ -108,6 +122,9 @@ require_once(__DIR__ . '/includes/header.php'); ?>
 
   <main class="main">
     <h2 class="page__title"><span class="bg-shadow">Pré-Sélections</span></h2>
+    <p class="bg-shadow" style="text-align: center;">
+      <?= htmlspecialchars($preselections_label) ?>, <?= htmlspecialchars($films_label) ?>
+    </p>
 
     <form action="<?= base_url('pre_selections.php') ?>" method="POST">
       <div class="preselections__add lt__inline bg-shadow">
