@@ -122,7 +122,7 @@ require_once(__DIR__ . '/includes/header.php'); ?>
 
   <main class="main">
     <h2 class="page__title"><span class="bg-shadow">Pré-Sélections</span></h2>
-    <p class="bg-shadow" style="text-align: center;">
+    <p class="bg-shadow preselections__summary">
       <?= htmlspecialchars($preselections_label) ?>, <?= htmlspecialchars($films_label) ?>
     </p>
 
