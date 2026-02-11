@@ -22,7 +22,7 @@ if(isset($_POST['new_membre'])){
     $json_membre = json_encode($array_membre);
     call_API("/api/newmembre", "POST", $json_membre);
 
-    header("Location: /admin.php");
+    header('Location: ' . base_url('admin.php'));
     exit;
 }
 
@@ -39,7 +39,7 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
     call_API("/api/actifMembre/".$membreId, "PATCH", $body);
 
-    header("Location: /admin.php");
+    header('Location: ' . base_url('admin.php'));
     exit;
 }
 
@@ -47,20 +47,20 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
     
 require_once(__DIR__ . '/includes/header.php');
 ?>
-    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="<?= base_url('admin.css') ?>">
     <title>Administration</title>
 </head>
 
 <body>
 
     <h1 class="page__title">
-        <img src="/assets/images/no_mojito.png" />
+        <img src="<?= base_url('assets/images/no_mojito.png') ?>" />
         No Mojito Zone
-        <img src="/assets/images/no_mojito.png" />
+        <img src="<?= base_url('assets/images/no_mojito.png') ?>" />
     </h1>
 
     <h2>Inscription</h2>
-    <form method="POST" id="signup-form" class="" action="/admin.php">
+    <form method="POST" id="signup-form" class="" action="<?= base_url('admin.php') ?>">
         <div class="col">
             <input type="text" class="" name="name"  placeholder="Nom de famille"/>
         </div>
@@ -100,44 +100,55 @@ if(isset($_POST['new_proposeur'])){
     call_API("/api/newSemaine", "POST", $json_semaine);
 }
 
-//Formulaire de création de semaine
-echo '<form method="post" action="/admin.php">';
-
-// Membre proposeur
-echo '  <label>Membres</label>
-        <select class="text-dark" name="user">';
-            foreach($membres as $membre){ //Afficher un utlisateur dans le dropdown
-                echo"<option class='text-dark' value=".$membre->id.">". $membre->nom." ".$membre->prenom."</option>";
-            }
-echo "  </select>";
-echo "  <br/>";
-
-// Date de la semaine
-echo "  <label>Date</label>";
-echo "  <input type='date' name='date'>";
-echo "  <br/>";
-
-// Type de semaine
-echo "  <label>Type de PS</label>";
-echo '  <select class="text-dark" name="typeSemaine">';
-echo "       <option class='text-dark' value='PSAvecFilm'>PS avec film</option>";
-echo "       <option class='text-dark' value='PSSansFilm'>PS sans film</option>";
-echo "       <option class='text-dark' value='PasDePS'>Pas de PS</option>";
-echo "       <option class='text-dark' value='PSDroitDivin'>PS de droit divin</option>";
-echo "  </select>";
-echo "  <br/>";
-
-// Submit
-echo "<button type='submit' name='new_proposeur'>Créer une semaine</button>
-</form>";
-
-echo "<h2>Prochaines Semaine</h2>";
-
-printNextproposeurs($id_current_semaine);
-echo "<p class = 'text-center'><b>tokar <br/> pilou <br/> olivier <br/> fred <br/> renaud <br/> bebert <br/> marion <br/> royale <br/> grim</b></p>";
-
 ?>
-<form method="POST" action="/admin.php">
+
+<!-- Formulaire de création de semaine -->
+<form method="post" action="<?= base_url('admin.php') ?>">
+
+    <!-- Membre proposeur -->
+    <label>Membres</label>
+    <select class="text-dark" name="user">
+        <?php foreach($membres as $membre): ?>
+            <option class="text-dark" value="<?= htmlspecialchars($membre->id) ?>" >
+                <?= htmlspecialchars($membre->nom . ' ' . $membre->prenom) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <br/>
+
+    <label>Date</label>
+    <input type="date" name="date">
+    <br/>
+
+    <label>Type de PS</label>
+    <select class="text-dark" name="typeSemaine">
+        <option class="text-dark" value="PSAvecFilm">PS avec film</option>
+        <option class="text-dark" value="PSSansFilm">PS sans film</option>
+        <option class="text-dark" value="PasDePS">Pas de PS</option>
+        <option class="text-dark" value="PSDroitDivin">PS de droit divin</option>
+    </select>
+    <br/>
+
+    <button type="submit" name="new_proposeur">Créer une semaine</button>
+</form>
+
+<h2>Prochaines Semaine</h2>
+
+<?php printNextproposeurs($id_current_semaine) ?>
+
+<ol>
+    <li>tokar</li> 
+    <li>pilou</li> 
+    <li>olivier</li> 
+    <li>fred</li> 
+    <li>renaud</li> 
+    <li>bebert</li> 
+    <li>marion</li> 
+    <li>royale</li> 
+    <li>grim</li> 
+</ol>
+
+<form method="POST" action="<?= base_url('admin.php') ?>">
     <table>
         <?php foreach($membres as $membre): ?>
             <tr>

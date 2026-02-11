@@ -1,31 +1,22 @@
 <?php
 require_once(__DIR__ . '/includes/init.php');
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['user'])) {
-    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
-    header("Location: /index.php");
-    exit();
-}
-
 // Récupérer les informations de l'utilisateur connecté
-$user_id = $_SESSION['user'];
+$user_id = $_SESSION['user'] ?? null;
 // @TODO : ne pas utiliser $membres, pour gérer l'authentification, à refactoriser quand on refactorisera l'Authentification
 $json_user = array_values(array_filter($membres, fn($m) => $m->id == $user_id))[0] ?? null;
 
-require_once(__DIR__ . '/includes/header.php');
-
-// Vérifier si les informations de l'utilisateur ont été récupérées avec succès
+// Vérifier si l'utilisateur est connecté
 if (empty($json_user)) {
-    echo "Erreur: Impossible de récupérer les informations de l'utilisateur.";
+    // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header('Location: ' . base_url('index.php'));
     exit();
 }
 
-// Afficher les informations de l'utilisateur
-?>
+require_once(__DIR__ . '/includes/header.php'); ?>
 
     <title>Profil de l'utilisateur</title>
-    <link rel="stylesheet" href="/historique_film.css">
+    <link rel="stylesheet" href="<?= base_url('historique_film.css') ?>">
 </head>
 <body>
 
@@ -100,7 +91,7 @@ if (empty($json_user)) {
         </ul>
     </p>
 
-    <form method="post" class="form-noter-tous-films" action="/save_note.php">
+    <form method="post" class="form-noter-tous-films" action="<?= base_url('save_note.php') ?>" >
         <button type="submit">Noter tous les films</button>
         <table>
             <thead>

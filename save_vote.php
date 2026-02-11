@@ -22,6 +22,6 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
   }
 }
 
-header('Location: /index.php');
+header('Location: ' . base_url('index.php'));
 exit();
 ?>

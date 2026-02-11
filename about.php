@@ -4,7 +4,7 @@ require_once(__DIR__ . '/includes/header.php');
 ?>
 
     <title>A Propos de CinePS</title>
-    <link rel="stylesheet" href="/historique_film.css">
+    <link rel="stylesheet" href="<?= base_url('historique_film.css') ?>">
 </head>
 <body>
 

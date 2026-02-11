@@ -67,7 +67,7 @@ require_once(__DIR__ . '/includes/header.php');
 ?>
 
 
-    <link href="/historique_film.css" rel="stylesheet">
+    <link href="<?= base_url('historique_film.css') ?>" rel="stylesheet">
 
     <title>Statistiques</title>
     <!--Load the AJAX API-->

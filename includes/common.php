@@ -12,7 +12,7 @@ function printFilmsProposes(){
   if (empty($json_current_semaine->propositions)) { // Aucun film n'a été proposé
     echo '<mark> Aucun film n\'a été proposé </mark>';
   } else {
-    echo '<form method="POST" action="/index.php" onsubmit="return confirm(\'Supprimer la proposition?\')">';
+    echo '<form method="POST" action="' . base_url('index.php') . '" onsubmit="return confirm(\'Supprimer la proposition?\')">';
     foreach ($json_current_semaine->propositions as $proposition) {
       echo '<div>';
       echo '<mark><a class="text-dark" href="' . $proposition->film->imdb . '">' . $proposition->film->titre . ' </a>';
@@ -20,7 +20,7 @@ function printFilmsProposes(){
       echo '</mark>';
       if ($is_proposeur && !$proposition_semaine) {
         echo '<button type="submit" name="delete_proposition" value="' . $proposition->id . '" class="btn" >🗑️</button>';
-    }
+      }
       echo '</div>';
     }
     echo '</form>';
@@ -35,7 +35,16 @@ function printResultatVote($id_semaine){
     echo '<mark>Il n\'y a pas encore eu de propositions cette semaine</mark>';
   }elseif(count($json_film_victorieux) == 1){//Affiche le film victorieux
     $film_victorieux = $json_film_victorieux[0]->film;
-    echo '<mark>Tous les utilisateurs ont voté. Le film retenu est : <br ><b><a class="text-dark" href = '.$film_victorieux->imdb.'>' .$film_victorieux->titre.'</b></mark>';
+    ?>
+    <mark>
+      Tous les utilisateurs ont voté. Le film retenu est : <br>
+      <b>
+        <a class="text-dark" href="<?= htmlspecialchars($film_victorieux->imdb) ?>" >
+          <?= htmlspecialchars($film_victorieux->titre) ?>
+        </a>
+      </b>
+    </mark>
+    <?php
   }else{
     $film_victorieux = $json_film_victorieux[0]->film;
     echo '<mark>Tous les utilisateurs ont voté. Il y a égalité entre les films suivants : <br/>';
@@ -138,7 +147,7 @@ function printChoixvote($id_semaine){
       echo "<TR>";
 
       // titre avec lien imdb
-      echo '<TD><a class="text-dark" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
+      echo '<TD><a class="text-dark" href="' . htmlspecialchars($proposition_et_votes->film->imdb) . '">' . htmlspecialchars($proposition_et_votes->film->titre) . '</a></TD>';
       echo '<TD> '.$proposition_et_votes->film->sortie_film.'</TD>';
 
       // Ajoutez une variable pour stocker la somme des notes
@@ -189,8 +198,7 @@ function printChoixvote($id_semaine){
 
 
           if(!$current_user_a_note){
-          echo "<form method='POST' action='/save_note.php'>";
-
+          echo '<form method="POST" action="' . base_url('save_note.php') . '">';
           echo '<select name="note" id="'.$id_film.'">';
           echo '<option value="1">1</option>';
           echo '<option value="2">2</option>';
@@ -283,7 +291,7 @@ echo "</TABLE>";
 
   
         // titre avec lien imdb
-        echo '<TD><a class="texte-film-victorieux" href = '.$proposition_et_votes->film->imdb.'>' .$proposition_et_votes->film->titre.' </a></TD>';
+        echo '<TD><a class="texte-film-victorieux" href="' . htmlspecialchars($proposition_et_votes->film->imdb) . '" >' . htmlspecialchars($proposition_et_votes->film->titre) . '</a></TD>';
         echo '<TD> '.$proposition_et_votes->film->sortie_film.'</TD>';
   
         // Ajoutez une variable pour stocker la somme des notes
@@ -326,8 +334,7 @@ echo "</TABLE>";
             }
     
             if(!$current_user_a_note_et_non_absention){
-              echo "<form method='POST' action='/save_note.php'>";
-    
+              echo '<form method="POST" action="' . base_url('save_note.php') . '">';
               echo '  <select name="note" id="'.$id_film.'">';
               echo '    <option value="0">0 - Christophe Barbier</option>';
               echo '    <option value="1">1 - Purge</option>';

@@ -29,7 +29,7 @@ if(isset($_POST['notes'])){
             call_API("/api/note", "POST", $json_abstention);
         }
     }
-    header('Location: /profil.php');
+    header('Location: ' . base_url('profil.php'));
 }
 
 // Sauvegarde d'une note
@@ -54,7 +54,7 @@ if(isset($_POST['id_film'])){
         $json_note = json_encode($array_note);
         call_API("/api/note", "POST", $json_note);
     }
-    header('Location: /historique_film.php');
+    header('Location: ' . base_url('historique_film.php'));
 
 }
 
