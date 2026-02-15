@@ -81,13 +81,8 @@ foreach ($preselections as $preselection) {
   $total_films_count += count($preselection?->films ?? []);
 }
 
-$preselections_count_label = $preselections_count === 0
-  ? 'aucune pré-sélection'
-  : $preselections_count . ' pré-sélection' . ($preselections_count > 1 ? 's' : '');
-
-$total_films_count_label = $total_films_count === 0
-  ? 'aucun film'
-  : $total_films_count . ' film' . ($total_films_count > 1 ? 's' : '');
+$preselections_count_label = count_label($preselections_count, 'pré-sélection', 'pré-sélections', 'aucune pré-sélection');
+$total_films_count_label = count_label($total_films_count, 'film', 'films', 'aucun film');
 
 // TODO: a placer en fichier de conf? a aligner avec le backend?
 $MAX_FILMS_PER_PROPOSITION = 10;
