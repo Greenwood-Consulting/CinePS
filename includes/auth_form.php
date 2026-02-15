@@ -16,9 +16,15 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
                     </svg>
                 </button>
                 <ul class="submenu">
-                    <li><a href="profil.php">Profil</a></li>
-                    <li><a href="pre_selections.php">Pré-Sélections</a></li>
-                    <li><a href="deconnexion.php">Se déconnecter</a></li>
+                    <li><a href="<?= base_url('profil.php') ?>">Profil</a></li>
+                    <li><a href="<?= base_url('pre_selections.php') ?>">Pré-Sélections</a></li>
+                    <li>
+                        <!-- TODO: utiliser un button standard plutot que le lien. adapter la mise en forme du button -->
+                        <form method="post" action="">
+                            <input type="hidden" name="logout" value="1">
+                            <a href="" onclick="this.closest('form').submit();return false;" >Se déconnecter</a>
+                        </form>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -27,7 +33,7 @@ if(isset($_SESSION['user'])){ //Si on est connecté on propose la déconnexion
 }
 else{ //Sinon on propose la connexion
     echo "";
-    echo'<form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" class="login-form">';
+    echo'<form method="post" action="" class="login-form">';
     echo '<div class="form-group">
             <div class="fields">';
     echo '      <div class="field-group">

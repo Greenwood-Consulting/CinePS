@@ -7,10 +7,10 @@
     <title>Inscription</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="theme_signup/colorlib-regform-9/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="<?= base_url('theme_signup/colorlib-regform-9/fonts/material-icon/css/material-design-iconic-font.min.css') ?>">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="theme_signup/colorlib-regform-9/css/style.css">
+    <link rel="stylesheet" href="<?= base_url('theme_signup/colorlib-regform-9/css/style.css') ?>">
 </head>
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=cineps','root','');
@@ -31,7 +31,7 @@ if(isset($_POST['new_membre'])){//Ajout nouveau membre
 
         <div class="container">
             <div class="signup-content">
-                <form method="POST" id="signup-form" class="signup-form" action="">
+                <form method="POST" id="signup-form" class="signup-form" action="<?= base_url('inscription.php') ?>">
                     <h2>Inscription</h2>
                     <div class="form-group">
                         <input type="text" class="form-input" name="name"  placeholder="Nom de famille"/>
@@ -52,7 +52,7 @@ if(isset($_POST['new_membre'])){//Ajout nouveau membre
     </div>
 
     <!-- JS -->
-    <script src="theme_signup/colorlib-regform-9/vendor/jquery/jquery.min.js"></script>
-    <script src="theme_signup/colorlib-regform-9/js/main.js"></script>
+    <script src="<?= base_url('theme_signup/colorlib-regform-9/vendor/jquery/jquery.min.js') ?>"></script>
+    <script src="<?= base_url('theme_signup/colorlib-regform-9/js/main.js') ?>"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

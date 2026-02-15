@@ -1,43 +1,24 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
-require_once( 'includes/header.php');
-?>
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
 
-  <link href="historique_film.css" rel="stylesheet">
+require_once(__DIR__ . '/includes/header.php'); ?>
+
+  <link href="<?= base_url('historique_film.css') ?>" rel="stylesheet">
 
   <title>Historique</title>  
 
-
-
 </head>
-
-<!--
-<body class="minimal">
-<div id="site-border-left"></div>
-<div id="site-border-right"></div>
-<div id="site-border-top"></div>
-<div id="site-border-bottom"></div>
-<div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/space.jpg')">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="hero-full-wrapper">
-            <div class="text-content"-->
-<?php
-
-// Barre de navigation
-?>
 
 <div class="fixed-header">
   <div class="centered-buttons">
     <?php
-    require_once('includes/nav.php'); 
+    require_once(__DIR__ . '/includes/nav.php'); 
     ?>
   </div>
   <div class="right-form">
     <?php
-    require_once('includes/auth_form.php');
+    require_once(__DIR__ . '/includes/auth_form.php');
     ?>
   </div>
 </div>
@@ -86,7 +67,7 @@ foreach($array_historique_semaines as $semaine){
 
   $array_proposeurs[$semaine->proposeur->nom] = $semaine->proposeur;
 }
-echo'<form method="post" action="historique_film.php" class = "main-zone">
+echo'<form method="post" action="' . base_url('historique_film.php') . '" class="main-zone">
     <label>Membres</label>
         <select class="text-dark" name="user_filter">';
 foreach($array_proposeurs as $proposeur){ //Afficher un utlisateur
@@ -142,7 +123,7 @@ function admin_semaine_edit(){
   // Formulaire pour désigner le film gagnant et le proposeur de la semaine
   if (isset($_SESSION['user']) && $_SESSION['user'] == 1 ){ // Si utilisateur bebert
     echo "<details class = \"texte-historique\"><summary>Editer la semaine</summary>";
-    echo '<form method="post" action="historique_film.php">';
+    echo '<form method="post" action="' . base_url('historique_film.php') . '">';
 
     // Dropdown pour choisir le film gagnant
     echo '  <label>Spécifier le film gagnant</label>
@@ -243,8 +224,16 @@ foreach($array_historique_semaines as $semaine){
 
       // Affichage de l'interface d'édition de la semaine
       admin_semaine_edit();
-
-      echo "<p><b>Film de Droit Divin :</b> <a href='".$semaine->filmVu->imdb."' target='_blank'>".$semaine->filmVu->titre."</a> (".$semaine->filmVu->sortie_film.")</p><br />";
+      ?>
+        <p>
+          <b>Film de Droit Divin :</b>
+          <a href="<?= htmlspecialchars($semaine->filmVu->imdb) ?>" target="_blank">
+            <?= htmlspecialchars($semaine->filmVu->titre) ?> 
+          </a>
+          (<?= $semaine->filmVu->sortie_film ?>)
+        </p>
+        <br />
+      <?php
     }
 
   }
@@ -262,7 +251,7 @@ foreach($array_historique_semaines as $semaine){
     
   </div>
   
-  <?php require_once('includes/footer.php'); ?>
+  <?php require_once(__DIR__ . '/includes/footer.php'); ?>
 
   <!-- Script JavaScript intégré -->
   <script>

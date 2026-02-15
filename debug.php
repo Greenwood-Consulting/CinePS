@@ -1,11 +1,10 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/calcul_etat.php');
-require_once('includes/header.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/calcul_etat.php');
+require_once(__DIR__ . '/includes/header.php');
 ?>
 
 <title>CinePs Debug</title>
-<link rel="stylesheet" href="css/styles.css?v=1.0">
 <style>
   ul li.true:before {
     content: '✔ ';
@@ -44,9 +43,9 @@ require_once('includes/header.php');
         "/",
         "/index.php",
         "/admin.php",
-        "/deconnexion.php",
         "/historique_film.php",
         "/inscription.php",
+        "/pre_selections.php",
         "/profil.php",
         "/resultat_vote.php",
         "/save_vote.php",
@@ -55,7 +54,7 @@ require_once('includes/header.php');
       ?>
 
       <?php foreach ($pages as $page): ?>
-        <li><a href="<?= $page ?>"><?= $page ?></a></li>
+        <li><a href="<?= base_url($page) ?>"><?= $page ?></a></li>
       <?php endforeach; ?>
     </ul>
   </article>

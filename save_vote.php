@@ -1,6 +1,6 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/common.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/common.php');
 
 // Mise à jour de la table a_vote pour l'utilisateur connecté
 $array_body_avote = array();
@@ -22,6 +22,6 @@ if(!isset($_POST['abstention'])){//si on appui sur le bouton "proposition termin
   }
 }
 
-header('Location: index.php');
+header('Location: ' . base_url('index.php'));
 exit();
 ?>

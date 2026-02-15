@@ -1,10 +1,10 @@
 <?php
-require_once('includes/init.php');
-require_once('includes/calcul_etat.php');
+require_once(__DIR__ . '/includes/init.php');
+require_once(__DIR__ . '/includes/calcul_etat.php');
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
-  header('Location: index.php');
+  header('Location: ' . base_url('index.php'));
   exit;
 }
 $user_id = $_SESSION['user'];
@@ -19,7 +19,7 @@ if (isset($_POST['create_preselection'])) {
   ]);
   call_API('/api/preselections', 'POST', $body);
 
-  header('Location: pre_selections.php');
+  header('Location: ' . base_url('pre_selections.php'));
   exit;
 }
 
@@ -28,7 +28,7 @@ if (isset($_POST['delete_preselection'])) {
   $id = $_POST['delete_preselection'];
   call_API('/api/preselections/' . $id, 'DELETE');
 
-  header('Location: pre_selections.php');
+  header('Location: ' . base_url('pre_selections.php'));
   exit;
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['create_film']) && isset($_POST['preselection_id']) && ctype_di
   ]);
   call_API('/api/films', 'POST', $body);
   
-  header('Location: pre_selections.php');
+  header('Location: ' . base_url('pre_selections.php'));
   exit;
 }
 
@@ -52,7 +52,7 @@ if (isset($_POST['delete_film'])) {
   $id = $_POST['delete_film'];
   call_API('/api/films/' . $id, 'DELETE');
 
-  header('Location: pre_selections.php');
+  header('Location: ' . base_url('pre_selections.php'));
   exit;
 }
 
@@ -63,7 +63,7 @@ if (isset($_POST['propose_preselection']) && ctype_digit($_POST['propose_presele
   ]);
   call_API('/api/propositions', 'POST', $body);
 
-  header('Location: pre_selections.php');
+  header('Location: ' . base_url('pre_selections.php'));
   exit;
 }
 
@@ -85,10 +85,10 @@ function checkPreselectionSize ($preselection) {
   return $size >0 && $size <= $MAX_FILMS_PER_PROPOSITION;
 }
 
-require_once('includes/header.php'); ?>
+require_once(__DIR__ . '/includes/header.php'); ?>
 <title>Pré-Sélections</title>
-<link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="assets/css/pages/preselections.css">
+<link rel="stylesheet" href="<?= base_url('assets/css/main.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/pages/preselections.css') ?>">
 </head>
 
 <body>
@@ -96,20 +96,20 @@ require_once('includes/header.php'); ?>
   <header class="header">
     <div class="header__container">
       <h1 class="header__title">
-        <img src="assets/logo/logo.png" alt="logo CinePS" />
+        <img src="<?= base_url('assets/logo/logo.png') ?>" alt="logo CinePS" />
         CinePS
       </h1>
       <nav class="nav">
-        <?php require_once('includes/nav.php'); ?>
+        <?php require_once(__DIR__ . '/includes/nav.php'); ?>
       </nav>
-      <?php require_once('includes/auth_form.php'); ?>
+      <?php require_once(__DIR__ . '/includes/auth_form.php'); ?>
     </div>
   </header>
 
   <main class="main">
     <h2 class="page__title"><span class="bg-shadow">Pré-Sélections</span></h2>
 
-    <form action="pre_selections.php" method="POST">
+    <form action="<?= base_url('pre_selections.php') ?>" method="POST">
       <div class="preselections__add lt__inline bg-shadow">
         <input type="text" placeholder="thème" name="theme">
         <button class="btn" type="submit" name="create_preselection">Créer une nouvelle liste</button>
@@ -120,7 +120,7 @@ require_once('includes/header.php'); ?>
       <?php foreach ($preselections as $preselection): ?>
         <li class="preselection bg-shadow">
           <h3 class="preselection__theme lt__inline hover_target">
-            <form action="pre_selections.php" method="POST">
+            <form action="<?= base_url('pre_selections.php') ?>" method="POST">
               <span class="font__dymo"><?= htmlspecialchars($preselection->theme) ?></span>
 
               <?php if($is_proposeur): ?>
@@ -153,7 +153,7 @@ require_once('includes/header.php'); ?>
           <ul>
             <?php foreach ($preselection->films as $film): ?>
               <li>
-                <form action="pre_selections.php" method="POST">
+                <form action="<?= base_url('pre_selections.php') ?>" method="POST">
                   <span class="lt__in-line hover_target">
                     <a href="<?= htmlspecialchars($film->imdb) ?>"><?= htmlspecialchars($film->titre) ?>
                       (<?= htmlspecialchars($film->sortie_film) ?>)
@@ -182,7 +182,7 @@ require_once('includes/header.php'); ?>
               </li>
             <?php endforeach; ?>
           </ul>
-          <form action="pre_selections.php" method="POST">
+          <form action="<?= base_url('pre_selections.php') ?>" method="POST">
             <div class="lt__inline">
               <input class="preselection__add-titre" type="text" placeholder="titre" name="titre" />
               <input class="preselection__add-imdb" type="text" placeholder="https://www.imdb.com" name="imdb" />
@@ -196,7 +196,7 @@ require_once('includes/header.php'); ?>
     </ul>
   </main>
 
-  <?php require_once('includes/footer.php'); ?>
+  <?php require_once(__DIR__ . '/includes/footer.php'); ?>
 
 </body>
 
