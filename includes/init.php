@@ -77,3 +77,15 @@ function logout(): void {
   header('Location: ' . base_url('index.php'));
   exit;
 }
+
+/**
+ * Affiche une étiquette avec le nombre et le bon accord de pluriel.
+ * Exemple : 
+ * $total_films_count_label = count_label($total_films_count, 'film', 'films', 'aucun film');
+ */
+function count_label(int $count, string $singular, ?string $plural = null, ?string $zero = null): string {
+    if ($count === 0 && $zero !== null) return $zero;
+    if ($count === 1) return "1 $singular";
+    $plural = $plural ?? ($singular . 's');
+    return $count . ' ' . $plural;
+}
