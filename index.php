@@ -552,22 +552,6 @@ printNextproposeurs($id_current_semaine);
     
   </div>
  
- 
-                
-  
-
-  
-
-  <script>
-  document.addEventListener("DOMContentLoaded", function (event) {
-     type();
-     movingBackgroundImage();
-  });
-</script>
-<script type="text/javascript" src="<?= base_url('main.70a66962.js') ?>"></script>
-
-
-
 </body>
 <script src="<?= base_url('assets/js/animation-ia.js') ?>"></script>
 <script src="<?= base_url('assets/js/popup.js') ?>"></script>
