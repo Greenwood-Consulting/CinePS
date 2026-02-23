@@ -53,6 +53,15 @@ h2, p, ul{
   background-color: #000000c7; /* Couleur de fond semi-opaque */
 }
 
+.historique-explication-choix-film {
+  display: block;
+  width: 40%;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .footer_div {
   text-align: center;
 }
@@ -156,7 +165,7 @@ button {
   margin-top: 80px; /* Ajuste cette valeur selon la hauteur du bandeau */
 }
 
-// Pour les écrans inférieurs à une largeur standard de 1280px
+/* Pour les écrans inférieurs à une largeur standard de 1280px */
 @media (max-width: 1280px) { /* Ajuste la largeur selon le besoin */
   .fixed-header {
       flex-direction: column; /* Change la direction pour empiler les éléments verticalement */

@@ -201,7 +201,7 @@ foreach($array_historique_semaines as $semaine){
 
       // Raison propoition choisie
       if ($semaine->raison_proposition_choisie != null){
-        echo "<p><b>Cette semaine le film retenu l'a été pour la raison suivante : <br />".$semaine->raison_proposition_choisie."</b></p><br />";
+        echo "<p class=\"historique-explication-choix-film\"><b>Cette semaine le film retenu l'a été pour la raison suivante : <br />".$semaine->raison_proposition_choisie."</b></p><br />";
       }
   
       printChoixvoteFromArray($semaine, $array_historique_membres);
