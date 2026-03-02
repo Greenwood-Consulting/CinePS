@@ -19,7 +19,7 @@ if (isset($_POST['create_preselection'])) {
   ]);
   call_API('/api/preselections', 'POST', $body);
 
-  header('Location: ' . base_url('pre_selections.php'));
+  header('Location: ' . base_url('pre_selections.php'), true, 303);
   exit;
 }
 
@@ -28,7 +28,7 @@ if (isset($_POST['delete_preselection'])) {
   $id = $_POST['delete_preselection'];
   call_API('/api/preselections/' . $id, 'DELETE');
 
-  header('Location: ' . base_url('pre_selections.php'));
+  header('Location: ' . base_url('pre_selections.php'), true, 303);
   exit;
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['create_film']) && isset($_POST['preselection_id']) && ctype_di
   ]);
   call_API('/api/films', 'POST', $body);
   
-  header('Location: ' . base_url('pre_selections.php'));
+  header('Location: ' . base_url('pre_selections.php'), true, 303);
   exit;
 }
 
@@ -52,7 +52,7 @@ if (isset($_POST['delete_film'])) {
   $id = $_POST['delete_film'];
   call_API('/api/films/' . $id, 'DELETE');
 
-  header('Location: ' . base_url('pre_selections.php'));
+  header('Location: ' . base_url('pre_selections.php'), true, 303);
   exit;
 }
 
@@ -63,7 +63,7 @@ if (isset($_POST['propose_preselection']) && ctype_digit($_POST['propose_presele
   ]);
   call_API('/api/propositions', 'POST', $body);
 
-  header('Location: ' . base_url('pre_selections.php'));
+  header('Location: ' . base_url('pre_selections.php'), true, 303);
   exit;
 }
 

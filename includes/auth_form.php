@@ -56,8 +56,11 @@ else{ //Sinon on propose la connexion
     // Bouton de connexion
     echo "  <button class='btn btn-warning login-btn' name='form_name' value='login'>Se connecter</button>";
     // si l'user n'est pas defini malgré la demande de login 
-    if (($_POST['form_name'] ?? '') === 'login') {
-        echo "<span>Le mdp n'est pas valide</span>";
+    if (isset($_SESSION['flash']['login_error'])) {
+        echo '<span>' . $_SESSION['flash']['login_error'] . '</span>';
+
+        // Effacer le message une fois affiché
+        unset($_SESSION['flash']['login_error']);
     }
     echo "</div>
     </form>";
