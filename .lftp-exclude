@@ -1,0 +1,14 @@
+# fichiers/dossiers à ignorer lors du deploiement en preprod/prod
+# - ce qui est inutile pour le fonctionnement du serveur
+.git/**
+.github/**
+.gitignore
+.lftp-exclude
+debug.php
+README.md
+scripts/**
+
+# - ce qui ne doit pas être supprimé du serveur
+.htaccess
+.htpasswd
+config/env.php
