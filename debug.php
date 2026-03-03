@@ -44,7 +44,6 @@ require_once(__DIR__ . '/includes/header.php');
         "/index.php",
         "/admin.php",
         "/historique_film.php",
-        "/inscription.php",
         "/pre_selections.php",
         "/profil.php",
         "/resultat_vote.php",
@@ -62,7 +61,7 @@ require_once(__DIR__ . '/includes/header.php');
   <article>
     <h3>Constantes d'initialisation requises</h3>
     <ul>
-      <li>[token JWT API] <code>$_SESSION['token']</code> : <span class="truncate" style="width: 300px;"><?= isset($_SESSION['token']) ? $_SESSION['token'] : "aucun" ?></span></li>
+      <li class="<?= isset($_SESSION['token']) ? "true" : "false" ?>">[token JWT API] <code>$_SESSION['token']</code></li>
       <li>[member list] <code>sizeof($membres)</code> : <?= sizeof($membres) ?></li>
     </ul>
   </article>
