@@ -22,7 +22,7 @@ if(isset($_POST['new_membre'])){
     $json_membre = json_encode($array_membre);
     call_API("/api/newmembre", "POST", $json_membre);
 
-    header('Location: ' . base_url('admin.php'));
+    header('Location: ' . base_url('admin.php'), true, 303);
     exit;
 }
 
@@ -39,7 +39,30 @@ if(isset($_POST['enable_membre']) || isset($_POST['disable_membre'])){
 
     call_API("/api/actifMembre/".$membreId, "PATCH", $body);
 
-    header('Location: ' . base_url('admin.php'));
+    header('Location: ' . base_url('admin.php'), true, 303);
+    exit;
+}
+
+//si il clique sur le bouton new_proposeur, création d'une nouvelle semaine
+if(isset($_POST['new_proposeur'])){
+    $id_proposeur = addslashes($_POST['user']);
+    $date_proposeur = addslashes($_POST['date']);
+    $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
+    $type_semaine = $_POST['typeSemaine'];
+
+    $array_semaine = array(
+        "proposeur_id" => $id_proposeur,
+        "jour" => $date_proposeur,
+        "type_semaine" => $type_semaine,
+        "proposition_termine" => false,
+        "theme" => "",
+        "type_semaine" => $type_semaine
+    );
+    $json_semaine = json_encode($array_semaine);
+
+    call_API("/api/newSemaine", "POST", $json_semaine);
+
+    header('Location: ' . base_url('admin.php'), true, 303);
     exit;
 }
 
@@ -78,29 +101,6 @@ require_once(__DIR__ . '/includes/header.php');
     
 </br>
 <h2> Choix du proposeur pour la semaine souhaitée </h2>
-<?php
-
-//si il clique sur le bouton new_proposeur, création d'une nouvelle semaine
-if(isset($_POST['new_proposeur'])){
-    $id_proposeur = addslashes($_POST['user']);
-    $date_proposeur = addslashes($_POST['date']);
-    $date_to_insert = date("Y-m-d", strtotime($date_proposeur));
-    $type_semaine = $_POST['typeSemaine'];
-
-    $array_semaine = array(
-        "proposeur_id" => $id_proposeur,
-        "jour" => $date_proposeur,
-        "type_semaine" => $type_semaine,
-        "proposition_termine" => false,
-        "theme" => "",
-        "type_semaine" => $type_semaine
-    );
-    $json_semaine = json_encode($array_semaine);
-
-    call_API("/api/newSemaine", "POST", $json_semaine);
-}
-
-?>
 
 <!-- Formulaire de création de semaine -->
 <form method="post" action="<?= base_url('admin.php') ?>">
