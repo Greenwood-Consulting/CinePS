@@ -21,4 +21,17 @@ define('API_PASSWORD', '***');
 define('BASE_URL', 'http://localhost:8080');
 
 define('VIDEOS_YOUTUBE', ['ID_VIDEO', 'ID_VIDEO', 'ID_VIDEO']);
-?>
+
+
+// --- SESSION conf ---->>
+
+// Session ID Name Fingerprinting: Set the session cookie name
+define('SESSION_COOKIE_NAME', 'ID');
+
+// Durée de vie max d'une session (secondes)
+define('SESSION_MAX_AGE', 8 * 60 * 60);  // 8 heures de durée vie max de la session
+
+// Durée d'inactivité max (secondes)
+define('SESSION_TIMEOUT', 15 * 60);  // 15 minutes d'inactivité
+
+// <<--- SESSION conf ----
