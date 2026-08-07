@@ -27,26 +27,31 @@ if(!isset($membres) || !is_array($membres)) {
 }
 
 
-// Si on vient du formulaire de d'authentification
-if(($_POST['form_name'] ?? '') === 'login'){
+// Si on vient du formulaire de d'authentification et que les credentials sont présents
+if(($_POST['form_name'] ?? '') === 'login' && isset($_POST['user']) && isset($_POST['password'])){
 
-  // si les credentials sont présents
-  if(isset($_POST['user']) && isset($_POST['password'])){
-    $body = json_encode([
-          'email' => $_POST['user'],
-          'password' => $_POST['password']
-      ]);
-  
-    // verifie les credentials de l'utilisateur
-    $response = call_API('/api/membre_login_check', 'POST', $body);
+  $body = json_encode([
+    'email' => $_POST['user'],
+    'password' => $_POST['password']
+  ]);
 
-    //Le mot de passe correspond
-    if(is_object($response) && !isset($response->error)){
-      
-        // enregistre l'id de l'utilisateur dans la  session
-        $_SESSION['user'] = $response->membre_id;     
-    }
+  // verifie les credentials de l'utilisateur
+  $response = call_API('/api/membre_login_check', 'POST', $body);
+
+  // Si le mot de passe correspond
+  if(is_object($response) && !isset($response->error) && isset($response->membre_id)){
+    // enregistre l'id de l'utilisateur dans la  session
+    $_SESSION['user'] = $response->membre_id;
+  } 
+  // Si le mot de passe ne correspond pas
+  else {
+    // Message flash pour l'étape GET
+    $_SESSION['flash']['login_error'] = "Le mdp n'est pas valide";
   }
+    
+  // Redirection PRG
+  header('Location: ' . base_url('index.php'), true, 303);
+  exit;
 }
 
 

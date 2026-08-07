@@ -12,7 +12,7 @@ if(isset($_POST['update_dlink'])){//si un nouveau film est proposé
   $body = json_encode(['value' => $value]);
   call_API("/api/dlink", "PUT", $body);
 
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -24,7 +24,7 @@ if(isset($_POST['delete_proposition'])){//si un nouveau film est proposé
   call_API("/api/proposition/".$proposition_id, "DELETE");
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -45,7 +45,7 @@ if(isset($_POST['new_proposition'])){//si un nouveau film est proposé
   call_API("/api/proposition", "POST", $json_proposition);
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -61,7 +61,7 @@ if(isset($_POST['end_proposition'])){//si on appui sur le bouton "proposition te
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -77,7 +77,7 @@ if(isset($_POST['update_theme'])){
   call_API("/api/semaine/".$id_current_semaine, "PATCH", $json_semaine);
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -88,7 +88,7 @@ if(isset($_POST['seconde_chance'])){//si un nouveau film est proposé
   $array_proposition = call_API("/api/secondeChance/".$id_proposeur , "POST");
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
@@ -108,7 +108,7 @@ if(isset($_POST['chatGPT'])){
   call_API("/api/propositionOpenAI", "POST", $json_body);
 
   // Redirection après mise à jour
-   header('Location: ' . base_url('index.php'));
+  header('Location: ' . base_url('index.php'), true, 303);
   exit;
 }
 
