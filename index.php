@@ -490,6 +490,8 @@ if ($json_current_semaine->type == "PSAvecFilm") {
             </div>
             <!-- Overlay etoilé affiché lors de l'appel a chatGPT -->
             <div id="animationOverlay"></div>
+            <script src="<?= base_url('assets/js/animation-ia.js') ?>"></script>
+            <script src="<?= base_url('assets/js/popup.js') ?>"></script>
           <?php endif; ?>
 
         </form>
@@ -553,7 +555,4 @@ printNextproposeurs($id_current_semaine);
   </div>
  
 </body>
-<script src="<?= base_url('assets/js/animation-ia.js') ?>"></script>
-<script src="<?= base_url('assets/js/popup.js') ?>"></script>
-
 </html>
