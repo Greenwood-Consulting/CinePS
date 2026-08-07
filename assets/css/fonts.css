@@ -6,6 +6,26 @@
   font-display: swap;
 }
 
+/* declaration necessaire pour etre 100% raccord avec le design original de la page index.php */
+/* a revoir lors du refacto du css de la page index.php */
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../fonts/RobotoMono-Regular.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* declaration necessaire pour etre 100% raccord avec le design original de la page index.php */
+/* a revoir lors du refacto du css de la page index.php */
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../fonts/RobotoMono-Regular.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Exemple d'utilisation */
 .font__std {
   font-family: "Roboto Mono", monospace;
@@ -22,6 +42,16 @@
 /* Exemple d'utilisation */
 .font__bold {
   font-family: "Roboto Black", sans-serif;
+}
+
+/* declaration necessaire pour etre 100% raccord avec le design original de la page index.php */
+/* a revoir lors du refacto du css de la page index.php */
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
